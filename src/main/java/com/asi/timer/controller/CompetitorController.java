@@ -23,4 +23,14 @@ public class CompetitorController {
         return ResponseEntity.ok(this.competitorService.createCompetitor(competitorRequest).getId().toString());
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<String> updateCompetitor(@RequestBody CompetitorRequest competitorRequest) {
+        return ResponseEntity.ok(this.competitorService.updateCompetitor(competitorRequest).getId().toString());
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteCompetitor(@RequestBody CompetitorRequest competitorRequest) {
+        return ResponseEntity.ok(this.competitorService.deleteCompetitor(competitorRequest).getId().toString());
+    }
+
 }

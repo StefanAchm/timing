@@ -23,4 +23,14 @@ public class RoundController {
         return ResponseEntity.ok(this.roundService.createRound(roundRequest).getId().toString());
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<String> updateRound(@RequestBody RoundRequest roundRequest) {
+        return ResponseEntity.ok(this.roundService.updateRound(roundRequest).getId().toString());
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteRound(@RequestBody RoundRequest roundRequest) {
+        return ResponseEntity.ok(this.roundService.deleteRound(roundRequest).getId().toString());
+    }
+
 }

@@ -1,6 +1,10 @@
 package com.asi.timer.model.view;
 
+import java.util.UUID;
+
 public class RoundRequest {
+
+    private UUID id;
 
     private int roundNumber;
 
@@ -9,6 +13,14 @@ public class RoundRequest {
     private String gender;
 
     public RoundRequest() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public int getRoundNumber() {
