@@ -75,7 +75,7 @@ public class CompetitorRoundService {
             competitorResponse.setLastName(competitorRound.getCompetitor().getLastName());
             competitorResponse.setStartNumber(competitorRound.getCompetitor().getStartNumber());
             competitorResponse.setClub(competitorRound.getCompetitor().getClub());
-            competitorResponse.setDomicil(competitorRound.getCompetitor().getDomicil());
+            competitorResponse.setDomicil(competitorRound.getCompetitor().getCity());
             competitorResponse.setDateOfBirth(competitorRound.getCompetitor().getDateOfBirth());
             competitorResponse.setGender(competitorRound.getCompetitor().getGender());
 

@@ -5,8 +5,6 @@ import com.asi.timer.model.view.CompetitorRequest;
 import com.asi.timer.repositories.CompetitorRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class CompetitorService {
 
@@ -22,7 +20,7 @@ public class CompetitorService {
         competitor.setStartNumber(competitorRequest.getStartNumber());
         competitor.setFirstName(competitorRequest.getFirstName());
         competitor.setLastName(competitorRequest.getLastName());
-        competitor.setDomicil(competitorRequest.getDomicil());
+        competitor.setCity(competitorRequest.getDomicil());
         competitor.setClub(competitorRequest.getClub());
         competitor.setDateOfBirth(competitorRequest.getDateOfBirth());
         competitor.setGender(competitorRequest.getGender());
@@ -40,7 +38,7 @@ public class CompetitorService {
         competitor.setStartNumber(competitorRequest.getStartNumber());
         competitor.setFirstName(competitorRequest.getFirstName());
         competitor.setLastName(competitorRequest.getLastName());
-        competitor.setDomicil(competitorRequest.getDomicil());
+        competitor.setCity(competitorRequest.getDomicil());
         competitor.setClub(competitorRequest.getClub());
         competitor.setDateOfBirth(competitorRequest.getDateOfBirth());
         competitor.setGender(competitorRequest.getGender());

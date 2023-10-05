@@ -11,3 +11,4 @@
 ## Other
 
 - For rounds, would it be better to make a combined index of roundNumber and gender?
+- Create Dockerfile and docker image

@@ -24,7 +24,7 @@ public class PdfPrinter {
     }
 
 
-    public static boolean saveTable(String type,
+    private static boolean saveTable(String type,
                                     String pdfPath,
                                     String pdfName,
                                     String gender,

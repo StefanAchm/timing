@@ -1,6 +1,7 @@
 package com.asi.timer.model.db;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -19,11 +20,11 @@ public class Competitor {
 
     private String lastName;
 
-    private String domicil;
+    private String city;
 
     private String club;
 
-    private Date dateOfBirth; // TODO: check datatype
+    private LocalDate dateOfBirth; // TODO: check datatype
 
     private String gender;
 
@@ -65,12 +66,12 @@ public class Competitor {
         this.lastName = lastName;
     }
 
-    public String getDomicil() {
-        return domicil;
+    public String getCity() {
+        return city;
     }
 
-    public void setDomicil(String domicil) {
-        this.domicil = domicil;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getClub() {
@@ -81,11 +82,11 @@ public class Competitor {
         this.club = club;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -104,4 +105,21 @@ public class Competitor {
     public void setCompetitorRounds(Set<CompetitorRound> competitorRounds) {
         this.competitorRounds = competitorRounds;
     }
+
+    // Custom
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    /**
+     *
+     * @return the date like dd-mm-yyyy
+     */
+    public String getDateOfBirthAsString() {
+
+        return dateOfBirth.getDayOfMonth() + "-" + dateOfBirth.getMonthValue() + "-" + dateOfBirth.getYear();
+
+    }
+
 }

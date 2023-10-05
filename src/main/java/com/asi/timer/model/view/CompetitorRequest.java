@@ -1,5 +1,6 @@
 package com.asi.timer.model.view;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ public class CompetitorRequest {
 
     private String club;
 
-    private Date dateOfBirth; // TODO: check datatype
+    private LocalDate dateOfBirth; // TODO: check datatype
 
     private String gender;
 
@@ -69,11 +70,11 @@ public class CompetitorRequest {
         this.club = club;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
