@@ -1,9 +1,7 @@
 package com.asi.timer.model.db;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +17,9 @@ public class Round {
     private int maxHolds;
 
     private String gender;
+
+    @OneToMany(mappedBy = "round")
+    private Set<CompetitorRound> competitorRounds;
 
     public Round() {
     }
@@ -53,5 +54,13 @@ public class Round {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Set<CompetitorRound> getCompetitorRounds() {
+        return competitorRounds;
+    }
+
+    public void setCompetitorRounds(Set<CompetitorRound> competitorRounds) {
+        this.competitorRounds = competitorRounds;
     }
 }

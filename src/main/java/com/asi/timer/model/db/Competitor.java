@@ -1,10 +1,8 @@
 package com.asi.timer.model.db;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -28,6 +26,9 @@ public class Competitor {
     private Date dateOfBirth; // TODO: check datatype
 
     private String gender;
+
+    @OneToMany(mappedBy = "competitor")
+    private Set<CompetitorRound> competitorRounds;
 
     public Competitor() {
     }
@@ -94,5 +95,13 @@ public class Competitor {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Set<CompetitorRound> getCompetitorRounds() {
+        return competitorRounds;
+    }
+
+    public void setCompetitorRounds(Set<CompetitorRound> competitorRounds) {
+        this.competitorRounds = competitorRounds;
     }
 }
