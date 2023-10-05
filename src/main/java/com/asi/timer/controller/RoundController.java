@@ -3,10 +3,9 @@ package com.asi.timer.controller;
 import com.asi.timer.model.view.RoundRequest;
 import com.asi.timer.service.RoundService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/round")
@@ -19,8 +18,19 @@ public class RoundController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createRound(@RequestBody RoundRequest roundRequest) {
-        return ResponseEntity.ok(this.roundService.createRound(roundRequest).getId().toString());
+    public ResponseEntity<String> createRound(@RequestParam boolean addCompetitors,
+                                              @RequestBody RoundRequest roundRequest) {
+
+        return ResponseEntity.ok(this.roundService.createRound(roundRequest, addCompetitors).getId().toString());
+
+    }
+
+    @PostMapping("/updateSuccessScore")
+    public ResponseEntity<String> updateSuccessScore(@RequestParam UUID roundId,
+                                                     @RequestParam int successScore) {
+
+        return ResponseEntity.ok(this.roundService.updateSuccessScore(roundId, successScore).getId().toString());
+
     }
 
     @PostMapping("/update")

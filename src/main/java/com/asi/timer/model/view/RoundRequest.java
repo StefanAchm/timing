@@ -12,6 +12,8 @@ public class RoundRequest {
 
     private String gender;
 
+    private int successScore;
+
     public RoundRequest() {
     }
 
@@ -45,5 +47,13 @@ public class RoundRequest {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public int getSuccessScore() {
+        return successScore;
+    }
+
+    public void setSuccessScore(int successScore) {
+        this.successScore = successScore;
     }
 }

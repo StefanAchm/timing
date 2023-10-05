@@ -19,7 +19,6 @@ public class CompetitorService {
     public Competitor createCompetitor(CompetitorRequest competitorRequest) {
 
         Competitor competitor = new Competitor();
-        competitor.setId(UUID.randomUUID());
         competitor.setStartNumber(competitorRequest.getStartNumber());
         competitor.setFirstName(competitorRequest.getFirstName());
         competitor.setLastName(competitorRequest.getLastName());

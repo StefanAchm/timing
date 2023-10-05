@@ -3,11 +3,13 @@ package com.asi.timer.service;
 import com.asi.timer.model.db.Competitor;
 import com.asi.timer.model.db.CompetitorRound;
 import com.asi.timer.model.db.Round;
+import com.asi.timer.model.view.CompetitorResponse;
 import com.asi.timer.repositories.CompetitorRepository;
 import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,11 +31,16 @@ public class CompetitorRoundService {
 
     public String addCompetitorToRound(UUID competitorId, UUID roundId) {
 
-        Competitor competitor = this.competitorRepository.findById(competitorId).orElseThrow();
-        Round round = this.roundRepository.findById(roundId).orElseThrow();
+        Competitor competitor = this.competitorRepository
+                .findById(competitorId)
+                .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorId + " not found"));
+
+
+        Round round = this.roundRepository
+                .findById(roundId)
+                .orElseThrow(() -> new RuntimeException("Round with id " + roundId + " not found"));
 
         CompetitorRound competitorRound = new CompetitorRound();
-        competitorRound.setId(UUID.randomUUID());
         competitorRound.setCompetitor(competitor);
         competitorRound.setRound(round);
 
@@ -43,10 +50,77 @@ public class CompetitorRoundService {
 
     public String updateScore(UUID competitorRoundID, int score) {
 
-        CompetitorRound competitorRound = this.competitorRoundRepository.findById(competitorRoundID).orElseThrow();
+        CompetitorRound competitorRound = this.competitorRoundRepository
+                .findById(competitorRoundID)
+                .orElseThrow(() -> new RuntimeException("CompetitorRound with id " + competitorRoundID + " not found"));
+
         competitorRound.setScore(score);
+
         this.competitorRoundRepository.save(competitorRound);
+
         return "Score updated";
 
     }
+
+    public List<CompetitorResponse> getCompetitors(int roundNumber, String gender) {
+
+        List<CompetitorRound> competitorRounds = this.competitorRoundRepository
+                .findByRound_RoundNumberAndRound_Gender(roundNumber, gender);
+
+        return competitorRounds.stream().map(competitorRound -> {
+
+            CompetitorResponse competitorResponse = new CompetitorResponse();
+            competitorResponse.setId(competitorRound.getCompetitor().getId());
+            competitorResponse.setFirstName(competitorRound.getCompetitor().getFirstName());
+            competitorResponse.setLastName(competitorRound.getCompetitor().getLastName());
+            competitorResponse.setStartNumber(competitorRound.getCompetitor().getStartNumber());
+            competitorResponse.setClub(competitorRound.getCompetitor().getClub());
+            competitorResponse.setDomicil(competitorRound.getCompetitor().getDomicil());
+            competitorResponse.setDateOfBirth(competitorRound.getCompetitor().getDateOfBirth());
+            competitorResponse.setGender(competitorRound.getCompetitor().getGender());
+
+            return competitorResponse;
+
+        }).toList();
+
+    }
+
+    public void addCompetitorsToRound(Round newRound) {
+
+        // 1. Find all possible candidates for the round
+
+        Round previousRound = this.roundRepository.findByRoundNumberAndGender(newRound.getRoundNumber() - 1, newRound.getGender());
+
+        List<Competitor> competitors = findPossibleCandidatesForRound(newRound, previousRound);
+
+        // 2. Add all to the round
+
+        competitors.forEach(competitor -> {
+
+            CompetitorRound competitorRound = new CompetitorRound();
+            competitorRound.setCompetitor(competitor);
+            competitorRound.setRound(newRound);
+
+            this.competitorRoundRepository.save(competitorRound);
+
+        });
+
+    }
+
+    private List<Competitor> findPossibleCandidatesForRound(Round newRound, Round previousRound) {
+
+        if(newRound.getRoundNumber() == 1) {
+            return this.competitorRepository.findAllByGender(newRound.getGender());
+        } else {
+
+            List<CompetitorRound> competitorRounds = this
+                    .competitorRoundRepository
+                    .findByRoundIdAndScoreGreaterThan(previousRound.getId(), previousRound.getSuccessScore());
+
+            return competitorRounds.stream().map(CompetitorRound::getCompetitor).toList();
+        }
+
+    }
+
+
 }

@@ -18,6 +18,8 @@ public class Round {
 
     private String gender;
 
+    private int successScore;
+
     @OneToMany(mappedBy = "round")
     private Set<CompetitorRound> competitorRounds;
 
@@ -62,5 +64,13 @@ public class Round {
 
     public void setCompetitorRounds(Set<CompetitorRound> competitorRounds) {
         this.competitorRounds = competitorRounds;
+    }
+
+    public int getSuccessScore() {
+        return successScore;
+    }
+
+    public void setSuccessScore(int successScore) {
+        this.successScore = successScore;
     }
 }

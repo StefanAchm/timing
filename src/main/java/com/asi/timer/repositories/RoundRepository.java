@@ -9,6 +9,6 @@ import java.util.UUID;
 @Repository
 public interface RoundRepository extends JpaRepository<Round, UUID> {
 
-
+    Round findByRoundNumberAndGender(int roundNumber, String gender);
 
 }

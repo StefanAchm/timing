@@ -3,6 +3,7 @@ package com.asi.timer.service;
 import com.asi.timer.model.db.CompetitorRound;
 import com.asi.timer.model.db.Round;
 import com.asi.timer.model.view.RoundRequest;
+import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +14,30 @@ public class RoundService {
 
     private final RoundRepository roundRepository;
 
-    public RoundService(RoundRepository roundRepository) {
+    private final CompetitorRoundService competitorRoundService;
+
+    public RoundService(RoundRepository roundRepository, CompetitorRoundService competitorRoundService) {
         this.roundRepository = roundRepository;
+        this.competitorRoundService = competitorRoundService;
     }
 
-    public Round createRound(RoundRequest roundRequest) {
+    public Round createRound(RoundRequest roundRequest, boolean addCompetitors) {
 
         Round round = new Round();
-        round.setId(UUID.randomUUID());
         round.setRoundNumber(roundRequest.getRoundNumber());
         round.setMaxHolds(roundRequest.getMaxHolds());
         round.setGender(roundRequest.getGender());
 
-        return this.roundRepository.save(round);
+        Round roundCreated = this.roundRepository.save(round);
+
+        // End transaction
+//        this.roundRepository.flush(); // This is needed to get the ID of the round
+
+        if (addCompetitors) {
+            this.competitorRoundService.addCompetitorsToRound(roundCreated);
+        }
+
+        return roundCreated;
 
     }
 
@@ -61,4 +73,15 @@ public class RoundService {
 
     }
 
+    public Round updateSuccessScore(UUID roundId, int successScore) {
+
+        Round round = this.roundRepository
+                .findById(roundId)
+                .orElseThrow(() -> new RuntimeException("Round with id " + roundId + " not found"));
+
+        round.setSuccessScore(successScore);
+
+        return this.roundRepository.save(round);
+
+    }
 }
