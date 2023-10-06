@@ -6,6 +6,7 @@
 ## Features
 
 - Print of starter-list and results
+  - Sort by startnumber or score (depending on which list you print!)
 - scoring of rounds!
 
 ## Other
