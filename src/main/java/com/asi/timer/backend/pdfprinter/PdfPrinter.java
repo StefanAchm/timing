@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+@Deprecated
 public class PdfPrinter {
 
     public static String print(EnumPrintType printType, CompetitorRound competitorRound) {
@@ -41,7 +42,7 @@ public class PdfPrinter {
 
         try {
 
-            if(!pdfPath.equals("")) {
+            if(!pdfPath.isEmpty()) {
                 new File(pdfPath).mkdir();
             }
 

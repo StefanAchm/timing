@@ -1,25 +1,26 @@
 package com.asi.timer.backend.pdfprinter;
 
+import com.asi.timer.backend.pdfprinter.model.Columns;
+import com.asi.timer.backend.pdfprinter.model.PdfContentContainer;
+import com.asi.timer.backend.pdfprinter.model.Rows;
 import com.asi.timer.enums.EnumPrintType;
 import com.asi.timer.model.db.Competitor;
 
 import java.util.List;
 
-public class PdfContainerFactory {
+public class PdfContentContainerFactory {
 
-    private static final String FILEPATH = "C:\\Users\\StefanA\\Desktop\\"; // todo
-
-    public static PdfContainer getContainer(EnumPrintType type, String gender, int round, List<Competitor> competitors) {
+    public static PdfContentContainer getContainer(String folderPath, EnumPrintType type, String gender, int round, List<Competitor> competitors) {
         return switch (type) {
-            case START_LIST -> getStartListContainer(type, gender, round, competitors);
-            case RESULT_LIST -> getResultListContainer(type, gender, round, competitors);
+            case START_LIST -> getStartListContainer(folderPath, type, gender, round, competitors);
+            case RESULT_LIST -> getResultListContainer(folderPath, type, gender, round, competitors);
         };
     }
 
-    private static PdfContainer getResultListContainer(EnumPrintType type, String gender, int round, List<Competitor> competitors) {
+    private static PdfContentContainer getResultListContainer(String folderPath, EnumPrintType type, String gender, int round, List<Competitor> competitors) {
 
-        return new PdfContainer(
-                FILEPATH,
+        return new PdfContentContainer(
+                folderPath,
                 getFileName(type, gender, round),
                 Columns.getColumns(type),
                 type,
@@ -30,10 +31,10 @@ public class PdfContainerFactory {
 
     }
 
-    private static PdfContainer getStartListContainer(EnumPrintType type, String gender, int round, List<Competitor> competitors) {
+    private static PdfContentContainer getStartListContainer(String folderPath, EnumPrintType type, String gender, int round, List<Competitor> competitors) {
 
-        return new PdfContainer(
-                FILEPATH,
+        return new PdfContentContainer(
+                folderPath,
                 getFileName(type, gender, round),
                 Columns.getColumns(type),
                 type,

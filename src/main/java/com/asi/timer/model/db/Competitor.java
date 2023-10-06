@@ -34,6 +34,16 @@ public class Competitor {
     public Competitor() {
     }
 
+    public Competitor(int startNumber, String firstName, String lastName, String city, String club, LocalDate dateOfBirth, String gender) {
+        this.startNumber = startNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.city = city;
+        this.club = club;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+    }
+
     public UUID getId() {
         return id;
     }

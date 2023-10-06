@@ -1,10 +1,13 @@
-package com.asi.timer.backend.pdfprinter;
+package com.asi.timer.backend.pdfprinter.model;
 
 import com.asi.timer.enums.EnumPrintType;
 
 import java.util.List;
 
-public class PdfContainer {
+public class PdfContentContainer {
+
+    private static final int rowsOnFirstPage = 10;
+    private static final int rowsOnNextPages = 12;
 
     private String filePath;
     private String fileName;
@@ -19,27 +22,27 @@ public class PdfContainer {
 
     private List<Row> rows;
 
-    public PdfContainer(String filePath,
-                        String fileName,
-                        List<Column> columns,
-                        EnumPrintType type,
-                        String gender,
-                        int round,
-                        List<Row> rows) {
+    public PdfContentContainer(String filePath,
+                               String fileName,
+                               List<Column> columns,
+                               EnumPrintType type,
+                               String gender,
+                               int round,
+                               List<Row> rows) {
 
-        if(filePath == null || filePath.isBlank()) {
+        if (filePath == null || filePath.isBlank()) {
             throw new IllegalArgumentException("filePath is null or blank");
         }
 
-        if(fileName == null || fileName.isBlank()) {
+        if (fileName == null || fileName.isBlank()) {
             throw new IllegalArgumentException("fileName is null or blank");
         }
 
-        if(columns == null || columns.isEmpty()) {
+        if (columns == null || columns.isEmpty()) {
             throw new IllegalArgumentException("columns is null or empty");
         }
 
-        if(rows == null || rows.isEmpty()) {
+        if (rows == null || rows.isEmpty()) {
             throw new IllegalArgumentException("rows is null or empty");
         }
 
@@ -108,4 +111,42 @@ public class PdfContainer {
     public void setRows(List<Row> rows) {
         this.rows = rows;
     }
+
+    public List<Row> getRowsForPage(int page) {
+
+        if (page == 0) {
+
+            return this.rows.subList(0, 10);
+
+        } else {
+
+            int start = rowsOnFirstPage + (page - 1) * rowsOnNextPages;
+            int end = Math.min(this.rows.size() - 1, start + rowsOnNextPages);
+
+            return this.rows.subList(start, end);
+
+        }
+
+    }
+
+    public int getNrPages() {
+
+        int nrPages = 1;
+
+        if (this.rows.size() > rowsOnFirstPage) {
+
+            int rowsLeft = this.rows.size() - rowsOnFirstPage;
+
+            nrPages += rowsLeft / rowsOnNextPages;
+
+            if (rowsLeft % rowsOnNextPages != 0) {
+                nrPages++;
+            }
+
+        }
+
+        return nrPages;
+
+    }
+
 }

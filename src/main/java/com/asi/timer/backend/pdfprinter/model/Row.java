@@ -1,4 +1,4 @@
-package com.asi.timer.backend.pdfprinter;
+package com.asi.timer.backend.pdfprinter.model;
 
 import java.util.List;
 
