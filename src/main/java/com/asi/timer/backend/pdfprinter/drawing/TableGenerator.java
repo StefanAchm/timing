@@ -79,7 +79,7 @@ public class TableGenerator {
 
                 content.setPhrase(new Paragraph(cellContent, font));
                 content.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                content.setFixedHeight(25f);
+                content.setFixedHeight(35f);
                 content.setBorderWidth(0f);
 
                 if (currentRowNr % 2 == 0) {

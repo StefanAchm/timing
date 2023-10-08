@@ -1,19 +1,11 @@
 package com.asi.timer.backend.pdfprinter.model;
 
-import com.asi.timer.enums.EnumPrintType;
+import com.asi.timer.backend.score.model.CompetitorScore;
 import com.asi.timer.model.db.Competitor;
 
 import java.util.List;
 
 public class Rows {
-
-    public static List<Row> getRows(EnumPrintType type, List<Competitor> competitors) {
-
-        return switch (type) {
-            case START_LIST -> getStartListRows(competitors);
-            case RESULT_LIST -> getResultListRows(competitors);
-        };
-    }
 
     public static List<Row> getStartListRows(List<Competitor> competitors) {
 
@@ -33,9 +25,29 @@ public class Rows {
 
     }
 
-    public static List<Row> getResultListRows(List<Competitor> competitors) {
+    public static List<Row> getResultListRows(List<CompetitorScore> competitorScores) {
 
-        throw new RuntimeException("Not implemented yet");
+        return competitorScores.stream()
+                .map(competitorScore -> {
+
+                    Row row = new Row();
+                    row.setCells(List.of(
+                            String.valueOf(competitorScore.getRank()),
+                            competitorScore.getCompetitor().getFullName(),
+                            competitorScore.getCompetitor().getCity(),
+                            competitorScore.getCompetitor().getClub(),
+                            competitorScore.getCompetitor().getDateOfBirthAsString(),
+                            "Runde " + competitorScore.getLastRound().getRound().getRoundNumber(),
+                            "15", // todo
+                            "weitergezogen", // todo
+                            "5", // todo
+                            String.valueOf(competitorScore.getScoreForPdf())
+                    ));
+
+                    return row;
+
+                })
+                .toList();
 
     }
 

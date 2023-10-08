@@ -3,6 +3,7 @@ package com.asi.timer.backend.pdfprinter;
 import com.asi.timer.backend.pdfprinter.model.Columns;
 import com.asi.timer.backend.pdfprinter.model.PdfContentContainer;
 import com.asi.timer.backend.pdfprinter.model.Rows;
+import com.asi.timer.backend.score.model.CompetitorScore;
 import com.asi.timer.enums.EnumPrintType;
 import com.asi.timer.model.db.Competitor;
 
@@ -17,10 +18,11 @@ public class PdfContentContainerFactory {
                                                    String gender,
                                                    int round,
                                                    LocalDate date,
-                                                   List<Competitor> competitors) {
+                                                   List<Competitor> competitors,
+                                                   List<CompetitorScore> competitorScores) {
         return switch (type) {
             case START_LIST -> getStartListContainer(folderPath, eventTitle, type, gender, round, date, competitors);
-            case RESULT_LIST -> getResultListContainer(folderPath, eventTitle, type, gender, round, date, competitors);
+            case RESULT_LIST -> getResultListContainer(folderPath, eventTitle, type, gender, round, date, competitorScores);
         };
     }
 
@@ -30,7 +32,7 @@ public class PdfContentContainerFactory {
                                                               String gender,
                                                               int round,
                                                               LocalDate date,
-                                                              List<Competitor> competitors) {
+                                                              List<CompetitorScore> competitorScores) {
 
         return new PdfContentContainer(
                 folderPath,
@@ -41,7 +43,7 @@ public class PdfContentContainerFactory {
                 type,
                 gender,
                 round,
-                Rows.getRows(type, competitors)
+                Rows.getResultListRows(competitorScores)
         );
 
     }
@@ -63,7 +65,7 @@ public class PdfContentContainerFactory {
                 type,
                 gender,
                 round,
-                Rows.getRows(type, competitors)
+                Rows.getStartListRows(competitors)
         );
 
     }

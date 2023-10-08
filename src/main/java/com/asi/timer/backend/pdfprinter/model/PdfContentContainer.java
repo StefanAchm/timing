@@ -66,12 +66,12 @@ public class PdfContentContainer {
 
         switch (type) {
             case START_LIST -> {
-                this.rowsOnFirstPage = 15;
-                this.rowsOnNextPages = 20;
+                this.rowsOnFirstPage = 11;
+                this.rowsOnNextPages = 14;
             }
             case RESULT_LIST -> {
-                this.rowsOnFirstPage = 10;
-                this.rowsOnNextPages = 12;
+                this.rowsOnFirstPage = 11;
+                this.rowsOnNextPages = 14;
             }
             default -> throw new IllegalArgumentException("type is not supported");
         }
