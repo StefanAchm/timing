@@ -1,9 +1,11 @@
 package com.asi.timer.service;
 
+import com.asi.timer.backend.score.ScoreCalculator;
 import com.asi.timer.model.db.Competitor;
 import com.asi.timer.model.db.CompetitorRound;
 import com.asi.timer.model.db.Round;
 import com.asi.timer.model.view.CompetitorResponse;
+import com.asi.timer.model.view.CompetitorRoundScoreRequest;
 import com.asi.timer.repositories.CompetitorRepository;
 import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
@@ -48,17 +50,19 @@ public class CompetitorRoundService {
         
     }
 
-    public String updateScore(UUID competitorRoundID, int score) {
+    public double updateScore(UUID competitorRoundID, CompetitorRoundScoreRequest competitorRoundScoreRequest) {
 
         CompetitorRound competitorRound = this.competitorRoundRepository
                 .findById(competitorRoundID)
                 .orElseThrow(() -> new RuntimeException("CompetitorRound with id " + competitorRoundID + " not found"));
 
-        competitorRound.setScore(score);
+        competitorRound.setHoldNumber(competitorRoundScoreRequest.getHoldNumber());
+        competitorRound.setHoldType(competitorRoundScoreRequest.getHoldType());
+        competitorRound.setTryNumber(competitorRoundScoreRequest.getTryNumber());
 
         this.competitorRoundRepository.save(competitorRound);
 
-        return "Score updated";
+        return ScoreCalculator.calculateScore(competitorRound);
 
     }
 

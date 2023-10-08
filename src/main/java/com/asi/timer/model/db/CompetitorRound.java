@@ -1,5 +1,7 @@
 package com.asi.timer.model.db;
 
+import com.asi.timer.enums.EnumHoldType;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -17,7 +19,11 @@ public class CompetitorRound {
     @ManyToOne
     private Round round;
 
-    private int score; // TODO: extend with hold, etc.
+    private EnumHoldType holdType;
+
+    private int holdNumber;
+
+    private int tryNumber;
 
     public void setId(UUID id) {
         this.id = id;
@@ -43,11 +49,28 @@ public class CompetitorRound {
         this.round = round;
     }
 
-    public int getScore() {
-        return score;
+    public EnumHoldType getHoldType() {
+        return holdType;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setHoldType(EnumHoldType holdType) {
+        this.holdType = holdType;
     }
+
+    public int getHoldNumber() {
+        return holdNumber;
+    }
+
+    public void setHoldNumber(int holdNumber) {
+        this.holdNumber = holdNumber;
+    }
+
+    public int getTryNumber() {
+        return tryNumber;
+    }
+
+    public void setTryNumber(int tryNumber) {
+        this.tryNumber = tryNumber;
+    }
+
 }
