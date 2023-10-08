@@ -2,6 +2,8 @@ package com.asi.timer.backend.pdfprinter.model;
 
 import com.asi.timer.enums.EnumPrintType;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class PdfContentContainer {
@@ -14,7 +16,11 @@ public class PdfContentContainer {
 
     private List<Column> columns;
 
+    private String eventTile;
+
     private EnumPrintType type;
+
+    private LocalDate date;
 
     private String gender;
 
@@ -24,6 +30,8 @@ public class PdfContentContainer {
 
     public PdfContentContainer(String filePath,
                                String fileName,
+                               String eventTile,
+                               LocalDate date,
                                List<Column> columns,
                                EnumPrintType type,
                                String gender,
@@ -48,11 +56,13 @@ public class PdfContentContainer {
 
         this.filePath = filePath;
         this.fileName = fileName;
+        this.eventTile = eventTile;
         this.columns = columns;
         this.type = type;
         this.gender = gender;
         this.round = round;
         this.rows = rows;
+        this.date = date;
 
     }
 
@@ -70,6 +80,14 @@ public class PdfContentContainer {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getEventTile() {
+        return eventTile;
+    }
+
+    public void setEventTile(String eventTile) {
+        this.eventTile = eventTile;
     }
 
     public List<Column> getColumns() {
@@ -110,6 +128,20 @@ public class PdfContentContainer {
 
     public void setRows(List<Row> rows) {
         this.rows = rows;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getDateForPdf() {
+
+        return this.date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+
     }
 
     public List<Row> getRowsForPage(int page) {

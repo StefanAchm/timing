@@ -12,39 +12,54 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.time.LocalDate;
 import java.util.List;
 
 public class PdfContainer {
 
     private final Document document;
     private final PdfWriter writer;
+    private final File file;
     private final PdfContentContainer pdfContentContainer;
 
     public PdfContainer(String folderPath,
+                        String eventTitle,
                         EnumPrintType type,
                         String gender,
                         int round,
+                        LocalDate date,
                         List<Competitor> competitors) throws DocumentException, FileNotFoundException {
 
-        this.pdfContentContainer = PdfContentContainerFactory.getContainer(folderPath, type, gender, round, competitors);
+        this.pdfContentContainer = PdfContentContainerFactory.getContainer(folderPath, eventTitle, type, gender, round, date, competitors);
 
         FileUtils.createFolderIfNotExists(this.pdfContentContainer.getFilePath());
 
         this.document = generateDocument();
 
-        this.writer = generateWriter(this.document, this.pdfContentContainer.getFilePath(), this.pdfContentContainer.getFileName());
+        this.file = FileUtils.createFileOrUnique(
+                this.pdfContentContainer.getFilePath(),
+                this.pdfContentContainer.getFileName(),
+                "pdf"
+        );
+
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+        this.writer = generateWriter(this.document, fileOutputStream);
 
         this.document.open();
 
     }
 
-    public void generatePdf() throws DocumentException {
+    public File generatePdf() throws DocumentException {
 
         this.drawContent();
 
         this.document.close();
+
+        return this.file;
 
     }
 
@@ -54,10 +69,9 @@ public class PdfContainer {
 
     }
 
-    private static PdfWriter generateWriter(Document document, String pdfFilePath, String pdfFileName) throws FileNotFoundException, DocumentException {
+    private static PdfWriter generateWriter(Document document, FileOutputStream fileOutputStream) throws DocumentException {
 
-
-        return PdfWriter.getInstance(document, new FileOutputStream(pdfFilePath + "/" + pdfFileName));
+        return PdfWriter.getInstance(document, fileOutputStream);
 
     }
 
@@ -69,19 +83,17 @@ public class PdfContainer {
 
             if (currentPageNr == 0) {
 
-                TitleGenerator.addTitle(
-                        this.document,
-                        "Ergebnisliste", // todo
-                        "KIOT Boulderup 2023", // todo
-                        "Herren", // todo (can also be Damen, or 'Herren Runde 1')
-                        "20. 08. 2022"
-                );
+                if(this.pdfContentContainer.getType() == EnumPrintType.RESULT_LIST) {
+                    TitleGenerator.addTitleForResultList(this.document, this.pdfContentContainer);
+                } else {
+                    TitleGenerator.addTitleForStartList(this.document, this.pdfContentContainer);
+                }
 
             }
 
             TableGenerator.addTable(this.document, this.pdfContentContainer, currentPageNr);
 
-            FooterGenerator.addTableFooter(this.document, this.writer, currentPageNr, nrPages); // TODO: more dynamic content
+            FooterGenerator.addTableFooter(this.writer, this.pdfContentContainer, currentPageNr, nrPages);
 
             if (currentPageNr < nrPages - 1) {
                 this.document.newPage();

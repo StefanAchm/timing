@@ -6,22 +6,37 @@ import com.asi.timer.backend.pdfprinter.model.Rows;
 import com.asi.timer.enums.EnumPrintType;
 import com.asi.timer.model.db.Competitor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class PdfContentContainerFactory {
 
-    public static PdfContentContainer getContainer(String folderPath, EnumPrintType type, String gender, int round, List<Competitor> competitors) {
+    public static PdfContentContainer getContainer(String folderPath,
+                                                   String eventTitle,
+                                                   EnumPrintType type,
+                                                   String gender,
+                                                   int round,
+                                                   LocalDate date,
+                                                   List<Competitor> competitors) {
         return switch (type) {
-            case START_LIST -> getStartListContainer(folderPath, type, gender, round, competitors);
-            case RESULT_LIST -> getResultListContainer(folderPath, type, gender, round, competitors);
+            case START_LIST -> getStartListContainer(folderPath, eventTitle, type, gender, round, date, competitors);
+            case RESULT_LIST -> getResultListContainer(folderPath, eventTitle, type, gender, round, date, competitors);
         };
     }
 
-    private static PdfContentContainer getResultListContainer(String folderPath, EnumPrintType type, String gender, int round, List<Competitor> competitors) {
+    private static PdfContentContainer getResultListContainer(String folderPath,
+                                                              String eventTile,
+                                                              EnumPrintType type,
+                                                              String gender,
+                                                              int round,
+                                                              LocalDate date,
+                                                              List<Competitor> competitors) {
 
         return new PdfContentContainer(
                 folderPath,
                 getFileName(type, gender, round),
+                eventTile,
+                date,
                 Columns.getColumns(type),
                 type,
                 gender,
@@ -31,11 +46,19 @@ public class PdfContentContainerFactory {
 
     }
 
-    private static PdfContentContainer getStartListContainer(String folderPath, EnumPrintType type, String gender, int round, List<Competitor> competitors) {
+    private static PdfContentContainer getStartListContainer(String folderPath,
+                                                             String eventTile,
+                                                             EnumPrintType type,
+                                                             String gender,
+                                                             int round,
+                                                             LocalDate date,
+                                                             List<Competitor> competitors) {
 
         return new PdfContentContainer(
                 folderPath,
                 getFileName(type, gender, round),
+                eventTile,
+                date,
                 Columns.getColumns(type),
                 type,
                 gender,
@@ -61,10 +84,10 @@ public class PdfContentContainerFactory {
 
         switch (type) {
             case START_LIST -> {
-                return baseName + "_" + genderName + "_Runde" + round + ".pdf";
+                return baseName + "_" + genderName + "_Runde" + round;
             }
             case RESULT_LIST -> {
-                return baseName + "_" + genderName + ".pdf";
+                return baseName + "_" + genderName;
             }
             default -> throw new IllegalStateException("Unexpected value: " + type);
         }

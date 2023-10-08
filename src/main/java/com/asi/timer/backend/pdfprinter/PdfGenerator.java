@@ -5,22 +5,26 @@ import com.asi.timer.enums.EnumPrintType;
 import com.asi.timer.model.db.Competitor;
 import com.itextpdf.text.DocumentException;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class PdfGenerator {
 
-    public static void generatePdf(String folderPath,
+    public static File generatePdf(String folderPath,
+                                   String eventTitle,
                                    EnumPrintType type,
                                    String gender,
                                    int round,
+                                   LocalDate date,
                                    List<Competitor> competitors) {
 
         try {
 
-            PdfContainer pdfContainer = new PdfContainer(folderPath, type, gender, round, competitors);
+            PdfContainer pdfContainer = new PdfContainer(folderPath, eventTitle, type, gender, round, date, competitors);
 
-            pdfContainer.generatePdf();
+            return pdfContainer.generatePdf();
 
         } catch (DocumentException | FileNotFoundException e) {
             throw new RuntimeException(e);

@@ -1,5 +1,6 @@
 package com.asi.timer.backend.pdfprinter.drawing;
 
+import com.asi.timer.backend.pdfprinter.model.PdfContentContainer;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -13,7 +14,10 @@ public class FooterGenerator {
 
     // TODO: Make it more dynamic
 
-    public static void addTableFooter(Document document, PdfWriter writer, int pageNumber, int pageNumberTotal) {
+    public static void addTableFooter(PdfWriter writer,
+                                      PdfContentContainer pdfContentContainer,
+                                      int pageNumber,
+                                      int pageNumberTotal) {
 
         PdfPTable table = new PdfPTable(3);
 
@@ -27,11 +31,8 @@ public class FooterGenerator {
         Font font = new Font(Font.FontFamily.UNDEFINED, 10f);
         font.setColor(BaseColor.LIGHT_GRAY);
 
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        Date date = new Date();
-
         // Links
-        phrase = new Paragraph(dateFormat.format(date), font);
+        phrase = new Paragraph(pdfContentContainer.getDateForPdf(), font);
         cell.setPhrase(phrase);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         table.addCell(cell);
@@ -43,7 +44,8 @@ public class FooterGenerator {
         table.addCell(cell);
 
         // Rechts
-        phrase = new Paragraph("Seite " + pageNumber + " von " + pageNumberTotal, font);
+        int actualPageNumber = pageNumber + 1;
+        phrase = new Paragraph("Seite " + actualPageNumber + " von " + pageNumberTotal, font);
         cell.setPhrase(phrase);
         cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
         table.addCell(cell);
