@@ -22,11 +22,30 @@ class PdfGeneratorTest {
                 "male",
                 1,
                 LocalDate.now(),
-                CompetitorsDummyData.getCompetitors()
+                CompetitorsDummyData.geCompetitorsWithLongStrings()
         );
 
         FileUtils.openFile(file);
 
     }
+
+//    @Test
+//    void generateResultList() {
+//
+//        String folderPath = "C:\\Users\\Stefan\\Desktop\\";
+//
+//        File file = PdfGenerator.generatePdf(
+//                folderPath,
+//                "KIOT Bouldercup 2023",
+//                EnumPrintType.RESULT_LIST,
+//                "male",
+//                1,
+//                LocalDate.now(),
+//                CompetitorsDummyData.geCompetitorsWithLongStrings()
+//        );
+//
+//        FileUtils.openFile(file);
+//
+//    }
 
 }

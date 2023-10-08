@@ -20,7 +20,7 @@ public class TableGenerator {
 
         addTableHeader(table, pdfContentContainer.getColumns());
 
-        addRows(table, pdfContentContainer.getRowsForPage(currentPageNr));
+        addRows(table, pdfContentContainer.getRowsForPage(currentPageNr), pdfContentContainer.getColumns());
 
         document.add(table);
 
@@ -48,7 +48,7 @@ public class TableGenerator {
             Font font = new Font(Font.FontFamily.UNDEFINED, 12f, Font.BOLD);
 
             header.setPhrase(new Paragraph(column.getName(), font));
-            header.setVerticalAlignment(Element.ALIGN_MIDDLE); // TODO
+            header.setVerticalAlignment(Element.ALIGN_MIDDLE);
             header.setFixedHeight(25f);
             header.setBorderWidth(0f);
             header.setPaddingBottom(10f);
@@ -59,20 +59,26 @@ public class TableGenerator {
 
     }
 
-    private static void addRows(PdfPTable table, List<Row> rows) {
+    private static void addRows(PdfPTable table, List<Row> rows, List<Column> columns) {
 
         for (int currentRowNr = 0; currentRowNr < rows.size(); currentRowNr++) {
 
             Row row = rows.get(currentRowNr);
 
-            for (String cell : row.getCells()) {
+            List<String> cells = row.getCells();
+            for (int currentColumnNr = 0; currentColumnNr < cells.size(); currentColumnNr++) {
+                String cell = cells.get(currentColumnNr);
 
                 PdfPCell content = new PdfPCell();
 
                 Font font = new Font(Font.FontFamily.UNDEFINED, 11f);
 
-                content.setPhrase(new Paragraph(cell, font));
-                content.setVerticalAlignment(Element.ALIGN_MIDDLE); // TODO
+                // If cell content exceeds the width of the cell, wrapp it!
+
+                String cellContent = getCorrectCellContent(cell, columns, currentColumnNr, font);
+
+                content.setPhrase(new Paragraph(cellContent, font));
+                content.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 content.setFixedHeight(25f);
                 content.setBorderWidth(0f);
 
@@ -84,6 +90,45 @@ public class TableGenerator {
 
             }
         }
+
+    }
+
+    protected static String getCorrectCellContent(String cell, List<Column> columns, int currentColumnNr, Font font) {
+
+        double allCellWidths = columns.stream()
+                .map(Column::getColumnWidth)
+                .reduce(0.0, Double::sum);
+
+        double relativeCellWidth = columns.get(currentColumnNr).getColumnWidth() / allCellWidths;
+
+        double cellWidth = relativeCellWidth * 270; // A4 width landscape
+
+        double cellWidthPoint = Utilities.millimetersToPoints((float) cellWidth);
+
+        double cellContentWidthPoint ;
+
+        String finalContent = cell;
+        String finalContentWidthDots = cell;
+
+        int i = 0;
+        do {
+
+            if(i > 0) {
+                finalContent = finalContent.substring(0, finalContent.length() - 1);
+                finalContentWidthDots = finalContent + "...";
+            }
+
+            cellContentWidthPoint = font
+                    .getCalculatedBaseFont(true)
+                    .getWidthPoint(finalContentWidthDots, font.getSize());
+
+            cellContentWidthPoint += 5; //
+
+            i++;
+
+        } while (cellContentWidthPoint > cellWidthPoint);
+
+        return finalContentWidthDots;
 
     }
 

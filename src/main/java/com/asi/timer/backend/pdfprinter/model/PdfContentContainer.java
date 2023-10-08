@@ -8,8 +8,8 @@ import java.util.List;
 
 public class PdfContentContainer {
 
-    private static final int rowsOnFirstPage = 10;
-    private static final int rowsOnNextPages = 12;
+    private final int rowsOnFirstPage;
+    private final int rowsOnNextPages;
 
     private String filePath;
     private String fileName;
@@ -63,6 +63,18 @@ public class PdfContentContainer {
         this.round = round;
         this.rows = rows;
         this.date = date;
+
+        switch (type) {
+            case START_LIST -> {
+                this.rowsOnFirstPage = 15;
+                this.rowsOnNextPages = 20;
+            }
+            case RESULT_LIST -> {
+                this.rowsOnFirstPage = 10;
+                this.rowsOnNextPages = 12;
+            }
+            default -> throw new IllegalArgumentException("type is not supported");
+        }
 
     }
 
@@ -146,18 +158,22 @@ public class PdfContentContainer {
 
     public List<Row> getRowsForPage(int page) {
 
+        int start;
+        int end;
+
         if (page == 0) {
 
-            return this.rows.subList(0, 10);
+            start = 0;
+            end = Math.min(this.rows.size(), start + rowsOnFirstPage);
 
         } else {
 
-            int start = rowsOnFirstPage + (page - 1) * rowsOnNextPages;
-            int end = Math.min(this.rows.size() - 1, start + rowsOnNextPages);
-
-            return this.rows.subList(start, end);
+            start = rowsOnFirstPage + (page - 1) * rowsOnNextPages;
+            end = Math.min(this.rows.size(), start + rowsOnNextPages);
 
         }
+
+        return this.rows.subList(start, end);
 
     }
 

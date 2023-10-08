@@ -44,4 +44,78 @@ public class CompetitorDummyData {
             "male"
     );
 
+    public static Competitor competitorWithLongName1 = CompetitorDummyDataGenerator.generateCompetitor(
+            5,
+            "Maximilian",
+            "ABCDEFGHIJKLMNOPQ",
+            "Musterstadt",
+            "Musterclub",
+            "1990-01-01",
+            "male"
+    );
+
+    public static Competitor competitorWithLongClubname1 = CompetitorDummyDataGenerator.generateCompetitor(
+            6,
+            "Maximilian",
+            "Mustermann",
+            "Musterstadt",
+            "AV - ABCDEFGHIJKL",
+            "1990-01-01",
+            "male"
+    );
+
+    public static Competitor competitorWithLongClubname2 = CompetitorDummyDataGenerator.generateCompetitor(
+            7,
+            "Maximilian",
+            "Mustermann",
+            "Musterstadt",
+            "ABC ABCDEFGHI",
+            "1990-01-01",
+            "male"
+    );
+
+    public static Competitor competitorWithLongClubname3 = CompetitorDummyDataGenerator.generateCompetitor(
+            8,
+            "Maximilian",
+            "Mustermann",
+            "Musterstadt",
+            "Kletterverein ABCDEFGHI",
+            "1990-01-01",
+            "male"
+    );
+
+    public static Competitor competitorWithLongClubname4 = CompetitorDummyDataGenerator.generateCompetitor(
+            9,
+            "Maximilian",
+            "Mustermann",
+            "Musterstadt",
+            "ÖAV ABCDEFGHI",
+            "1990-01-01",
+            "male"
+    );
+
+    public static Competitor competitorWithLongDomicil = CompetitorDummyDataGenerator.generateCompetitor(
+            10,
+            "Maximilian",
+            "Mustermann",
+            "ABCDEFGHIJKLMNOPQRST",
+            "ÖAV ABCDEFGHI",
+            "1990-01-01",
+            "male"
+    );
+
+    public static Competitor competitorX(int startNumber) {
+
+        return CompetitorDummyDataGenerator.generateCompetitor(
+                startNumber,
+                "Max",
+                "Mustermann",
+                "Musterstadt",
+                "Musterclub",
+                "1990-01-01",
+                "male"
+        );
+
+    }
+
 }
