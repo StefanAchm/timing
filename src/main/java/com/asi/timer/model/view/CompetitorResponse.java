@@ -18,7 +18,7 @@ public class CompetitorResponse {
 
     private String club;
 
-    private LocalDate dateOfBirth; // TODO: check datatype
+    private LocalDate dateOfBirth;
 
     private String gender;
 
