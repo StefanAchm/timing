@@ -15,6 +15,7 @@ public interface CompetitorRoundRepository extends JpaRepository<CompetitorRound
 
     List<CompetitorRound> findByRound_RoundNumberAndRound_Gender(int roundNumber, String gender);
 
-    List<CompetitorRound> findByRoundIdAndScoreGreaterThan(UUID id, int successScore);
+    // TODO: this does not work!
+//    List<CompetitorRound> findByRoundIdAndScoreGreaterThan(UUID id, int successScore);
 
 }

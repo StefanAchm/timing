@@ -117,11 +117,13 @@ public class CompetitorRoundService {
             return this.competitorRepository.findAllByGender(newRound.getGender());
         } else {
 
-            List<CompetitorRound> competitorRounds = this
-                    .competitorRoundRepository
-                    .findByRoundIdAndScoreGreaterThan(previousRound.getId(), previousRound.getSuccessScore());
+            throw new RuntimeException("Not implemented yet");
 
-            return competitorRounds.stream().map(CompetitorRound::getCompetitor).toList();
+//            List<CompetitorRound> competitorRounds = this
+//                    .competitorRoundRepository
+//                    .findByRoundIdAndScoreGreaterThan(previousRound.getId(), previousRound.getSuccessScore());
+//
+//            return competitorRounds.stream().map(CompetitorRound::getCompetitor).toList();
         }
 
     }

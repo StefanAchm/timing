@@ -2,8 +2,11 @@ package com.asi.timer.service;
 
 import com.asi.timer.model.db.Competitor;
 import com.asi.timer.model.view.CompetitorRequest;
+import com.asi.timer.model.view.CompetitorResponse;
 import com.asi.timer.repositories.CompetitorRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CompetitorService {
@@ -64,4 +67,24 @@ public class CompetitorService {
         return competitor;
 
     }
+
+    public List<CompetitorResponse> getCompetitors() {
+
+        return this.competitorRepository.findAll()
+                .stream()
+                .map(competitor -> {
+                    CompetitorResponse competitorResponse = new CompetitorResponse();
+                    competitorResponse.setId(competitor.getId());
+                    competitorResponse.setStartNumber(competitor.getStartNumber());
+                    competitorResponse.setFirstName(competitor.getFirstName());
+                    competitorResponse.setLastName(competitor.getLastName());
+                    competitorResponse.setDomicil(competitor.getCity());
+                    competitorResponse.setClub(competitor.getClub());
+                    competitorResponse.setDateOfBirth(competitor.getDateOfBirth());
+                    competitorResponse.setGender(competitor.getGender());
+                    return competitorResponse;
+                }).toList();
+
+    }
+
 }
