@@ -79,7 +79,7 @@ public class CompetitorRoundService {
             competitorResponse.setLastName(competitorRound.getCompetitor().getLastName());
             competitorResponse.setStartNumber(competitorRound.getCompetitor().getStartNumber());
             competitorResponse.setClub(competitorRound.getCompetitor().getClub());
-            competitorResponse.setDomicil(competitorRound.getCompetitor().getCity());
+            competitorResponse.setCity(competitorRound.getCompetitor().getCity());
             competitorResponse.setDateOfBirth(competitorRound.getCompetitor().getDateOfBirth());
             competitorResponse.setGender(competitorRound.getCompetitor().getGender());
 
@@ -114,7 +114,7 @@ public class CompetitorRoundService {
     private List<Competitor> findPossibleCandidatesForRound(Round newRound, Round previousRound) {
 
         if(newRound.getRoundNumber() == 1) {
-            return this.competitorRepository.findAllByGender(newRound.getGender());
+            return this.competitorRepository.findAllByGenderAndDeletedFalse(newRound.getGender());
         } else {
 
             throw new RuntimeException("Not implemented yet");

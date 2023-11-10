@@ -10,6 +10,9 @@ import java.util.UUID;
 @Repository
 public interface CompetitorRepository extends JpaRepository<Competitor, UUID> {
 
-    List<Competitor> findAllByGender(String gender);
+    List<Competitor> findAllByGenderAndDeletedFalse(String gender);
+
+    // Find all, where delete = false
+    List<Competitor> findAllByDeletedFalse();
 
 }

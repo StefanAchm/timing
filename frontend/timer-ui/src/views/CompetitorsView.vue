@@ -76,8 +76,8 @@
                       md="4"
                   >
                     <v-text-field
-                        v-model="editedItem.domicil"
-                        label="Domizil"
+                        v-model="editedItem.city"
+                        label="City"
                     ></v-text-field>
                   </v-col>
 
@@ -106,24 +106,24 @@
                         min-width="auto"
                     >
 
-                    <template v-slot:activator="{ on, attrs }">
+                      <template v-slot:activator="{ on, attrs }">
 
-                      <v-text-field
+                        <v-text-field
+                            v-model="editedItem.dateOfBirth"
+                            label="Date of Birth"
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+
+                      </template>
+
+                      <v-date-picker
                           v-model="editedItem.dateOfBirth"
                           label="Date of Birth"
-                          v-bind="attrs"
-                          v-on="on"
-                      ></v-text-field>
+                          :active-picker.sync="activePicker"
+                      ></v-date-picker>
 
-                    </template>
-
-                    <v-date-picker
-                        v-model="editedItem.dateOfBirth"
-                        label="Date of Birth"
-                        :active-picker.sync="activePicker"
-                    ></v-date-picker>
-
-                      </v-menu>
+                    </v-menu>
 
                   </v-col>
 
@@ -214,7 +214,7 @@ export default {
       {text: 'Start Number', value: 'startNumber'},
       {text: 'First Name', value: 'firstName'},
       {text: 'Last Name', value: 'lastName'},
-      {text: 'Domizil', value: 'domicil'},
+      {text: 'City', value: 'city'},
       {text: 'Club', value: 'club'},
       {text: 'Date of Birth', value: 'dateOfBirth'},
       {text: 'Gender', value: 'gender'},
@@ -225,7 +225,7 @@ export default {
       startNumber: '',
       firstName: '',
       lastName: '',
-      domicil: '',
+      city: '',
       club: '',
       dateOfBirth: '',
       gender: ''
@@ -238,16 +238,16 @@ export default {
   }),
 
   computed: {
-    formTitle () {
+    formTitle() {
       return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
     },
   },
 
   watch: {
-    dialog (val) {
+    dialog(val) {
       val || this.close()
     },
-    dialogDelete (val) {
+    dialogDelete(val) {
       val || this.closeDelete()
     },
   },
@@ -274,32 +274,43 @@ export default {
           });
     },
 
-    editItem (item) {
+    editItem(item) {
       this.editedIndex = this.competitors.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
-    deleteItem (item) {
+    deleteItem(item) {
       this.editedIndex = this.competitors.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
-    deleteItemConfirm () {
-      this.competitors.splice(this.editedIndex, 1)
-      this.closeDelete()
+    deleteItemConfirm() {
+
+      axios
+          .post(Properties.API_IP + '/competitor/delete', this.editedItem, {params: {soft: true}})
+          .then(data => {
+            console.log(data);
+          })
+          .catch(error => {
+            console.log(error);
+          }).finally(() => {
+        this.dialogDelete = false
+        this.close();
+      });
     },
 
-    close () {
+    close() {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
+        this.initialize()
       })
     },
 
-    closeDelete () {
+    closeDelete() {
       this.dialogDelete = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -307,11 +318,22 @@ export default {
       })
     },
 
-    save () {
+    save() {
 
       if (this.editedIndex > -1) {
 
-        Object.assign(this.competitors[this.editedIndex], this.editedItem)
+        // Object.assign(this.competitors[this.editedIndex], this.editedItem)
+
+        axios
+            .post(Properties.API_IP + '/competitor/update', this.editedItem)
+            .then(data => {
+              console.log(data);
+            })
+            .catch(error => {
+              console.log(error);
+            }).finally(() => {
+          this.close();
+        });
 
         this.close()
 
@@ -327,8 +349,8 @@ export default {
             .catch(error => {
               console.log(error);
             }).finally(() => {
-              this.close();
-            });
+          this.close();
+        });
 
       }
 
@@ -336,7 +358,6 @@ export default {
     },
 
   }
-
 
 
 }

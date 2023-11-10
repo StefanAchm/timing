@@ -1,7 +1,6 @@
 package com.asi.timer.model.view;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 public class CompetitorResponse {
@@ -14,7 +13,7 @@ public class CompetitorResponse {
 
     private String lastName;
 
-    private String domicil;
+    private String city;
 
     private String club;
 
@@ -54,12 +53,12 @@ public class CompetitorResponse {
         this.lastName = lastName;
     }
 
-    public String getDomicil() {
-        return domicil;
+    public String getCity() {
+        return city;
     }
 
-    public void setDomicil(String domicil) {
-        this.domicil = domicil;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getClub() {

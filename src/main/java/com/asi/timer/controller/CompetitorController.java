@@ -29,8 +29,8 @@ public class CompetitorController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteCompetitor(@RequestBody CompetitorRequest competitorRequest) {
-        return ResponseEntity.ok(this.competitorService.deleteCompetitor(competitorRequest).getId().toString());
+    public ResponseEntity<String> deleteCompetitor(@RequestBody CompetitorRequest competitorRequest, @RequestParam boolean soft) {
+        return ResponseEntity.ok(this.competitorService.deleteCompetitor(competitorRequest, soft).getId().toString());
     }
 
     @GetMapping("/getCompetitors")

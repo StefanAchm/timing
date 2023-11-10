@@ -54,7 +54,7 @@ public class CompetitorService {
 
     }
 
-    public Competitor deleteCompetitor(CompetitorRequest competitorRequest) {
+    public Competitor deleteCompetitor(CompetitorRequest competitorRequest, boolean soft) {
 
         Competitor competitor = this.competitorRepository
                 .findById(competitorRequest.getId())
@@ -62,7 +62,12 @@ public class CompetitorService {
 
         // TODO: attention, if the competitor is already in a round, this will not work!
 
-        this.competitorRepository.delete(competitor);
+        if(soft) {
+            competitor.setDeleted(true);
+            this.competitorRepository.save(competitor);
+        } else {
+            this.competitorRepository.delete(competitor);
+        }
 
         return competitor;
 
@@ -70,7 +75,7 @@ public class CompetitorService {
 
     public List<CompetitorResponse> getCompetitors() {
 
-        return this.competitorRepository.findAll()
+        return this.competitorRepository.findAllByDeletedFalse()
                 .stream()
                 .map(competitor -> {
                     CompetitorResponse competitorResponse = new CompetitorResponse();
@@ -78,7 +83,7 @@ public class CompetitorService {
                     competitorResponse.setStartNumber(competitor.getStartNumber());
                     competitorResponse.setFirstName(competitor.getFirstName());
                     competitorResponse.setLastName(competitor.getLastName());
-                    competitorResponse.setDomicil(competitor.getCity());
+                    competitorResponse.setCity(competitor.getCity());
                     competitorResponse.setClub(competitor.getClub());
                     competitorResponse.setDateOfBirth(competitor.getDateOfBirth());
                     competitorResponse.setGender(competitor.getGender());
