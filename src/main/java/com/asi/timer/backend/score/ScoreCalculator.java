@@ -29,13 +29,21 @@ public class ScoreCalculator {
 
     public static double calculateScore(CompetitorRound competitorRound) {
 
+        return calculateScore(competitorRound.getHoldNumber(),
+                competitorRound.getHoldType(),
+                competitorRound.getTryNumber());
+
+    }
+
+    public static double calculateScore(int holdNumber, EnumHoldType holdType, int tryNumber) {
+
         double points = 0;
 
-        points += getPointsOfHoldNumber(competitorRound.getHoldNumber());
+        points += getPointsOfHoldNumber(holdNumber);
 
-        points += getPointsOfHoldType(competitorRound.getHoldType());
+        points += getPointsOfHoldType(holdType);
 
-        points += getPointsOfTryNumber(competitorRound.getTryNumber());
+        points += getPointsOfTryNumber(tryNumber);
 
         points = Math.round(points * 100.0) / 100.0;
 

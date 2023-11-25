@@ -2,6 +2,7 @@ package com.asi.timer.controller;
 
 import com.asi.timer.model.view.CompetitorRequest;
 import com.asi.timer.model.view.CompetitorResponse;
+import com.asi.timer.model.view.RoundRequest;
 import com.asi.timer.service.CompetitorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,11 @@ public class CompetitorController {
     @GetMapping("/getCompetitors")
     public ResponseEntity<List<CompetitorResponse>> getCompetitors() {
         return ResponseEntity.ok(this.competitorService.getCompetitors());
+    }
+
+    @GetMapping("/getPossibleCompetitors")
+    public ResponseEntity<List<CompetitorResponse>> getPossibleCompetitors(@RequestParam RoundRequest roundRequest) {
+        return ResponseEntity.ok(this.competitorService.getPossibleCompetitors(roundRequest));
     }
 
 

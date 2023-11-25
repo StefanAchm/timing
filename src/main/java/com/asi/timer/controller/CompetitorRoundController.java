@@ -27,6 +27,14 @@ public class CompetitorRoundController {
 
     }
 
+//    @PostMapping("/addCompetitorsToRound")
+//    public ResponseEntity<String> addCompetitorsToRound(@RequestParam List<UUID> competitorIds,
+//                                                        @RequestParam UUID roundId) {
+//
+//        return ResponseEntity.ok(this.competitorRoundService.addCompetitorsToRound(competitorIds, roundId));
+//
+//    }
+
     @PostMapping("/updateScore")
     public ResponseEntity<Double> updateScore(@RequestParam UUID competitorRoundID,
                                               @RequestBody CompetitorRoundScoreRequest competitorRoundScoreRequest) {

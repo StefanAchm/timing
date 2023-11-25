@@ -89,24 +89,16 @@
 
 <script>
 
-// import TransactionsView from './components/TransactionsView.vue'
 
 export default {
   name: 'App',
-
-  // components: {
-  //   TransactionsView
-  // },
 
   data() {
     return {
       items: [
         {title: 'Home', icon: 'mdi-bank', route: '/'},
-        {title: 'Competitors', icon: 'mdi-account-multiple', route: '/competitors'}
-        // {title: 'Import', icon: 'mdi-import', route: '/import'},
-        // {title: 'Transactions', icon: 'mdi-swap-horizontal', route: '/transactions'},
-        // {title: 'Summary', icon: 'mdi-chart-line', route: '/summary'},
-        // { title: 'About', icon: 'mdi-help-box' },
+        {title: 'Teilnehmer', icon: 'mdi-account-multiple', route: '/competitors'},
+        {title: 'Runden', icon: 'mdi-account-multiple', route: '/rounds'}
       ],
       right: null,
       mini: true,

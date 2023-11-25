@@ -1,19 +1,16 @@
 <template>
-
-  <v-data-table :headers="headers" :items="competitors" sort-by="startNumber" class="elevation-1">
+  <v-data-table :headers="headers" :items="rounds" sort-by="roundNumber" class="elevation-1">
 
     <template v-slot:top>
-
       <v-toolbar flat>
-
-        <v-toolbar-title>Teilnehmer</v-toolbar-title>
+        <v-toolbar-title>Runden</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
 
         <v-dialog v-model="dialog" max-width="500px">
 
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">Add competitor</v-btn>
+            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">Runde hinzufügen</v-btn>
           </template>
 
           <v-card>
@@ -25,39 +22,19 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.startNumber" label="Startnummer"></v-text-field>
+                    <v-text-field v-model="editedItem.roundNumber" label="Rundennummer"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.firstName" label="Vorname"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.lastName" label="Nachname"></v-text-field>
+                    <v-text-field v-model="editedItem.maxHolds" label="Anzahl Griffe"></v-text-field>
                   </v-col>
 
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.city" label="Stadt"></v-text-field>
+                    <v-text-field v-model="editedItem.gender" label="Gender"></v-text-field>
                   </v-col>
 
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.club" label="Verein"></v-text-field>
-                  </v-col>
-
-                  <v-col cols="12" sm="6" md="4">
-
-                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
-
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field v-model="editedItem.dateOfBirth" label="Geburtsdatum" v-bind="attrs" v-on="on"></v-text-field>
-                      </template>
-
-                      <v-date-picker v-model="editedItem.dateOfBirth" label="Geburtsdatum" :active-picker.sync="activePicker"></v-date-picker>
-
-                    </v-menu>
-
-                  </v-col>
-
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.gender" label="Geschlecht"></v-text-field>
+                    <span>Anzahl Teilnehmer: {{ editedItem.competitors }}</span>
+                    <!--                    <v-text-field :readonly="true" v-model="editedItem.competitors" label="Anzahl Teilnehmer"></v-text-field>-->
                   </v-col>
 
                 </v-row>
@@ -66,16 +43,20 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+              <v-btn color="blue darken-1" text @click="close">
+                Cancel
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="save">
+                Save
+              </v-btn>
             </v-card-actions>
 
           </v-card>
-        </v-dialog>
 
+        </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="text-h5">Sicher, dass Sie diesen Eintrag löschen möchten?</v-card-title>
+            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
@@ -104,31 +85,25 @@
 import {Properties} from "@/config";
 import axios from "axios";
 
+
 export default {
 
   data: () => ({
     dialog: false,
     dialogDelete: false,
-    competitors: [],
+    rounds: [],
     headers: [
-      {text: 'Startnummer', value: 'startNumber'},
-      {text: 'Vorname', value: 'firstName'},
-      {text: 'Nachname', value: 'lastName'},
-      {text: 'Stadt', value: 'city'},
-      {text: 'Verein', value: 'club'},
-      {text: 'Geburtsdatum', value: 'dateOfBirth'},
-      {text: 'Geschlect', value: 'gender'},
+      {text: 'Rundennummer', value: 'roundNumber'},
+      {text: 'Typ', value: 'gender'},
+      {text: 'Anzahl Griffe', value: 'maxHolds'},
+      {text: 'Anzahl Teilnehmer', value: 'numberOfCompetitors'},
       {text: 'Aktionen', value: 'actions', sortable: false}
     ],
     editedIndex: -1,
     editedItem: {
-      startNumber: '',
-      firstName: '',
-      lastName: '',
-      city: '',
-      club: '',
-      dateOfBirth: '',
-      gender: ''
+      roundNumber: '',
+      gender: '',
+      maxHolds: ''
     },
     defaultItem: {
       name: '',
@@ -164,10 +139,10 @@ export default {
 
     initialize() {
       axios
-          .get(Properties.API_IP + '/competitor/getCompetitors')
+          .get(Properties.API_IP + '/round/getRounds')
           .then(response => {
             console.log(response.data);
-            this.competitors = response.data;
+            this.rounds = response.data;
           })
           .catch(error => {
             console.log(error);
@@ -175,13 +150,13 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.competitors.indexOf(item)
+      this.editedIndex = this.rounds.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem(item) {
-      this.editedIndex = this.competitors.indexOf(item)
+      this.editedIndex = this.rounds.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
@@ -189,7 +164,7 @@ export default {
     deleteItemConfirm() {
 
       axios
-          .post(Properties.API_IP + '/competitor/delete', this.editedItem, {params: {soft: true}})
+          .post(Properties.API_IP + '/round/delete', this.editedItem, {params: {soft: true}})
           .then(data => {
             console.log(data);
           })
@@ -222,10 +197,8 @@ export default {
 
       if (this.editedIndex > -1) {
 
-        // Object.assign(this.competitors[this.editedIndex], this.editedItem)
-
         axios
-            .post(Properties.API_IP + '/competitor/update', this.editedItem)
+            .post(Properties.API_IP + '/round/update', this.editedItem)
             .then(data => {
               console.log(data);
             })
@@ -239,10 +212,19 @@ export default {
 
       } else {
 
-        // New competitor
+        // New
+
+        const createRoundRequest = {
+          score: {
+            holdType: null,
+            holdNumber: "",
+            tryNumber: "",
+          },
+          roundRequest: this.editedItem
+        }
 
         axios
-            .post(Properties.API_IP + '/competitor/create', this.editedItem)
+            .post(Properties.API_IP + '/round/create', createRoundRequest, {params: {addCompetitors: true}})
             .then(data => {
               console.log(data);
             })

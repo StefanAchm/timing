@@ -1,15 +1,9 @@
-package com.asi.timer.model.db;
+package com.asi.timer.model.view;
 
-import javax.persistence.*;
-import java.util.Set;
 import java.util.UUID;
 
-@Entity
-@Table(name = "rounds")
-public class Round {
+public class RoundResponse {
 
-    @Id
-    @GeneratedValue
     private UUID id;
 
     private int roundNumber;
@@ -18,10 +12,11 @@ public class Round {
 
     private String gender;
 
-    @OneToMany(mappedBy = "round")
-    private Set<CompetitorRound> competitorRounds;
+    private int successScore;
 
-    public Round() {
+    private int numberOfCompetitors;
+
+    public RoundResponse() {
     }
 
     public UUID getId() {
@@ -56,12 +51,19 @@ public class Round {
         this.gender = gender;
     }
 
-    public Set<CompetitorRound> getCompetitorRounds() {
-        return competitorRounds;
+    public int getSuccessScore() {
+        return successScore;
     }
 
-    public void setCompetitorRounds(Set<CompetitorRound> competitorRounds) {
-        this.competitorRounds = competitorRounds;
+    public void setSuccessScore(int successScore) {
+        this.successScore = successScore;
     }
 
+    public int getNumberOfCompetitors() {
+        return numberOfCompetitors;
+    }
+
+    public void setNumberOfCompetitors(int numberOfCompetitors) {
+        this.numberOfCompetitors = numberOfCompetitors;
+    }
 }

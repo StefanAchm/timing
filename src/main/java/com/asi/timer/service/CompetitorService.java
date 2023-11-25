@@ -3,6 +3,7 @@ package com.asi.timer.service;
 import com.asi.timer.model.db.Competitor;
 import com.asi.timer.model.view.CompetitorRequest;
 import com.asi.timer.model.view.CompetitorResponse;
+import com.asi.timer.model.view.RoundRequest;
 import com.asi.timer.repositories.CompetitorRepository;
 import org.springframework.stereotype.Service;
 
@@ -92,4 +93,9 @@ public class CompetitorService {
 
     }
 
+    public List<CompetitorResponse> getPossibleCompetitors(RoundRequest roundRequest) {
+
+        return List.of(); // TODO: implement
+
+    }
 }

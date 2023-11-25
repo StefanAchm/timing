@@ -6,12 +6,16 @@ import com.asi.timer.model.db.CompetitorRound;
 import com.asi.timer.model.db.Round;
 import com.asi.timer.model.view.CompetitorResponse;
 import com.asi.timer.model.view.CompetitorRoundScoreRequest;
+import com.asi.timer.model.view.CreateRoundRequest;
+import com.asi.timer.model.view.Score;
 import com.asi.timer.repositories.CompetitorRepository;
 import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -89,13 +93,16 @@ public class CompetitorRoundService {
 
     }
 
-    public void addCompetitorsToRound(Round newRound) {
+    /**
+     * Find possible candidates for the round and add them to the round
+     * @param score minimum score
+     * @param round Round
+     */
+    public void autoAddCompetitorsToRound(Score score, Round round) {
 
         // 1. Find all possible candidates for the round
 
-        Round previousRound = this.roundRepository.findByRoundNumberAndGender(newRound.getRoundNumber() - 1, newRound.getGender());
-
-        List<Competitor> competitors = findPossibleCandidatesForRound(newRound, previousRound);
+        List<Competitor> competitors = findPossibleCandidatesForRound(round, score);
 
         // 2. Add all to the round
 
@@ -103,7 +110,7 @@ public class CompetitorRoundService {
 
             CompetitorRound competitorRound = new CompetitorRound();
             competitorRound.setCompetitor(competitor);
-            competitorRound.setRound(newRound);
+            competitorRound.setRound(round);
 
             this.competitorRoundRepository.save(competitorRound);
 
@@ -111,22 +118,54 @@ public class CompetitorRoundService {
 
     }
 
-    private List<Competitor> findPossibleCandidatesForRound(Round newRound, Round previousRound) {
+    private List<Competitor> findPossibleCandidatesForRound(Round round, Score score) {
 
-        if(newRound.getRoundNumber() == 1) {
-            return this.competitorRepository.findAllByGenderAndDeletedFalse(newRound.getGender());
+        if(round.getRoundNumber() == 1) {
+
+            return this.competitorRepository.findAllByGenderAndDeletedFalse(round.getGender());
+
         } else {
 
-            throw new RuntimeException("Not implemented yet");
+            // Find all, where holdNumber >= holdNumber and holdType == holdType and tryNumber >= tryNumber
 
-//            List<CompetitorRound> competitorRounds = this
-//                    .competitorRoundRepository
-//                    .findByRoundIdAndScoreGreaterThan(previousRound.getId(), previousRound.getSuccessScore());
-//
-//            return competitorRounds.stream().map(CompetitorRound::getCompetitor).toList();
+            double minimumScore = ScoreCalculator.calculateScore(
+                    score.getHoldNumber(),
+                    score.getHoldType(),
+                    score.getTryNumber()
+            );
+
+            List<Competitor> allByGenderAndDeletedFalse = this.competitorRepository.findAllByGenderAndDeletedFalse(round.getGender());
+
+            List<Competitor> competitors = new ArrayList<>();
+
+            for (Competitor competitor : allByGenderAndDeletedFalse) {
+
+                Optional<CompetitorRound> first = competitor.getCompetitorRounds()
+                        .stream()
+                        .filter(competitorRound1 -> competitorRound1.getRound().getRoundNumber() == round.getRoundNumber() - 1)
+                        .findFirst();
+
+                if(first.isPresent()) {
+
+                    CompetitorRound competitorRound = first.get();
+
+                    double roundScore = ScoreCalculator.calculateScore(competitorRound.getHoldNumber(),
+                            competitorRound.getHoldType(),
+                            competitorRound.getTryNumber());
+
+                    if(roundScore >= minimumScore) {
+                        competitors.add(competitor);
+                    }
+
+
+                }
+
+
+            }
+
+            return competitors;
         }
 
     }
-
 
 }
