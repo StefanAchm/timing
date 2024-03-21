@@ -94,7 +94,7 @@ public class CompetitorDummyData {
             "male"
     );
 
-    public static Competitor competitorWithLongDomicil = CompetitorDummyDataGenerator.generateCompetitor(
+    public static Competitor competitorWithLongCityName = CompetitorDummyDataGenerator.generateCompetitor(
             10,
             "Maximilian",
             "Mustermann",

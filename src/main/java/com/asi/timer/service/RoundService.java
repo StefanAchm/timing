@@ -25,6 +25,7 @@ public class RoundService {
     public List<RoundResponse> getRounds() {
 
         return this.roundRepository.findAll().stream().map(round -> {
+
             RoundResponse roundResponse = new RoundResponse();
             roundResponse.setId(round.getId());
             roundResponse.setRoundNumber(round.getRoundNumber());
@@ -32,7 +33,9 @@ public class RoundService {
             roundResponse.setGender(round.getGender());
 
             roundResponse.setNumberOfCompetitors(round.getCompetitorRounds().size());
+
             return roundResponse;
+
         }).collect(Collectors.toList());
 
     }
@@ -89,6 +92,21 @@ public class RoundService {
         this.roundRepository.delete(round);
 
         return round;
+
+    }
+
+    public RoundResponse preview(CreateRoundRequest createRoundRequest) {
+
+        RoundResponse roundResponse = new RoundResponse();
+        roundResponse.setRoundNumber(createRoundRequest.getRoundRequest().getRoundNumber());
+        roundResponse.setMaxHolds(createRoundRequest.getRoundRequest().getMaxHolds());
+        roundResponse.setGender(createRoundRequest.getRoundRequest().getGender());
+        roundResponse.setSuccessScore(0);
+
+        // TODO
+//        roundResponse.setNumberOfCompetitors(createRoundRequest.getScore().getCompetitors().size());
+
+        return roundResponse;
 
     }
 

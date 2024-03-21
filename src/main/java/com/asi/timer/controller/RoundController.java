@@ -30,6 +30,13 @@ public class RoundController {
 
     }
 
+    @PostMapping("/preview")
+    public ResponseEntity<RoundResponse> preview(@RequestBody CreateRoundRequest createRoundRequest) {
+
+        return ResponseEntity.ok(this.roundService.preview(createRoundRequest));
+
+    }
+
     @PostMapping("/update")
     public ResponseEntity<String> updateRound(@RequestBody RoundRequest roundRequest) {
         return ResponseEntity.ok(this.roundService.updateRound(roundRequest).getId().toString());

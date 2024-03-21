@@ -29,7 +29,12 @@
                   </v-col>
 
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.gender" label="Gender"></v-text-field>
+
+                    <v-select
+                        v-model="editedItem.gender"
+                        :items="['Herren', 'Damen']"
+                        label="Geschlecht"/>
+
                   </v-col>
 
                   <v-col cols="12" sm="6" md="4">
@@ -54,17 +59,15 @@
           </v-card>
 
         </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+
+        <DeleteDialog
+            :dialog.sync="dialogDelete"
+            @dialog-closed="initialize()"
+            :itemprop="editedItem"
+            :type="'round'"
+        />
+
+
       </v-toolbar>
     </template>
 
@@ -84,13 +87,17 @@
 <script>
 import {Properties} from "@/config";
 import axios from "axios";
+import DeleteDialog from "@/components/DeleteDialog.vue";
 
 
 export default {
 
+  components: {DeleteDialog},
+
   data: () => ({
     dialog: false,
     dialogDelete: false,
+
     rounds: [],
     headers: [
       {text: 'Rundennummer', value: 'roundNumber'},
@@ -100,14 +107,8 @@ export default {
       {text: 'Aktionen', value: 'actions', sortable: false}
     ],
     editedIndex: -1,
-    editedItem: {
-      roundNumber: '',
-      gender: '',
-      maxHolds: ''
-    },
-    defaultItem: {
-      name: '',
-    },
+    editedItem: {},
+    defaultItem: {},
     menu: false,
     activePicker: null,
   }),
@@ -122,9 +123,10 @@ export default {
     dialog(val) {
       val || this.close()
     },
-    dialogDelete(val) {
-      val || this.closeDelete()
-    },
+    // dialogDelete(val) {
+    //   val || this.closeDelete()
+    // },
+
   },
 
   created() {
@@ -147,6 +149,9 @@ export default {
           .catch(error => {
             console.log(error);
           });
+
+      this.editedItem = Object.assign({}, this.defaultItem)
+
     },
 
     editItem(item) {
@@ -155,26 +160,6 @@ export default {
       this.dialog = true
     },
 
-    deleteItem(item) {
-      this.editedIndex = this.rounds.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogDelete = true
-    },
-
-    deleteItemConfirm() {
-
-      axios
-          .post(Properties.API_IP + '/round/delete', this.editedItem, {params: {soft: true}})
-          .then(data => {
-            console.log(data);
-          })
-          .catch(error => {
-            console.log(error);
-          }).finally(() => {
-        this.dialogDelete = false
-        this.close();
-      });
-    },
 
     close() {
       this.dialog = false
@@ -185,13 +170,12 @@ export default {
       })
     },
 
-    closeDelete() {
-      this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
+    deleteItem(item) {
+      this.editedIndex = this.rounds.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogDelete = true
     },
+
 
     save() {
 

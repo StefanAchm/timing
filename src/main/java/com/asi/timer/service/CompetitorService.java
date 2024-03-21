@@ -1,5 +1,6 @@
 package com.asi.timer.service;
 
+import com.asi.timer.backend.utils.StartNumberUtil;
 import com.asi.timer.model.db.Competitor;
 import com.asi.timer.model.view.CompetitorRequest;
 import com.asi.timer.model.view.CompetitorResponse;
@@ -24,7 +25,7 @@ public class CompetitorService {
         competitor.setStartNumber(competitorRequest.getStartNumber());
         competitor.setFirstName(competitorRequest.getFirstName());
         competitor.setLastName(competitorRequest.getLastName());
-        competitor.setCity(competitorRequest.getDomicil());
+        competitor.setCity(competitorRequest.getCity());
         competitor.setClub(competitorRequest.getClub());
         competitor.setDateOfBirth(competitorRequest.getDateOfBirth());
         competitor.setGender(competitorRequest.getGender());
@@ -42,7 +43,7 @@ public class CompetitorService {
         competitor.setStartNumber(competitorRequest.getStartNumber());
         competitor.setFirstName(competitorRequest.getFirstName());
         competitor.setLastName(competitorRequest.getLastName());
-        competitor.setCity(competitorRequest.getDomicil());
+        competitor.setCity(competitorRequest.getCity());
         competitor.setClub(competitorRequest.getClub());
         competitor.setDateOfBirth(competitorRequest.getDateOfBirth());
         competitor.setGender(competitorRequest.getGender());
@@ -98,4 +99,16 @@ public class CompetitorService {
         return List.of(); // TODO: implement
 
     }
+
+    public Integer generateStartNumber() {
+
+        List<Integer> assignedStartNumbers = this.competitorRepository.findAllByDeletedFalse()
+                .stream()
+                .map(Competitor::getStartNumber)
+                .toList();
+
+        return StartNumberUtil.getRandomStartNumber(assignedStartNumbers);
+
+    }
+
 }

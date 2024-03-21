@@ -52,7 +52,7 @@ public class CompetitorsDummyData {
                 CompetitorDummyData.competitorWithLongClubname2,
                 CompetitorDummyData.competitorWithLongClubname3,
                 CompetitorDummyData.competitorWithLongClubname4,
-                CompetitorDummyData.competitorWithLongDomicil,
+                CompetitorDummyData.competitorWithLongCityName,
                 CompetitorDummyData.competitorX(11),
                 CompetitorDummyData.competitorX(12),
                 CompetitorDummyData.competitorX(13),

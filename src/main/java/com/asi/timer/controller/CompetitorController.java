@@ -30,8 +30,8 @@ public class CompetitorController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteCompetitor(@RequestBody CompetitorRequest competitorRequest, @RequestParam boolean soft) {
-        return ResponseEntity.ok(this.competitorService.deleteCompetitor(competitorRequest, soft).getId().toString());
+    public ResponseEntity<String> deleteCompetitor(@RequestBody CompetitorRequest competitorRequest) {
+        return ResponseEntity.ok(this.competitorService.deleteCompetitor(competitorRequest, false).getId().toString());
     }
 
     @GetMapping("/getCompetitors")
@@ -42,6 +42,12 @@ public class CompetitorController {
     @GetMapping("/getPossibleCompetitors")
     public ResponseEntity<List<CompetitorResponse>> getPossibleCompetitors(@RequestParam RoundRequest roundRequest) {
         return ResponseEntity.ok(this.competitorService.getPossibleCompetitors(roundRequest));
+    }
+
+
+    @GetMapping("/generateStartNumber")
+    public ResponseEntity<Integer> generateStartNumber() {
+        return ResponseEntity.ok(this.competitorService.generateStartNumber());
     }
 
 
