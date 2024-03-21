@@ -1,7 +1,5 @@
 package com.asi.timer.controller;
 
-import com.asi.timer.model.db.Round;
-import com.asi.timer.model.view.CompetitorResponse;
 import com.asi.timer.model.view.CreateRoundRequest;
 import com.asi.timer.model.view.RoundRequest;
 import com.asi.timer.model.view.RoundResponse;
@@ -10,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/round")

@@ -1,7 +1,7 @@
 package com.asi.timer.backend.score;
 
 import com.asi.timer.enums.EnumHoldType;
-import com.asi.timer.model.db.CompetitorRound;
+import com.asi.timer.model.db.DBCompetitorRound;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -56,7 +56,7 @@ class ScoreCalculatorTest {
         double expectedScore = arguments.getDouble(0);
         CompetitorRoundTestInputParams competitorRoundTestInputParams = arguments.get(1, CompetitorRoundTestInputParams.class);
 
-        CompetitorRound competitorRound = new CompetitorRound();
+        DBCompetitorRound competitorRound = new DBCompetitorRound();
         competitorRound.setHoldNumber(competitorRoundTestInputParams.holdNumber());
         competitorRound.setHoldType(competitorRoundTestInputParams.holdType());
         competitorRound.setTryNumber(competitorRoundTestInputParams.tryNumber());
@@ -73,24 +73,24 @@ class ScoreCalculatorTest {
 
         // Competitor 1
 
-        CompetitorRound competitorRound1 = new CompetitorRound();
+        DBCompetitorRound competitorRound1 = new DBCompetitorRound();
         competitorRound1.setHoldNumber(15);
         competitorRound1.setHoldType(EnumHoldType.TOUCHED);
         competitorRound1.setTryNumber(1);
 
-        CompetitorRound competitorRound2 = new CompetitorRound();
+        DBCompetitorRound competitorRound2 = new DBCompetitorRound();
         competitorRound2.setHoldNumber(15);
         competitorRound2.setHoldType(EnumHoldType.HELD);
         competitorRound2.setTryNumber(1);
 
         // Competitor 2
 
-        CompetitorRound competitorRound3 = new CompetitorRound();
+        DBCompetitorRound competitorRound3 = new DBCompetitorRound();
         competitorRound3.setHoldNumber(15);
         competitorRound3.setHoldType(EnumHoldType.HELD);
         competitorRound3.setTryNumber(1);
 
-        CompetitorRound competitorRound4 = new CompetitorRound();
+        DBCompetitorRound competitorRound4 = new DBCompetitorRound();
         competitorRound4.setHoldNumber(15);
         competitorRound4.setHoldType(EnumHoldType.TOUCHED);
         competitorRound4.setTryNumber(1);

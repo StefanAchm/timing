@@ -5,7 +5,7 @@ import com.asi.timer.backend.pdfprinter.model.PdfContentContainer;
 import com.asi.timer.backend.pdfprinter.model.Rows;
 import com.asi.timer.backend.score.model.CompetitorScore;
 import com.asi.timer.enums.EnumPrintType;
-import com.asi.timer.model.db.Competitor;
+import com.asi.timer.model.db.DBCompetitor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +18,7 @@ public class PdfContentContainerFactory {
                                                    String gender,
                                                    int round,
                                                    LocalDate date,
-                                                   List<Competitor> competitors,
+                                                   List<DBCompetitor> competitors,
                                                    List<CompetitorScore> competitorScores) {
         return switch (type) {
             case START_LIST -> getStartListContainer(folderPath, eventTitle, type, gender, round, date, competitors);
@@ -54,7 +54,7 @@ public class PdfContentContainerFactory {
                                                              String gender,
                                                              int round,
                                                              LocalDate date,
-                                                             List<Competitor> competitors) {
+                                                             List<DBCompetitor> competitors) {
 
         return new PdfContentContainer(
                 folderPath,

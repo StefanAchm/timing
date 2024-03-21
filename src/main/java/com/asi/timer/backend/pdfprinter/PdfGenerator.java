@@ -3,7 +3,7 @@ package com.asi.timer.backend.pdfprinter;
 import com.asi.timer.backend.pdfprinter.model.PdfContainer;
 import com.asi.timer.backend.score.model.CompetitorScore;
 import com.asi.timer.enums.EnumPrintType;
-import com.asi.timer.model.db.Competitor;
+import com.asi.timer.model.db.DBCompetitor;
 import com.itextpdf.text.DocumentException;
 
 import java.io.File;
@@ -19,7 +19,7 @@ public class PdfGenerator {
                                    String gender,
                                    int round,
                                    LocalDate date,
-                                   List<Competitor> competitors,
+                                   List<DBCompetitor> competitors,
                                    List<CompetitorScore> competitorScores) {
 
         try {

@@ -2,13 +2,12 @@ package com.asi.timer.model.db;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "competitors")
-public class Competitor {
+public class DBCompetitor {
 
     @Id
     @GeneratedValue
@@ -31,9 +30,9 @@ public class Competitor {
     private boolean deleted;
 
     @OneToMany(mappedBy = "competitor")
-    private Set<CompetitorRound> competitorRounds;
+    private Set<DBCompetitorRound> competitorRounds;
 
-    public Competitor() {
+    public DBCompetitor() {
     }
 
     public UUID getId() {
@@ -100,11 +99,11 @@ public class Competitor {
         this.gender = gender;
     }
 
-    public Set<CompetitorRound> getCompetitorRounds() {
+    public Set<DBCompetitorRound> getCompetitorRounds() {
         return competitorRounds;
     }
 
-    public void setCompetitorRounds(Set<CompetitorRound> competitorRounds) {
+    public void setCompetitorRounds(Set<DBCompetitorRound> competitorRounds) {
         this.competitorRounds = competitorRounds;
     }
 

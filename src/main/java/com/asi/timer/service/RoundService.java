@@ -1,6 +1,6 @@
 package com.asi.timer.service;
 
-import com.asi.timer.model.db.Round;
+import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.CreateRoundRequest;
 import com.asi.timer.model.view.RoundRequest;
 import com.asi.timer.model.view.RoundResponse;
@@ -40,15 +40,15 @@ public class RoundService {
 
     }
 
-    public Round createRound(CreateRoundRequest createRoundRequest, boolean addCompetitors) {
+    public DBRound createRound(CreateRoundRequest createRoundRequest, boolean addCompetitors) {
 
-        Round round = new Round();
+        DBRound round = new DBRound();
 
         round.setRoundNumber(createRoundRequest.getRoundRequest().getRoundNumber());
         round.setMaxHolds(createRoundRequest.getRoundRequest().getMaxHolds());
         round.setGender(createRoundRequest.getRoundRequest().getGender());
 
-        Round roundCreated = this.roundRepository.save(round);
+        DBRound roundCreated = this.roundRepository.save(round);
 
         // End transaction
 //        this.roundRepository.flush(); // This is needed to get the ID of the round
@@ -63,9 +63,9 @@ public class RoundService {
 
     }
 
-    public Round updateRound(RoundRequest roundRequest) {
+    public DBRound updateRound(RoundRequest roundRequest) {
 
-        Round round = this.roundRepository
+        DBRound round = this.roundRepository
                 .findById(roundRequest.getId())
                 .orElseThrow(() -> new RuntimeException("Round with id " + roundRequest.getId() + " not found"));
 
@@ -81,9 +81,9 @@ public class RoundService {
 
     }
 
-    public Round deleteRound(RoundRequest roundRequest) {
+    public DBRound deleteRound(RoundRequest roundRequest) {
 
-        Round round = this.roundRepository
+        DBRound round = this.roundRepository
                 .findById(roundRequest.getId())
                 .orElseThrow(() -> new RuntimeException("Round with id " + roundRequest.getId() + " not found"));
 

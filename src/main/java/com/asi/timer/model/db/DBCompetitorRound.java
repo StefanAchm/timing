@@ -7,17 +7,17 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "competitor_rounds")
-public class CompetitorRound {
+public class DBCompetitorRound {
 
     @Id
     @GeneratedValue
     private UUID id;
 
     @ManyToOne
-    private Competitor competitor;
+    private DBCompetitor competitor;
 
     @ManyToOne
-    private Round round;
+    private DBRound round;
 
     private EnumHoldType holdType;
 
@@ -33,19 +33,19 @@ public class CompetitorRound {
         return id;
     }
 
-    public Competitor getCompetitor() {
+    public DBCompetitor getCompetitor() {
         return competitor;
     }
 
-    public void setCompetitor(Competitor competitor) {
+    public void setCompetitor(DBCompetitor competitor) {
         this.competitor = competitor;
     }
 
-    public Round getRound() {
+    public DBRound getRound() {
         return round;
     }
 
-    public void setRound(Round round) {
+    public void setRound(DBRound round) {
         this.round = round;
     }
 

@@ -1,6 +1,13 @@
 <template>
 
-  <v-data-table :headers="headers" :items="competitors" sort-by="startNumber" class="elevation-1">
+  <v-data-table
+      :headers="headers"
+      :items="competitors"
+      sort-by="startNumber"
+      :expanded.sync="expanded"
+      item-key="startNumber"
+      show-expand
+      class="elevation-1">
 
     <template v-slot:top>
 
@@ -140,10 +147,19 @@
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
       <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+      <v-icon small @click="addToRounds(item)">mdi-plus</v-icon>
     </template>
 
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize">Reset</v-btn>
+    </template>
+
+    <template v-slot:expanded-item="{ headers, item }">
+
+      <td :colspan="headers.length">
+        {{ item.roundInfo }}
+      </td>
+
     </template>
 
   </v-data-table>
@@ -163,6 +179,7 @@ export default {
     dialogDelete: false,
     dialog: false,
     modal: false,
+    expanded: [],
 
     competitors: [],
     headers: [
@@ -224,6 +241,13 @@ export default {
           .then(response => {
             console.log(response.data);
             this.competitors = response.data;
+
+            for (const element of this.competitors) {
+              element.roundInfo = "Runden: " + element.competitorRounds.length;
+            }
+
+            console.log(this.competitors);
+
           })
           .catch(error => {
             console.log(error);
@@ -248,7 +272,7 @@ export default {
     editItem(item) {
       this.editedIndex = this.competitors.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      this.generateStartNumber()
+      // this.generateStartNumber()
       this.dialog = true
     },
 
@@ -256,6 +280,24 @@ export default {
       this.editedIndex = this.competitors.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
+    },
+
+    addToRounds(item) {
+
+      axios.post(
+          Properties.API_IP + "/competitor-round/addCompetitorToRound", null, {
+            headers: {'Content-Type': 'application/json'},
+            params: {
+              competitorId: item.id,
+              roundNumber: 1
+            }
+          })
+          .then(response => {
+            console.log(response)
+          })
+          .finally(() => {
+            this.close();
+          });
     },
 
     close() {

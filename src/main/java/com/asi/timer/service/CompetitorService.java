@@ -1,7 +1,7 @@
 package com.asi.timer.service;
 
 import com.asi.timer.backend.utils.StartNumberUtil;
-import com.asi.timer.model.db.Competitor;
+import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.view.CompetitorRequest;
 import com.asi.timer.model.view.CompetitorResponse;
 import com.asi.timer.model.view.RoundRequest;
@@ -19,9 +19,9 @@ public class CompetitorService {
         this.competitorRepository = competitorRepository;
     }
 
-    public Competitor createCompetitor(CompetitorRequest competitorRequest) {
+    public DBCompetitor createCompetitor(CompetitorRequest competitorRequest) {
 
-        Competitor competitor = new Competitor();
+        DBCompetitor competitor = new DBCompetitor();
         competitor.setStartNumber(competitorRequest.getStartNumber());
         competitor.setFirstName(competitorRequest.getFirstName());
         competitor.setLastName(competitorRequest.getLastName());
@@ -34,9 +34,9 @@ public class CompetitorService {
 
     }
 
-    public Competitor updateCompetitor(CompetitorRequest competitorRequest) {
+    public DBCompetitor updateCompetitor(CompetitorRequest competitorRequest) {
 
-        Competitor competitor = this.competitorRepository
+        DBCompetitor competitor = this.competitorRepository
                 .findById(competitorRequest.getId())
                 .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorRequest.getId() + " not found"));
 
@@ -56,9 +56,9 @@ public class CompetitorService {
 
     }
 
-    public Competitor deleteCompetitor(CompetitorRequest competitorRequest, boolean soft) {
+    public DBCompetitor deleteCompetitor(CompetitorRequest competitorRequest, boolean soft) {
 
-        Competitor competitor = this.competitorRepository
+        DBCompetitor competitor = this.competitorRepository
                 .findById(competitorRequest.getId())
                 .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorRequest.getId() + " not found"));
 
@@ -79,18 +79,7 @@ public class CompetitorService {
 
         return this.competitorRepository.findAllByDeletedFalse()
                 .stream()
-                .map(competitor -> {
-                    CompetitorResponse competitorResponse = new CompetitorResponse();
-                    competitorResponse.setId(competitor.getId());
-                    competitorResponse.setStartNumber(competitor.getStartNumber());
-                    competitorResponse.setFirstName(competitor.getFirstName());
-                    competitorResponse.setLastName(competitor.getLastName());
-                    competitorResponse.setCity(competitor.getCity());
-                    competitorResponse.setClub(competitor.getClub());
-                    competitorResponse.setDateOfBirth(competitor.getDateOfBirth());
-                    competitorResponse.setGender(competitor.getGender());
-                    return competitorResponse;
-                }).toList();
+                .map(competitor -> CompetitorResponse.fromDBCompetitorRound(competitor)).toList();
 
     }
 
@@ -104,7 +93,7 @@ public class CompetitorService {
 
         List<Integer> assignedStartNumbers = this.competitorRepository.findAllByDeletedFalse()
                 .stream()
-                .map(Competitor::getStartNumber)
+                .map(DBCompetitor::getStartNumber)
                 .toList();
 
         return StartNumberUtil.getRandomStartNumber(assignedStartNumbers);

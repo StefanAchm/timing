@@ -1,7 +1,7 @@
 package com.asi.timer.service;
 
 import com.asi.timer.enums.EnumPrintType;
-import com.asi.timer.model.db.CompetitorRound;
+import com.asi.timer.model.db.DBCompetitorRound;
 import com.asi.timer.repositories.CompetitorRoundRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class PrintService {
 
     public String print(EnumPrintType printType, UUID competitorRoundId) {
 
-        CompetitorRound competitorRound = this.competitorRoundRepository
+        DBCompetitorRound competitorRound = this.competitorRoundRepository
                 .findById(competitorRoundId)
                 .orElseThrow(() -> new RuntimeException("CompetitorRound with id " + competitorRoundId + " not found"));
 
