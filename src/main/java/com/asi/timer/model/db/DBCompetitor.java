@@ -28,6 +28,7 @@ public class DBCompetitor {
 
     private LocalDate dateOfBirth;
 
+    @Enumerated(EnumType.STRING)
     private EnumGender gender;
 
     private boolean deleted;

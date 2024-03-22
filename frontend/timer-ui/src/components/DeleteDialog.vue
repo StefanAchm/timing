@@ -42,7 +42,10 @@ export default {
     deleteItemConfirm() {
 
       axios
-          .post(Properties.API_IP + '/' + this.type + '/delete', this.editItem.id)
+          .post(Properties.API_IP + '/' + this.type + '/delete', null,
+              { headers: {'Content-Type': 'application/json'},
+                params: {id: this.editItem.id}
+              })
           .then()
           .catch()
           .finally(() => {

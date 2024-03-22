@@ -39,8 +39,8 @@ public class RoundController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteRound(@RequestBody UUID roundId) {
-        return ResponseEntity.ok(this.roundService.deleteRound(roundId).getId().toString());
+    public ResponseEntity<String> deleteRound(@RequestParam UUID id) {
+        return ResponseEntity.ok(this.roundService.deleteRound(id).getId().toString());
     }
 
     @GetMapping("/getRounds")

@@ -15,7 +15,14 @@
 
         <v-toolbar-title>Teilnehmer</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
+
         <v-spacer></v-spacer>
+
+
+        <v-btn color="primary" dark class="mb-2" @click="addRandom()">Add Random</v-btn>
+
+        <v-spacer></v-spacer>
+
 
         <v-dialog v-model="dialog" max-width="500px">
 
@@ -114,7 +121,7 @@
 
                     <v-select
                         v-model="editedItem.gender"
-                        :items="['Herren', 'Damen']"
+                        :items="['HERREN', 'DAMEN']"
                         label="Geschlecht"/>
 
                   </v-col>
@@ -229,10 +236,6 @@ export default {
     this.initialize();
   },
 
-  mounted() {
-    this.initialize();
-  },
-
   methods: {
 
     initialize() {
@@ -254,6 +257,31 @@ export default {
           });
 
       this.generateStartNumber()
+
+    },
+
+    addRandom() {
+
+      this.generateStartNumber();
+
+      let randomItem = {
+        startNumber: this.editedItem.startNumber,
+        firstName: 'Max' + Math.floor(Math.random() * 100),
+        lastName: 'Mustermann',
+        city: 'Musterstadt',
+        club: 'Musterclub',
+        gender: Math.random() > 0.5 ? 'HERREN' : 'DAMEN',
+        dateOfBirth: '1994-02-17'
+      };
+
+
+      axios
+          .post(Properties.API_IP + '/competitor/create', randomItem)
+          .then()
+          .catch()
+          .finally(() => {
+            this.initialize();
+      });
 
     },
 

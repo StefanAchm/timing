@@ -4,6 +4,7 @@ import com.asi.timer.enums.EnumGender;
 import com.asi.timer.model.db.DBCompetitor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +28,10 @@ public class APICompetitor {
     private EnumGender gender;
 
     private List<APICompetitorRound> competitorRounds;
+
+    public APICompetitor() {
+        this.competitorRounds = new ArrayList<>();
+    }
 
     public static APICompetitor fromDBCompetitorRound(DBCompetitor competitor) {
 

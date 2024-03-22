@@ -18,6 +18,7 @@ public class DBRound {
 
     private int maxHolds;
 
+    @Enumerated(EnumType.STRING)
     private EnumGender gender;
 
     @OneToMany(mappedBy = "round")

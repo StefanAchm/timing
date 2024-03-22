@@ -32,7 +32,7 @@
 
                     <v-select
                         v-model="editedItem.gender"
-                        :items="['Herren', 'Damen']"
+                        :items="['HERREN', 'DAMEN']"
                         label="Geschlecht"/>
 
                   </v-col>
@@ -196,19 +196,12 @@ export default {
 
       } else {
 
-        // New
-
-        const createRoundRequest = {
-          score: {
-            holdType: null,
-            holdNumber: "",
-            tryNumber: "",
-          },
-          roundRequest: this.editedItem
-        }
-
         axios
-            .post(Properties.API_IP + '/round/create', createRoundRequest, {params: {addCompetitors: true}})
+            .post(
+                Properties.API_IP + '/round/create',
+                this.editedItem,
+                {params: {addCompetitors: true}}
+            )
             .then(data => {
               console.log(data);
             })
