@@ -2,11 +2,11 @@ package com.asi.timer.controller;
 
 import com.asi.timer.enums.EnumPrintType;
 import com.asi.timer.service.PrintService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -20,11 +20,25 @@ public class PrintController {
         this.printService = printService;
     }
 
-    @PostMapping("/print")
-    public ResponseEntity<String> print(@RequestParam EnumPrintType printType,
-                                        @RequestParam UUID id) {
+    @GetMapping("/startList")
+    public ResponseEntity<Resource> getStartList(@RequestParam UUID id) {
 
-        return ResponseEntity.ok(this.printService.print(printType, id));
+        ByteArrayResource resource = printService.getList(id, EnumPrintType.START_LIST);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(resource);
+
+    }
+
+    @GetMapping("/resultList")
+    public ResponseEntity<Resource> getResultList(@RequestParam UUID id) {
+
+        ByteArrayResource resource = printService.getList(id, EnumPrintType.RESULT_LIST);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(resource);
 
     }
 

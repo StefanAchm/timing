@@ -1,8 +1,7 @@
 package com.asi.timer.service;
 
+import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBRound;
-import com.asi.timer.model.view.APICompetitor;
-import com.asi.timer.model.view.APICompetitorRound;
 import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
@@ -18,9 +17,17 @@ public class RoundService {
 
     private final CompetitorRoundService competitorRoundService;
 
-    public RoundService(RoundRepository roundRepository, CompetitorRoundService competitorRoundService) {
+    private final CompetitorService competitorService;
+
+    public RoundService(RoundRepository roundRepository,
+                        CompetitorRoundService competitorRoundService,
+                        CompetitorService competitorService
+    ) {
+
         this.roundRepository = roundRepository;
         this.competitorRoundService = competitorRoundService;
+        this.competitorService = competitorService;
+
     }
 
     public List<APIRound> getRounds() {
@@ -47,7 +54,9 @@ public class RoundService {
 
         if (addCompetitors) {
 
-            this.competitorRoundService.autoAddCompetitorsToRound(apiRound.getApiScore(), roundCreated);
+            apiRound.setId(roundCreated.getId());
+
+            this.competitorRoundService.autoAddCompetitorsToRound(apiRound);
 
         }
 
@@ -95,8 +104,9 @@ public class RoundService {
         roundResponse.setGender(apiRound.getGender());
         roundResponse.setSuccessScore(0);
 
-        // TODO
-//        roundResponse.setNumberOfCompetitors(apiRound.getScore().getCompetitors().size());
+        List<DBCompetitor> possibleCandidatesForRound = competitorService.findPossibleCandidatesForRound(apiRound);
+
+        roundResponse.setNumberOfCompetitors(possibleCandidatesForRound.size());
 
         return roundResponse;
 

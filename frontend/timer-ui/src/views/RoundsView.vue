@@ -7,7 +7,7 @@
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
 
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="dialog" max-width="1000px">
 
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">Runde hinzufügen</v-btn>
@@ -20,15 +20,17 @@
 
             <v-card-text>
               <v-container>
+
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+
+                  <v-col>
                     <v-text-field v-model="editedItem.roundNumber" label="Rundennummer"></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col>
                     <v-text-field v-model="editedItem.maxHolds" label="Anzahl Griffe"></v-text-field>
                   </v-col>
 
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col>
 
                     <v-select
                         v-model="editedItem.gender"
@@ -37,12 +39,50 @@
 
                   </v-col>
 
+                </v-row>
+
+
+                <v-row v-if="editedItem.score">
+
+                  <v-col>
+
+                    <HoldTypeSelector
+                        :hold-type.sync="holdTypeSelected"
+                        :selectDisabled="scoreRowDisabled()"
+                    />
+
+                  </v-col>
+
+                  <v-col>
+
+                    <v-text-field
+                        :disabled="scoreRowDisabled()"
+                        v-model="editedItem.score.holdNumber"
+                        label="Griff Nummer"></v-text-field>
+
+                  </v-col>
+
+                  <v-col>
+
+                    <v-text-field
+                        :disabled="scoreRowDisabled()"
+                        v-model="editedItem.score.tryNumber"
+                        label="Versuch"></v-text-field>
+
+                  </v-col>
+
+
+                </v-row>
+
+                <v-row v-if="editedItem">
+
                   <v-col cols="12" sm="6" md="4">
-                    <span>Anzahl Teilnehmer: {{ editedItem.competitors }}</span>
+                    <span>Anzahl Teilnehmer: {{ maxNumberOfCompetitors }}</span>
                     <!--                    <v-text-field :readonly="true" v-model="editedItem.competitors" label="Anzahl Teilnehmer"></v-text-field>-->
                   </v-col>
 
                 </v-row>
+
               </v-container>
             </v-card-text>
 
@@ -88,11 +128,12 @@
 import {Properties} from "@/config";
 import axios from "axios";
 import DeleteDialog from "@/components/DeleteDialog.vue";
+import HoldTypeSelector from "@/components/HoldTypeSelector.vue";
 
 
 export default {
 
-  components: {DeleteDialog},
+  components: {HoldTypeSelector, DeleteDialog},
 
   data: () => ({
     dialog: false,
@@ -107,10 +148,23 @@ export default {
       {text: 'Aktionen', value: 'actions', sortable: false}
     ],
     editedIndex: -1,
-    editedItem: {},
-    defaultItem: {},
+    editedItem: {
+      score: {
+        holdType: null,
+        holdNumber: null,
+        tryNumber: null
+      }
+    },
+    defaultItem: {
+      score: {}
+    },
     menu: false,
     activePicker: null,
+
+    holdTypeSelected: null,
+
+    maxNumberOfCompetitors: 0
+
   }),
 
   computed: {
@@ -120,12 +174,24 @@ export default {
   },
 
   watch: {
+
     dialog(val) {
       val || this.close()
     },
-    // dialogDelete(val) {
-    //   val || this.closeDelete()
-    // },
+
+    holdTypeSelected(val) {
+      this.editedItem.score.holdType = val;
+    },
+
+    editedItem() {
+
+      axios.post(Properties.API_IP + '/round/preview', this.editedItem)
+          .then(response => {
+            this.maxNumberOfCompetitors = response.data.numberOfCompetitors;
+          });
+
+
+    }
 
   },
 
@@ -139,15 +205,15 @@ export default {
 
   methods: {
 
+    scoreRowDisabled() {
+      return this.editedItem.roundNumber <= 1 || !this.editedItem.roundNumber;
+    },
+
     initialize() {
       axios
           .get(Properties.API_IP + '/round/getRounds')
           .then(response => {
-            console.log(response.data);
             this.rounds = response.data;
-          })
-          .catch(error => {
-            console.log(error);
           });
 
       this.editedItem = Object.assign({}, this.defaultItem)
@@ -181,38 +247,19 @@ export default {
 
       if (this.editedIndex > -1) {
 
-        axios
-            .post(Properties.API_IP + '/round/update', this.editedItem)
-            .then(data => {
-              console.log(data);
-            })
-            .catch(error => {
-              console.log(error);
-            }).finally(() => {
-          this.close();
-        });
-
-        this.close()
+        axios.post(Properties.API_IP + '/round/update', this.editedItem);
 
       } else {
 
-        axios
-            .post(
-                Properties.API_IP + '/round/create',
-                this.editedItem,
-                {params: {addCompetitors: true}}
-            )
-            .then(data => {
-              console.log(data);
-            })
-            .catch(error => {
-              console.log(error);
-            }).finally(() => {
-          this.close();
-        });
+        axios.post(
+            Properties.API_IP + '/round/create',
+            this.editedItem,
+            {params: {addCompetitors: true}}
+        );
 
       }
 
+      this.close();
 
     },
 

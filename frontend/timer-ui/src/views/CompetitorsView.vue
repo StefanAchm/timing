@@ -153,7 +153,7 @@
 
     <template v-slot:[`item.rounds`]="{ item }">
 
-        {{ item.nrOfRounds }}
+      {{ item.nrOfRounds }}
 
     </template>
 
@@ -283,7 +283,7 @@ export default {
           .catch()
           .finally(() => {
             this.initialize();
-      });
+          });
 
     },
 
@@ -291,18 +291,13 @@ export default {
       axios
           .get(Properties.API_IP + '/competitor/generateStartNumber')
           .then(response => {
-            console.log(response.data);
             this.editedItem.startNumber = response.data;
-          })
-          .catch(error => {
-            console.log(error);
           });
     },
 
     editItem(item) {
       this.editedIndex = this.competitors.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      // this.generateStartNumber()
       this.dialog = true
     },
 
@@ -321,9 +316,6 @@ export default {
               competitorId: item.id,
               roundNumber: 1
             }
-          })
-          .then(response => {
-            console.log(response)
           })
           .finally(() => {
             this.close();
@@ -352,35 +344,13 @@ export default {
 
       if (this.editedIndex > -1) {
 
-        // Object.assign(this.competitors[this.editedIndex], this.editedItem)
-
-        axios
-            .post(Properties.API_IP + '/competitor/update', this.editedItem)
-            .then(data => {
-              console.log(data);
-            })
-            .catch(error => {
-              console.log(error);
-            }).finally(() => {
-          this.close();
-        });
-
+        axios.post(Properties.API_IP + '/competitor/update', this.editedItem);
         this.close()
 
       } else {
 
-        // New competitor
-
-        axios
-            .post(Properties.API_IP + '/competitor/create', this.editedItem)
-            .then(data => {
-              console.log(data);
-            })
-            .catch(error => {
-              console.log(error);
-            }).finally(() => {
-          this.close();
-        });
+        axios.post(Properties.API_IP + '/competitor/create', this.editedItem)
+        this.close();
 
       }
 

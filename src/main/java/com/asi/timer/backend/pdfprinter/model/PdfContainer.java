@@ -35,7 +35,15 @@ public class PdfContainer {
                         List<DBCompetitor> competitors,
                         List<CompetitorScore> competitorScores) throws DocumentException, FileNotFoundException {
 
-        this.pdfContentContainer = PdfContentContainerFactory.getContainer(folderPath, eventTitle, type, gender, round, date, competitors, competitorScores);
+        this.pdfContentContainer = PdfContentContainerFactory.getContainer(
+                folderPath,
+                eventTitle,
+                type,
+                gender,
+                round,
+                date,
+                competitors,
+                competitorScores);
 
         FileUtils.createFolderIfNotExists(this.pdfContentContainer.getFilePath());
 

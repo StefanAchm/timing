@@ -75,6 +75,10 @@ public class ScoreCalculator {
 
     protected static double getPointsOfHoldType(EnumHoldType holdType) {
 
+        if(holdType == null) {
+            return 0;
+        }
+
         return switch (holdType) {
             case TOUCHED -> -0.4;
             case SLIPPED -> -0.2;

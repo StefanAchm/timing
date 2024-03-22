@@ -79,8 +79,8 @@ public class PdfContentContainerFactory {
         };
 
         String genderName = switch (gender) {
-            case "male" -> "Herren";
-            case "female" -> "Damen";
+            case "HERREN" -> "Herren";
+            case "DAMEN" -> "Damen";
             default -> throw new IllegalStateException("Unexpected value: " + gender);
         };
 

@@ -17,7 +17,7 @@ public class APIRound {
 
     private int successScore;
 
-    private APIScore apiScore;
+    private APIScore score;
 
     private int numberOfCompetitors;
 
@@ -76,12 +76,12 @@ public class APIRound {
         this.successScore = successScore;
     }
 
-    public APIScore getApiScore() {
-        return apiScore;
+    public APIScore getScore() {
+        return score;
     }
 
-    public void setApiScore(APIScore apiScore) {
-        this.apiScore = apiScore;
+    public void setScore(APIScore score) {
+        this.score = score;
     }
 
     public int getNumberOfCompetitors() {

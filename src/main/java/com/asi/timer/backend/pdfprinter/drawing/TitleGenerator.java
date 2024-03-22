@@ -70,8 +70,8 @@ public class TitleGenerator {
     public static void addTitleForResultList(Document document, PdfContentContainer pdfContentContainer) throws DocumentException {
 
         String subTitle = switch (pdfContentContainer.getGender()) {
-            case "male" -> "Herren";
-            case "female" -> "Damen";
+            case "HERREN" -> "Herren";
+            case "DAMEN" -> "Damen";
             default -> throw new IllegalStateException("Unexpected value: " + pdfContentContainer.getGender());
         };
 
@@ -88,8 +88,8 @@ public class TitleGenerator {
     public static void addTitleForStartList(Document document, PdfContentContainer pdfContentContainer) throws DocumentException {
 
         String genderName = switch (pdfContentContainer.getGender()) {
-            case "male" -> "Herren";
-            case "female" -> "Damen";
+            case "HERREN" -> "Herren";
+            case "DAMEN" -> "Damen";
             default -> throw new IllegalStateException("Unexpected value: " + pdfContentContainer.getGender());
         };
 

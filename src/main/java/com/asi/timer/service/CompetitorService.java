@@ -1,13 +1,19 @@
 package com.asi.timer.service;
 
+import com.asi.timer.backend.score.ScoreCalculator;
 import com.asi.timer.backend.utils.StartNumberUtil;
 import com.asi.timer.model.db.DBCompetitor;
+import com.asi.timer.model.db.DBCompetitorRound;
+import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.APICompetitor;
 import com.asi.timer.model.view.APIRound;
+import com.asi.timer.model.view.APIScore;
 import com.asi.timer.repositories.CompetitorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -90,6 +96,56 @@ public class CompetitorService {
                 .toList();
 
         return StartNumberUtil.getRandomStartNumber(assignedStartNumbers);
+
+    }
+
+    public List<DBCompetitor> findPossibleCandidatesForRound(APIRound round) {
+
+        if (round.getRoundNumber() == 1) {
+
+            return this.competitorRepository.findAllByGenderAndDeletedFalse(round.getGender());
+
+        } else {
+
+            // Find all, where holdNumber >= holdNumber and holdType == holdType and tryNumber >= tryNumber
+
+            double minimumScore = ScoreCalculator.calculateScore(
+                    round.getScore().getHoldNumber(),
+                    round.getScore().getHoldType(),
+                    round.getScore().getTryNumber()
+            );
+
+            List<DBCompetitor> allByGenderAndDeletedFalse = this.competitorRepository.findAllByGenderAndDeletedFalse(round.getGender());
+
+            List<DBCompetitor> competitors = new ArrayList<>();
+
+            for (DBCompetitor competitor : allByGenderAndDeletedFalse) {
+
+                Optional<DBCompetitorRound> first = competitor.getCompetitorRounds()
+                        .stream()
+                        .filter(competitorRound1 -> competitorRound1.getRound().getRoundNumber() == round.getRoundNumber() - 1)
+                        .findFirst();
+
+                if (first.isPresent()) {
+
+                    DBCompetitorRound competitorRound = first.get();
+
+                    double roundScore = ScoreCalculator.calculateScore(competitorRound.getHoldNumber(),
+                            competitorRound.getHoldType(),
+                            competitorRound.getTryNumber());
+
+                    if (roundScore >= minimumScore) {
+                        competitors.add(competitor);
+                    }
+
+
+                }
+
+
+            }
+
+            return competitors;
+        }
 
     }
 

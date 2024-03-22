@@ -24,7 +24,15 @@ public class PdfGenerator {
 
         try {
 
-            PdfContainer pdfContainer = new PdfContainer(folderPath, eventTitle, type, gender, round, date, competitors, competitorScores);
+            PdfContainer pdfContainer = new PdfContainer(
+                    folderPath,
+                    eventTitle,
+                    type,
+                    gender,
+                    round,
+                    date,
+                    competitors,
+                    competitorScores);
 
             return pdfContainer.generatePdf();
 

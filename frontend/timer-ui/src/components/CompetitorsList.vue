@@ -15,13 +15,6 @@
               dark
           >
 
-            <v-select
-                v-model="selectedRound"
-                :items="rounds"
-                item-text="roundName"
-                item-value="id"
-            ></v-select>
-
           </v-toolbar>
 
           <v-list
@@ -64,7 +57,7 @@
 
                 </v-list-item-content>
 
-                <v-list-item-action>
+                <v-list-item-action v-if="item.competitorRoundStatus === 'COMPLETED'" >
                   <v-chip color="primary" v-html="item.score"></v-chip>
                 </v-list-item-action>
 
@@ -95,15 +88,20 @@
             <v-container>
               <v-row>
 
+                <HoldTypeSelector
+                    :hold-type.sync="holdTypeSelected"
+                    :selectDisabled="false"
+                />
 
-                <v-select
-                    v-model="selectedCompetitorRound.holdType"
-                    :items="holdTypes"
-                    item-text="name"
-                    item-value="id"
-                    label="Griffart"
 
-                ></v-select>
+<!--                <v-select-->
+<!--                    v-model="selectedCompetitorRound.holdType"-->
+<!--                    :items="holdTypes"-->
+<!--                    item-text="name"-->
+<!--                    item-value="id"-->
+<!--                    label="Griffart"-->
+
+<!--                ></v-select>-->
 
               </v-row>
               <v-row>
@@ -147,24 +145,28 @@
 
 import {Properties} from "@/config";
 import axios from "axios";
+import HoldTypeSelector from "@/components/HoldTypeSelector.vue";
 
 export default {
 
-  // TODO: if the selected competitor (from the item list) has changed, return the new selected competitor from this component
-  // This can be done by emitting an event, which is then listened to in the parent component
-  // E.g., in t
+  components: {HoldTypeSelector},
+
+  props: {
+    selectedRound: {
+      type: String
+    }
+  },
 
   data: () => ({
-
-    selectedRound: null,
-    rounds: [],
 
     competitorRounds: [],
 
     selectedCompetitorRoundIndex: null,
     selectedCompetitorRound: null,
 
-    holdTypes: []
+    holdTypes: [],
+
+    holdTypeSelected: null,
 
   }),
 
@@ -180,28 +182,17 @@ export default {
 
     selectedCompetitorRoundIndex: function (newVal) {
       this.selectedCompetitorRound = this.sortedCompetitorRounds[newVal]
-    }
+    },
+
+    holdTypeSelected(val) {
+      this.selectedCompetitorRound.holdType = val;
+    },
 
   },
 
   methods: {
 
-    loadRounds() {
-      axios.get(Properties.API_IP + '/round/getRounds')
-          .then(response => {
 
-            this.rounds = response.data
-
-            for (const element of this.rounds) {
-              element.roundName = element.gender + " " + element.roundNumber;
-            }
-
-            this.selectedRound = this.rounds[0].id;
-          })
-          .catch(error => {
-            console.error(error);
-          });
-    },
 
     loadCompetitors(id) {
       axios.get(Properties.API_IP + '/competitor-round/getCompetitorRounds' + '?roundId=' + id)
