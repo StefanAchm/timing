@@ -72,7 +72,7 @@ public class CompetitorService {
 
         return this.competitorRepository.findAllByDeletedFalse()
                 .stream()
-                .map(competitor -> APICompetitor.fromDBCompetitorRound(competitor)).toList();
+                .map(competitor -> APICompetitor.fromDBCompetitor(competitor, true)).toList();
 
     }
 

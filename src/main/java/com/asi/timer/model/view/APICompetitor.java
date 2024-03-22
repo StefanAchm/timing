@@ -33,7 +33,7 @@ public class APICompetitor {
         this.competitorRounds = new ArrayList<>();
     }
 
-    public static APICompetitor fromDBCompetitorRound(DBCompetitor competitor) {
+    public static APICompetitor fromDBCompetitor(DBCompetitor competitor, boolean deep) {
 
         APICompetitor competitorResponse = new APICompetitor();
         competitorResponse.setId(competitor.getId());
@@ -45,14 +45,15 @@ public class APICompetitor {
         competitorResponse.setDateOfBirth(competitor.getDateOfBirth());
         competitorResponse.setGender(competitor.getGender());
 
-        competitor.getCompetitorRounds().forEach(competitorRound -> competitorResponse.getCompetitorRounds().add(
-                APICompetitorRound.fromDBCompetitorRound(competitorRound))
-        );
+        if(deep) {
+            competitor.getCompetitorRounds().forEach(competitorRound -> competitorResponse.getCompetitorRounds().add(
+                    APICompetitorRound.fromDBCompetitorRound(competitorRound, false))
+            );
+        }
 
         return competitorResponse;
 
     }
-
 
     public UUID getId() {
         return id;

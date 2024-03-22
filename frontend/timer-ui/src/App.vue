@@ -98,7 +98,8 @@ export default {
       items: [
         {title: 'Home', icon: 'mdi-bank', route: '/'},
         {title: 'Teilnehmer', icon: 'mdi-account-multiple', route: '/competitors'},
-        {title: 'Runden', icon: 'mdi-account-multiple', route: '/rounds'}
+        {title: 'Runden', icon: 'mdi-rotate-360', route: '/rounds'},
+        {title: 'Veranstaltung', icon: 'mdi-shoe-sneaker', route: '/competition'},
       ],
       right: null,
       mini: true,

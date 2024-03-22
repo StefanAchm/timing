@@ -1,5 +1,6 @@
 package com.asi.timer.model.db;
 
+import com.asi.timer.enums.EnumCompetitorRoundStatus;
 import com.asi.timer.enums.EnumHoldType;
 
 import javax.persistence.*;
@@ -19,11 +20,19 @@ public class DBCompetitorRound {
     @ManyToOne
     private DBRound round;
 
+    @Enumerated(EnumType.STRING)
     private EnumHoldType holdType;
 
     private int holdNumber;
 
     private int tryNumber;
+
+    @Enumerated(EnumType.STRING)
+    private EnumCompetitorRoundStatus competitorRoundStatus;
+
+    public DBCompetitorRound() {
+        this.competitorRoundStatus = EnumCompetitorRoundStatus.CREATED;
+    }
 
     public void setId(UUID id) {
         this.id = id;
@@ -73,4 +82,11 @@ public class DBCompetitorRound {
         this.tryNumber = tryNumber;
     }
 
+    public EnumCompetitorRoundStatus getCompetitorRoundStatus() {
+        return competitorRoundStatus;
+    }
+
+    public void setCompetitorRoundStatus(EnumCompetitorRoundStatus competitorRoundStatus) {
+        this.competitorRoundStatus = competitorRoundStatus;
+    }
 }

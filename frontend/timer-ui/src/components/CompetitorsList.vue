@@ -1,0 +1,249 @@
+<template>
+
+  <v-container>
+
+    <v-row>
+
+      <v-col sm="6">
+
+        <v-card
+            max-width="450"
+            class="mx-auto"
+        >
+          <v-toolbar
+              color="cyan"
+              dark
+          >
+
+            <v-select
+                v-model="selectedRound"
+                :items="rounds"
+                item-text="roundName"
+                item-value="id"
+            ></v-select>
+
+          </v-toolbar>
+
+          <v-list
+              two-line
+              style="max-height: 800px; overflow-y: auto"
+          >
+
+
+            <v-list-item-group
+                v-model="selectedCompetitorRoundIndex"
+                key="selectedCompetitorRound"
+            >
+
+
+              <v-list-item
+                  :key="item.id"
+                  v-for="(item) in sortedCompetitorRounds"
+                  :style="{
+                    backgroundColor: item.competitorRoundStatus === 'COMPLETED' ? 'lightgrey' : 'white',
+                    color: item.competitorRoundStatus === 'COMPLETED' ? 'grey' : 'black'
+                  }"
+              >
+
+                <v-list-item-avatar>
+                  <v-chip color="secondary" v-html="item.competitor.startNumber"></v-chip>
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+
+                  <v-list-item-title>
+                    {{ item.competitor.firstName }} {{ item.competitor.lastName }}
+                  </v-list-item-title>
+
+                  <v-list-item-subtitle v-if="item.competitorRoundStatus === 'COMPLETED'">
+                    Griff {{item.holdNumber}} {{item.holdType}} beim {{item.tryNumber}} Versuch
+                  </v-list-item-subtitle>
+                  <v-list-item-subtitle v-else>
+                    Keine Bewertung
+                  </v-list-item-subtitle>
+
+                </v-list-item-content>
+
+                <v-list-item-action>
+                  <v-chip color="primary" v-html="item.score"></v-chip>
+                </v-list-item-action>
+
+              </v-list-item>
+
+            </v-list-item-group>
+
+          </v-list>
+
+        </v-card>
+
+      </v-col>
+
+      <v-col sm="6">
+
+        <v-card>
+
+          <v-card-title v-if="selectedCompetitorRound">
+            {{ selectedCompetitorRound.competitor.firstName + ' ' + selectedCompetitorRound.competitor.lastName }}
+          </v-card-title>
+
+          <v-card-title v-else>
+            Bitte einen Teilnehmer auswählen
+          </v-card-title>
+
+
+          <v-card-text v-if="selectedCompetitorRound">
+            <v-container>
+              <v-row>
+
+
+                <v-select
+                    v-model="selectedCompetitorRound.holdType"
+                    :items="holdTypes"
+                    item-text="name"
+                    item-value="id"
+                    label="Griffart"
+
+                ></v-select>
+
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field v-model="selectedCompetitorRound.holdNumber" label="Griffnummer"></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-text-field v-model="selectedCompetitorRound.tryNumber" label="Versuch"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+
+            <!-- Save the changes to the competitorRound -->
+
+            <!-- To align the button on the right, use the v-spacer component -->
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn color="blue darken-1" text @click="save">
+                Speichern
+              </v-btn>
+
+            </v-card-actions>
+
+          </v-card-text>
+
+        </v-card>
+
+      </v-col>
+
+    </v-row>
+
+  </v-container>
+
+
+</template>
+
+<script>
+
+import {Properties} from "@/config";
+import axios from "axios";
+
+export default {
+
+  // TODO: if the selected competitor (from the item list) has changed, return the new selected competitor from this component
+  // This can be done by emitting an event, which is then listened to in the parent component
+  // E.g., in t
+
+  data: () => ({
+
+    selectedRound: null,
+    rounds: [],
+
+    competitorRounds: [],
+
+    selectedCompetitorRoundIndex: null,
+    selectedCompetitorRound: null,
+
+    holdTypes: []
+
+  }),
+
+  created() {
+    this.loadRounds();
+    this.getHoldTypes();
+  },
+
+  watch: {
+    selectedRound: function (newVal) {
+      this.loadCompetitors(newVal);
+    },
+
+    selectedCompetitorRoundIndex: function (newVal) {
+      this.selectedCompetitorRound = this.sortedCompetitorRounds[newVal]
+    }
+
+  },
+
+  methods: {
+
+    loadRounds() {
+      axios.get(Properties.API_IP + '/round/getRounds')
+          .then(response => {
+
+            this.rounds = response.data
+
+            for (const element of this.rounds) {
+              element.roundName = element.gender + " " + element.roundNumber;
+            }
+
+            this.selectedRound = this.rounds[0].id;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    },
+
+    loadCompetitors(id) {
+      axios.get(Properties.API_IP + '/competitor-round/getCompetitorRounds' + '?roundId=' + id)
+          .then(response => {
+            this.competitorRounds = response.data;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    },
+
+    save() {
+
+      this.selectedCompetitorRound.competitorRoundStatus = 'COMPLETED';
+
+      axios.post(Properties.API_IP + '/competitor-round/update',
+          JSON.stringify(this.selectedCompetitorRound),
+          {headers: {'Content-Type': 'application/json'}})
+          .then(response => {
+
+            this.selectedCompetitorRound.score = response.data;
+            this.selectedCompetitorRoundIndex += 1;
+          })
+    },
+
+    getHoldTypes() {
+      axios.get(Properties.API_IP + '/competitor-round/getHoldTypes')
+          .then(response => {
+            this.holdTypes = response.data;
+          });
+    }
+
+  },
+
+  computed: {
+    sortedCompetitorRounds() {
+      return this.competitorRounds.slice().sort((a, b) => {
+        return a.competitor.startNumber - b.competitor.startNumber;
+      });
+    }
+  }
+
+}
+
+</script>

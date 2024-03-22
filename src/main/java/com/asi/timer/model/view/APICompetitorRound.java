@@ -1,5 +1,7 @@
 package com.asi.timer.model.view;
 
+import com.asi.timer.backend.score.ScoreCalculator;
+import com.asi.timer.enums.EnumCompetitorRoundStatus;
 import com.asi.timer.enums.EnumHoldType;
 import com.asi.timer.model.db.DBCompetitorRound;
 
@@ -15,8 +17,13 @@ public class APICompetitorRound {
 
     private int tryNumber;
 
+    private EnumCompetitorRoundStatus competitorRoundStatus;
 
-    public static APICompetitorRound fromDBCompetitorRound(DBCompetitorRound competitorRound) {
+    private APICompetitor competitor;
+
+    private Double score;
+
+    public static APICompetitorRound fromDBCompetitorRound(DBCompetitorRound competitorRound, boolean deep) {
 
         APICompetitorRound apiCompetitorRound = new APICompetitorRound();
 
@@ -24,9 +31,20 @@ public class APICompetitorRound {
         apiCompetitorRound.setHoldType(competitorRound.getHoldType());
         apiCompetitorRound.setHoldNumber(competitorRound.getHoldNumber());
         apiCompetitorRound.setTryNumber(competitorRound.getTryNumber());
+        apiCompetitorRound.setCompetitorRoundStatus(competitorRound.getCompetitorRoundStatus());
+
+        if(competitorRound.getCompetitorRoundStatus().equals(EnumCompetitorRoundStatus.COMPLETED)) {
+            apiCompetitorRound.setScore(ScoreCalculator.calculateScore(competitorRound));
+        } else {
+            apiCompetitorRound.setScore(null);
+        }
+
+
+        if(deep) {
+            apiCompetitorRound.setCompetitor(APICompetitor.fromDBCompetitor(competitorRound.getCompetitor(), false));
+        }
 
         return apiCompetitorRound;
-
 
     }
 
@@ -62,4 +80,27 @@ public class APICompetitorRound {
         this.tryNumber = tryNumber;
     }
 
+    public APICompetitor getCompetitor() {
+        return competitor;
+    }
+
+    public void setCompetitor(APICompetitor competitor) {
+        this.competitor = competitor;
+    }
+
+    public EnumCompetitorRoundStatus getCompetitorRoundStatus() {
+        return competitorRoundStatus;
+    }
+
+    public void setCompetitorRoundStatus(EnumCompetitorRoundStatus competitorRoundStatus) {
+        this.competitorRoundStatus = competitorRoundStatus;
+    }
+
+    public Double getScore() {
+        return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
+    }
 }

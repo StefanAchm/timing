@@ -1,6 +1,8 @@
 package com.asi.timer.service;
 
 import com.asi.timer.model.db.DBRound;
+import com.asi.timer.model.view.APICompetitor;
+import com.asi.timer.model.view.APICompetitorRound;
 import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;

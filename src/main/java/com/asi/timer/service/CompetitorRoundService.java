@@ -1,6 +1,8 @@
 package com.asi.timer.service;
 
 import com.asi.timer.backend.score.ScoreCalculator;
+import com.asi.timer.enums.EnumGender;
+import com.asi.timer.enums.EnumHoldType;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
 import com.asi.timer.model.db.DBRound;
@@ -12,10 +14,7 @@ import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CompetitorRoundService {
@@ -88,28 +87,29 @@ public class CompetitorRoundService {
 
     }
 
-    public List<APICompetitor> getCompetitors(int roundNumber, String gender) {
+    public List<APICompetitor> getCompetitors(int roundNumber, EnumGender gender) {
 
         List<DBCompetitorRound> competitorRounds = this.competitorRoundRepository
                 .findByRound_RoundNumberAndRound_Gender(roundNumber, gender);
 
         return competitorRounds
                 .stream()
-                .map(competitorRound -> APICompetitor.fromDBCompetitorRound(competitorRound.getCompetitor()))
+                .map(competitorRound -> APICompetitor.fromDBCompetitor(competitorRound.getCompetitor(), true))
                 .toList();
 
     }
 
     /**
      * Find possible candidates for the round and add them to the round
-     * @param APIScore minimum score
-     * @param round Round
+     *
+     * @param apiScore minimum score
+     * @param round    Round
      */
-    public void autoAddCompetitorsToRound(APIScore APIScore, DBRound round) {
+    public void autoAddCompetitorsToRound(APIScore apiScore, DBRound round) {
 
         // 1. Find all possible candidates for the round
 
-        List<DBCompetitor> competitors = findPossibleCandidatesForRound(round, APIScore);
+        List<DBCompetitor> competitors = findPossibleCandidatesForRound(round, apiScore);
 
         // 2. Add all to the round
 
@@ -125,9 +125,9 @@ public class CompetitorRoundService {
 
     }
 
-    private List<DBCompetitor> findPossibleCandidatesForRound(DBRound round, APIScore APIScore) {
+    private List<DBCompetitor> findPossibleCandidatesForRound(DBRound round, APIScore apiScore) {
 
-        if(round.getRoundNumber() == 1) {
+        if (round.getRoundNumber() == 1) {
 
             return this.competitorRepository.findAllByGenderAndDeletedFalse(round.getGender());
 
@@ -136,9 +136,9 @@ public class CompetitorRoundService {
             // Find all, where holdNumber >= holdNumber and holdType == holdType and tryNumber >= tryNumber
 
             double minimumScore = ScoreCalculator.calculateScore(
-                    APIScore.getHoldNumber(),
-                    APIScore.getHoldType(),
-                    APIScore.getTryNumber()
+                    apiScore.getHoldNumber(),
+                    apiScore.getHoldType(),
+                    apiScore.getTryNumber()
             );
 
             List<DBCompetitor> allByGenderAndDeletedFalse = this.competitorRepository.findAllByGenderAndDeletedFalse(round.getGender());
@@ -152,7 +152,7 @@ public class CompetitorRoundService {
                         .filter(competitorRound1 -> competitorRound1.getRound().getRoundNumber() == round.getRoundNumber() - 1)
                         .findFirst();
 
-                if(first.isPresent()) {
+                if (first.isPresent()) {
 
                     DBCompetitorRound competitorRound = first.get();
 
@@ -160,7 +160,7 @@ public class CompetitorRoundService {
                             competitorRound.getHoldType(),
                             competitorRound.getTryNumber());
 
-                    if(roundScore >= minimumScore) {
+                    if (roundScore >= minimumScore) {
                         competitors.add(competitor);
                     }
 
@@ -172,6 +172,40 @@ public class CompetitorRoundService {
 
             return competitors;
         }
+
+    }
+
+    public List<APICompetitorRound> getCompetitorRounds(UUID roundId) {
+
+        List<DBCompetitorRound> competitorRounds = this.competitorRoundRepository.findByRound_Id(roundId);
+
+        return competitorRounds
+                .stream()
+                .map(competitorRound -> APICompetitorRound.fromDBCompetitorRound(competitorRound, true))
+                .toList();
+
+    }
+
+    public Double update(APICompetitorRound competitorRoundRequest) {
+
+        DBCompetitorRound competitorRound = this.competitorRoundRepository
+                .findById(competitorRoundRequest.getId())
+                .orElseThrow(() -> new RuntimeException("CompetitorRound with id " + competitorRoundRequest.getId() + " not found"));
+
+        competitorRound.setHoldNumber(competitorRoundRequest.getHoldNumber());
+        competitorRound.setHoldType(competitorRoundRequest.getHoldType());
+        competitorRound.setTryNumber(competitorRoundRequest.getTryNumber());
+        competitorRound.setCompetitorRoundStatus(competitorRoundRequest.getCompetitorRoundStatus());
+
+        this.competitorRoundRepository.save(competitorRound);
+
+        return ScoreCalculator.calculateScore(competitorRound);
+
+    }
+
+    public List<EnumHoldType> getHoldTypes() {
+
+        return Arrays.stream(EnumHoldType.values()).toList();
 
     }
 

@@ -151,6 +151,12 @@
       </v-toolbar>
     </template>
 
+    <template v-slot:[`item.rounds`]="{ item }">
+
+        {{ item.nrOfRounds }}
+
+    </template>
+
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
       <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
@@ -197,6 +203,7 @@ export default {
       {text: 'Verein', value: 'club'},
       {text: 'Geburtsdatum', value: 'dateOfBirth'},
       {text: 'Geschlect', value: 'gender'},
+      {text: 'Runden', value: 'rounds'},
       {text: 'Aktionen', value: 'actions', sortable: false}
     ],
     editedIndex: -1,
@@ -242,19 +249,14 @@ export default {
       axios
           .get(Properties.API_IP + '/competitor/getCompetitors')
           .then(response => {
-            console.log(response.data);
             this.competitors = response.data;
 
             for (const element of this.competitors) {
-              element.roundInfo = "Runden: " + element.competitorRounds.length;
+              element.nrOfRounds = element.competitorRounds.length;
             }
 
-            console.log(this.competitors);
-
           })
-          .catch(error => {
-            console.log(error);
-          });
+          .catch();
 
       this.generateStartNumber()
 
