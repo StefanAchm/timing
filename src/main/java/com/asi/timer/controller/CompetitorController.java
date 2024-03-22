@@ -39,12 +39,6 @@ public class CompetitorController {
         return ResponseEntity.ok(this.competitorService.getCompetitors());
     }
 
-    @GetMapping("/getPossibleCompetitors")
-    public ResponseEntity<List<APICompetitor>> getPossibleCompetitors(@RequestParam APIRound roundRequest) {
-        return ResponseEntity.ok(this.competitorService.getPossibleCompetitors(roundRequest));
-    }
-
-
     @GetMapping("/generateStartNumber")
     public ResponseEntity<Integer> generateStartNumber() {
         return ResponseEntity.ok(this.competitorService.generateStartNumber());

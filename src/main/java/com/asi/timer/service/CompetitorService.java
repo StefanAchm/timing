@@ -4,9 +4,11 @@ import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.backend.utils.StartNumberUtil;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
+import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.APICompetitor;
 import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.CompetitorRepository;
+import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +22,9 @@ public class CompetitorService {
     private final CompetitorRepository competitorRepository;
 
     public CompetitorService(CompetitorRepository competitorRepository) {
+
         this.competitorRepository = competitorRepository;
+
     }
 
     public DBCompetitor createCompetitor(APICompetitor competitorRequest) {
@@ -77,12 +81,6 @@ public class CompetitorService {
         return this.competitorRepository.findAllByDeletedFalse()
                 .stream()
                 .map(competitor -> APICompetitor.fromDBCompetitor(competitor, true)).toList();
-
-    }
-
-    public List<APICompetitor> getPossibleCompetitors(APIRound roundRequest) {
-
-        return List.of(); // TODO: implement
 
     }
 
