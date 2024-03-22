@@ -1,21 +1,15 @@
-package com.asi.timer.backend.pdfprinter.drawing;
+package com.asi.timer.backend.pdfprinter.utils;
 
-import com.asi.timer.backend.pdfprinter.model.PdfContentContainer;
+import com.asi.timer.backend.pdfprinter.model.Pdf;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class FooterGenerator {
 
-    // TODO: Make it more dynamic
-
     public static void addTableFooter(PdfWriter writer,
-                                      PdfContentContainer pdfContentContainer,
+                                      Pdf pdf,
                                       int pageNumber,
                                       int pageNumberTotal) {
 
@@ -32,7 +26,7 @@ public class FooterGenerator {
         font.setColor(BaseColor.LIGHT_GRAY);
 
         // Links
-        phrase = new Paragraph(pdfContentContainer.getDateForPdf(), font);
+        phrase = new Paragraph(pdf.getDateForPdf(), font);
         cell.setPhrase(phrase);
         cell.setHorizontalAlignment(Element.ALIGN_LEFT);
         table.addCell(cell);

@@ -1,15 +1,27 @@
-package com.asi.timer.backend.pdfprinter.model;
+package com.asi.timer.backend.pdfprinter.utils;
 
-import com.asi.timer.backend.score.model.CompetitorScore;
+import com.asi.timer.backend.model.Competitor;
+import com.asi.timer.backend.pdfprinter.model.Row;
+import com.asi.timer.backend.model.CompetitorScore;
 import com.asi.timer.enums.EnumCompetitorRoundStatus;
-import com.asi.timer.model.db.DBCompetitor;
+import com.asi.timer.enums.EnumPrintType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rows {
+public class RowsGenerator {
 
-    public static List<Row> getStartListRows(List<DBCompetitor> competitors) {
+    public static List<Row> getRows(EnumPrintType printType, List<Competitor> competitors, List<CompetitorScore> competitorScores) {
+
+        return switch (printType) {
+            case START_LIST -> getStartListRows(competitors);
+            case RESULT_LIST -> getResultListRows(competitorScores);
+        };
+
+    }
+
+
+    public static List<Row> getStartListRows(List<Competitor> competitors) {
 
         return competitors.stream()
                 .map(competitor -> {
@@ -56,7 +68,7 @@ public class Rows {
                     score.getCompetitor().getCity(),
                     score.getCompetitor().getClub(),
                     score.getCompetitor().getDateOfBirthAsString(),
-                    "Runde " + score.getLastRound().getRound().getRoundNumber(),
+                    "Runde " + score.getLastRound().getRoundNumber(),
                     holdNumber,
                     holdType,
                     tryNumber,

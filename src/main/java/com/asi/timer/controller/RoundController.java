@@ -19,10 +19,10 @@ public class RoundController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createRound(@RequestParam boolean addCompetitors,
+    public ResponseEntity<APIRound> createRound(@RequestParam boolean addCompetitors,
                                               @RequestBody APIRound createRoundRequest) {
 
-        return ResponseEntity.ok(this.roundService.createRound(createRoundRequest, addCompetitors).getId().toString());
+        return ResponseEntity.ok(this.roundService.createRound(createRoundRequest, addCompetitors));
 
     }
 

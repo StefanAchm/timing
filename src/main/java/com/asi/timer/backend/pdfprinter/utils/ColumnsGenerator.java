@@ -1,10 +1,11 @@
-package com.asi.timer.backend.pdfprinter.model;
+package com.asi.timer.backend.pdfprinter.utils;
 
+import com.asi.timer.backend.pdfprinter.model.Column;
 import com.asi.timer.enums.EnumPrintType;
 
 import java.util.List;
 
-public class Columns {
+public class ColumnsGenerator {
 
     public static List<Column> getColumns(EnumPrintType printType) {
 

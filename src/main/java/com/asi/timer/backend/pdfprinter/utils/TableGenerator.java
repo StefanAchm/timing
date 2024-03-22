@@ -1,7 +1,7 @@
-package com.asi.timer.backend.pdfprinter.drawing;
+package com.asi.timer.backend.pdfprinter.utils;
 
 import com.asi.timer.backend.pdfprinter.model.Column;
-import com.asi.timer.backend.pdfprinter.model.PdfContentContainer;
+import com.asi.timer.backend.pdfprinter.model.Table;
 import com.asi.timer.backend.pdfprinter.model.Row;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -11,16 +11,16 @@ import java.util.List;
 
 public class TableGenerator {
 
-    public static void addTable(Document document, PdfContentContainer pdfContentContainer, int currentPageNr) throws DocumentException {
+    public static void addTable(Document document, Table tableData, int currentPageNr) throws DocumentException {
 
-        PdfPTable table = new PdfPTable(pdfContentContainer.getColumns().size());
+        PdfPTable table = new PdfPTable(tableData.getColumns().size());
         table.setWidthPercentage(100);
 
-        setWidths(table, pdfContentContainer.getColumns());
+        setWidths(table, tableData.getColumns());
 
-        addTableHeader(table, pdfContentContainer.getColumns());
+        addTableHeader(table, tableData.getColumns());
 
-        addRows(table, pdfContentContainer.getRowsForPage(currentPageNr), pdfContentContainer.getColumns());
+        addRows(table, tableData.getRowsForPage(currentPageNr), tableData.getColumns());
 
         document.add(table);
 

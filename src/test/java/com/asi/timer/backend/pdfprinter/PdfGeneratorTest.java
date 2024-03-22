@@ -1,8 +1,11 @@
 package com.asi.timer.backend.pdfprinter;
 
+import com.asi.timer.backend.pdfprinter.enums.EnumGender;
+import com.asi.timer.backend.pdfprinter.model.Pdf;
+import com.asi.timer.backend.utils.FileUtils;
 import com.asi.timer.enums.EnumPrintType;
+import com.asi.timer.helper.CompetitorDummyData;
 import com.asi.timer.helper.CompetitorScoreDummyData;
-import com.asi.timer.helper.CompetitorsDummyData;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -10,22 +13,23 @@ import java.time.LocalDate;
 
 class PdfGeneratorTest {
 
+    private static final String folderPath = "C:\\Users\\Stefan\\Desktop\\";
+
 
     @Test
     void generateStartList() {
 
-        String folderPath = "C:\\Users\\Stefan\\Desktop\\";
+        Pdf build = Pdf.newBuilder()
+                .eventTitle("KIOT Bouldercup 2023")
+                .type(EnumPrintType.START_LIST)
+                .gender(EnumGender.HERREN)
+                .round(1)
+                .date(LocalDate.now())
+                .competitors(CompetitorDummyData.geCompetitorsWithLongStrings())
+                .competitorScores(null)
+                .build();
 
-        File file = PdfGenerator.generatePdf(
-                folderPath,
-                "KIOT Bouldercup 2023",
-                EnumPrintType.START_LIST,
-                "male",
-                1,
-                LocalDate.now(),
-                CompetitorsDummyData.geCompetitorsWithLongStrings(),
-                null
-        );
+        File file = PdfGenerator.generatePdf(folderPath, build);
 
         FileUtils.openFile(file);
 
@@ -34,18 +38,17 @@ class PdfGeneratorTest {
     @Test
     void generateResultList() {
 
-        String folderPath = "C:\\Users\\Stefan\\Desktop\\";
+        Pdf build = Pdf.newBuilder()
+                .eventTitle("KIOT Bouldercup 2023")
+                .type(EnumPrintType.RESULT_LIST)
+                .gender(EnumGender.HERREN)
+                .round(1)
+                .date(LocalDate.now())
+                .competitors(null)
+                .competitorScores(CompetitorScoreDummyData.getMale1())
+                .build();
 
-        File file = PdfGenerator.generatePdf(
-                folderPath,
-                "KIOT Bouldercup 2023",
-                EnumPrintType.RESULT_LIST,
-                "male",
-                1,
-                LocalDate.now(),
-                null,
-                CompetitorScoreDummyData.getMale1()
-        );
+        File file = PdfGenerator.generatePdf(folderPath, build);
 
         FileUtils.openFile(file);
 
@@ -54,18 +57,17 @@ class PdfGeneratorTest {
     @Test
     void generateResultList2() {
 
-        String folderPath = "C:\\Users\\Stefan\\Desktop\\";
+        Pdf build = Pdf.newBuilder()
+                .eventTitle("KIOT Bouldercup 2023")
+                .type(EnumPrintType.RESULT_LIST)
+                .gender(EnumGender.HERREN)
+                .round(1)
+                .date(LocalDate.now())
+                .competitors(null)
+                .competitorScores(CompetitorScoreDummyData.getMale(60))
+                .build();
 
-        File file = PdfGenerator.generatePdf(
-                folderPath,
-                "KIOT Bouldercup 2023",
-                EnumPrintType.RESULT_LIST,
-                "male",
-                1,
-                LocalDate.now(),
-                null,
-                CompetitorScoreDummyData.getMale(60)
-        );
+        File file = PdfGenerator.generatePdf(folderPath, build);
 
         FileUtils.openFile(file);
 

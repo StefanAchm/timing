@@ -1,18 +1,19 @@
-package com.asi.timer.backend.score;
+package com.asi.timer.backend.utils;
 
+import com.asi.timer.backend.model.CompetitorRound;
 import com.asi.timer.enums.EnumHoldType;
-import com.asi.timer.model.db.DBCompetitorRound;
 
 import java.util.List;
 
-public class ScoreCalculator {
+public class ScoreUtil {
 
-    public static double calculateScore(List<DBCompetitorRound> competitorRounds) {
+    @Deprecated
+    public static double calculateScore(List<CompetitorRound> competitorRounds) {
 
         double score = 0;
 
         for (int i = 0; i < competitorRounds.size(); i++) {
-            DBCompetitorRound competitorRound = competitorRounds.get(i);
+            CompetitorRound competitorRound = competitorRounds.get(i);
 
             if(i < competitorRounds.size() - 1) {
                 // There is a next round, therefore use max points here!
@@ -27,7 +28,7 @@ public class ScoreCalculator {
 
     }
 
-    public static double calculateScore(DBCompetitorRound competitorRound) {
+    public static double calculateScore(CompetitorRound competitorRound) {
 
         return calculateScore(competitorRound.getHoldNumber(),
                 competitorRound.getHoldType(),

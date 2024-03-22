@@ -1,7 +1,10 @@
 package com.asi.timer.helper;
 
-import com.asi.timer.backend.score.model.CompetitorScore;
-import com.asi.timer.enums.EnumGender;
+import com.asi.timer.backend.model.Competitor;
+import com.asi.timer.backend.model.CompetitorRound;
+import com.asi.timer.backend.model.CompetitorScore;
+import com.asi.timer.enums.EnumCompetitorRoundStatus;
+import com.asi.timer.enums.EnumHoldType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,81 +40,104 @@ public class CompetitorScoreDummyData {
     }
 
     private static CompetitorScore competitorScoreX(int i) {
-        return CompetitorScoreDummyDataGenerator.generateCompetitorScore(
+        return generateCompetitorScore(
                 i,
                 CompetitorDummyData.competitorX(i),
-                RoundDummyDataGenerator.generateRound(3, EnumGender.HERREN),
+                3,
                 100- i
         );
     }
 
-    public static CompetitorScore competitorScore1 = CompetitorScoreDummyDataGenerator.generateCompetitorScore(
+    public static CompetitorScore competitorScore1 = generateCompetitorScore(
             1,
             CompetitorDummyData.competitor1,
-            RoundDummyDataGenerator.generateRound(1, EnumGender.HERREN),
+            1,
             15.9999999999999876
     );
 
-    public static CompetitorScore competitorScore2 = CompetitorScoreDummyDataGenerator.generateCompetitorScore(
+    public static CompetitorScore competitorScore2 = generateCompetitorScore(
             2,
             CompetitorDummyData.competitor3,
-            RoundDummyDataGenerator.generateRound(1, EnumGender.HERREN),
+            1,
             15
     );
 
-    public static CompetitorScore competitorScore3 = CompetitorScoreDummyDataGenerator.generateCompetitorScore(
+    public static CompetitorScore competitorScore3 = generateCompetitorScore(
             3,
             CompetitorDummyData.competitor4,
-            RoundDummyDataGenerator.generateRound(1, EnumGender.HERREN),
+            1,
             14
     );
 
-    public static CompetitorScore competitorScore4 = CompetitorScoreDummyDataGenerator.generateCompetitorScore(
+    public static CompetitorScore competitorScore4 = generateCompetitorScore(
             4,
             CompetitorDummyData.competitorWithLongName1,
-            RoundDummyDataGenerator.generateRound(1, EnumGender.HERREN),
+            1,
             13
     );
 
-    public static CompetitorScore competitorScore5 = CompetitorScoreDummyDataGenerator.generateCompetitorScore(
+    public static CompetitorScore competitorScore5 = generateCompetitorScore(
             5,
             CompetitorDummyData.competitorWithLongClubname1,
-            RoundDummyDataGenerator.generateRound(1, EnumGender.HERREN),
+            1,
             12
     );
 
-    public static CompetitorScore competitorScore6 = CompetitorScoreDummyDataGenerator.generateCompetitorScore(
+    public static CompetitorScore competitorScore6 = generateCompetitorScore(
             6,
             CompetitorDummyData.competitorWithLongClubname2,
-            RoundDummyDataGenerator.generateRound(1, EnumGender.HERREN),
+            1,
             11
     );
 
-    public static CompetitorScore competitorScore7 = CompetitorScoreDummyDataGenerator.generateCompetitorScore(
+    public static CompetitorScore competitorScore7 = generateCompetitorScore(
             7,
             CompetitorDummyData.competitorWithLongClubname3,
-            RoundDummyDataGenerator.generateRound(1, EnumGender.HERREN),
+            1,
             10.999885522
     );
 
 
-    public static CompetitorScore competitorScore8 = CompetitorScoreDummyDataGenerator.generateCompetitorScore(
+    public static CompetitorScore competitorScore8 = generateCompetitorScore(
             8,
             CompetitorDummyData.competitorWithLongClubname4,
-            RoundDummyDataGenerator.generateRound(1, EnumGender.HERREN),
+            1,
             9.16
     );
 
 
 
-    public static CompetitorScore competitorScore9 = CompetitorScoreDummyDataGenerator.generateCompetitorScore(
+    public static CompetitorScore competitorScore9 = generateCompetitorScore(
             9,
             CompetitorDummyData.competitorWithLongCityName,
-            RoundDummyDataGenerator.generateRound(1, EnumGender.HERREN),
+            1,
             8.0346
     );
 
 
+    public static CompetitorScore generateCompetitorScore(
+            int rank,
+            Competitor competitor,
+            int roundNumber,
+            double score) {
+
+        CompetitorRound lastRound = new CompetitorRound();
+        lastRound.setRoundNumber(roundNumber);
+        lastRound.setCompetitor(competitor);
+        lastRound.setCompetitorRoundStatus(EnumCompetitorRoundStatus.COMPLETED);
+        lastRound.setHoldNumber(25);
+        lastRound.setHoldType(EnumHoldType.HELD);
+        lastRound.setTryNumber(3);
+
+        CompetitorScore competitorScore = new CompetitorScore();
+        competitorScore.setRank(rank);
+        competitorScore.setCompetitor(competitor);
+        competitorScore.setLastRound(lastRound);
+        competitorScore.setScore(score);
+
+        return competitorScore;
+
+    }
 
 
 }

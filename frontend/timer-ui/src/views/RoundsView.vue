@@ -247,7 +247,7 @@ export default {
 
       if (this.editedIndex > -1) {
 
-        axios.post(Properties.API_IP + '/round/update', this.editedItem);
+        axios.post(Properties.API_IP + '/round/update', this.editedItem).then(() => {this.close()});
 
       } else {
 
@@ -255,11 +255,9 @@ export default {
             Properties.API_IP + '/round/create',
             this.editedItem,
             {params: {addCompetitors: true}}
-        );
+        ).then(() => {this.close()});
 
       }
-
-      this.close();
 
     },
 

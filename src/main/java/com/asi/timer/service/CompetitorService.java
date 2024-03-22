@@ -1,13 +1,11 @@
 package com.asi.timer.service;
 
-import com.asi.timer.backend.score.ScoreCalculator;
+import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.backend.utils.StartNumberUtil;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
-import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.APICompetitor;
 import com.asi.timer.model.view.APIRound;
-import com.asi.timer.model.view.APIScore;
 import com.asi.timer.repositories.CompetitorRepository;
 import org.springframework.stereotype.Service;
 
@@ -109,7 +107,7 @@ public class CompetitorService {
 
             // Find all, where holdNumber >= holdNumber and holdType == holdType and tryNumber >= tryNumber
 
-            double minimumScore = ScoreCalculator.calculateScore(
+            double minimumScore = ScoreUtil.calculateScore(
                     round.getScore().getHoldNumber(),
                     round.getScore().getHoldType(),
                     round.getScore().getTryNumber()
@@ -130,7 +128,7 @@ public class CompetitorService {
 
                     DBCompetitorRound competitorRound = first.get();
 
-                    double roundScore = ScoreCalculator.calculateScore(competitorRound.getHoldNumber(),
+                    double roundScore = ScoreUtil.calculateScore(competitorRound.getHoldNumber(),
                             competitorRound.getHoldType(),
                             competitorRound.getTryNumber());
 

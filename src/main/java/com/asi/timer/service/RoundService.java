@@ -1,8 +1,10 @@
 package com.asi.timer.service;
 
 import com.asi.timer.model.db.DBCompetitor;
+import com.asi.timer.model.db.DBCompetitorRound;
 import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.APIRound;
+import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +16,21 @@ import java.util.stream.Collectors;
 public class RoundService {
 
     private final RoundRepository roundRepository;
+    private final CompetitorRoundRepository competitorRoundRepository;
 
     private final CompetitorRoundService competitorRoundService;
 
     private final CompetitorService competitorService;
 
     public RoundService(RoundRepository roundRepository,
+                        CompetitorRoundRepository competitorRoundRepository,
                         CompetitorRoundService competitorRoundService,
                         CompetitorService competitorService
     ) {
 
         this.roundRepository = roundRepository;
+        this.competitorRoundRepository = competitorRoundRepository;
+
         this.competitorRoundService = competitorRoundService;
         this.competitorService = competitorService;
 
@@ -39,28 +45,25 @@ public class RoundService {
 
     }
 
-    public DBRound createRound(APIRound apiRound, boolean addCompetitors) {
+    public APIRound createRound(APIRound apiRound, boolean addCompetitors) {
 
-        DBRound round = new DBRound();
-
-        round.setRoundNumber(apiRound.getRoundNumber());
-        round.setMaxHolds(apiRound.getMaxHolds());
-        round.setGender(apiRound.getGender());
+        DBRound round = DBRound.fromAPIRound(apiRound);
 
         DBRound roundCreated = this.roundRepository.save(round);
-
-        // End transaction
-//        this.roundRepository.flush(); // This is needed to get the ID of the round
 
         if (addCompetitors) {
 
             apiRound.setId(roundCreated.getId());
 
-            this.competitorRoundService.autoAddCompetitorsToRound(apiRound);
+            List<DBCompetitor> possibleCandidatesForRound = competitorService.findPossibleCandidatesForRound(apiRound);
+
+            this.competitorRoundService.addCompetitorsToRound(possibleCandidatesForRound, round);
+
+            apiRound.setNumberOfCompetitors(possibleCandidatesForRound.size());
 
         }
 
-        return roundCreated;
+        return apiRound;
 
     }
 
@@ -73,8 +76,6 @@ public class RoundService {
         round.setRoundNumber(apiRound.getRoundNumber());
         round.setMaxHolds(apiRound.getMaxHolds());
         round.setGender(apiRound.getGender());
-
-        // TODO: attention
 
         this.roundRepository.save(round);
 
@@ -89,7 +90,7 @@ public class RoundService {
                 .orElseThrow(() -> new RuntimeException("Round with id " + roundId + " not found"));
 
         // TODO: attention
-
+        this.competitorRoundRepository.deleteAll(round.getCompetitorRounds()); // TODO: attention
         this.roundRepository.delete(round);
 
         return round;

@@ -1,11 +1,14 @@
 package com.asi.timer.helper;
 
+import com.asi.timer.backend.model.Competitor;
 import com.asi.timer.enums.EnumGender;
-import com.asi.timer.model.db.DBCompetitor;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class CompetitorDummyData {
 
-    public static DBCompetitor competitor1 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static Competitor competitor1 = generateCompetitor(
             1,
             "Max",
             "Mustermann",
@@ -15,7 +18,7 @@ public class CompetitorDummyData {
             EnumGender.HERREN
     );
 
-    public static DBCompetitor competitor2 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static Competitor competitor2 = generateCompetitor(
             2,
             "Maxine",
             "Musterfrau",
@@ -25,7 +28,7 @@ public class CompetitorDummyData {
             EnumGender.DAMEN
     );
 
-    public static DBCompetitor competitor3 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static Competitor competitor3 = generateCompetitor(
             3,
             "Maximilian",
             "Muster",
@@ -35,7 +38,7 @@ public class CompetitorDummyData {
             EnumGender.HERREN
     );
 
-    public static DBCompetitor competitor4 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static Competitor competitor4 = generateCompetitor(
             4,
             "Maximilian",
             "Muster",
@@ -45,7 +48,7 @@ public class CompetitorDummyData {
             EnumGender.HERREN
     );
 
-    public static DBCompetitor competitorWithLongName1 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static Competitor competitorWithLongName1 = generateCompetitor(
             5,
             "Maximilian",
             "ABCDEFGHIJKLMNOPQ",
@@ -55,7 +58,7 @@ public class CompetitorDummyData {
             EnumGender.HERREN
     );
 
-    public static DBCompetitor competitorWithLongClubname1 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static Competitor competitorWithLongClubname1 = generateCompetitor(
             6,
             "Maximilian",
             "Mustermann",
@@ -65,7 +68,7 @@ public class CompetitorDummyData {
             EnumGender.HERREN
     );
 
-    public static DBCompetitor competitorWithLongClubname2 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static Competitor competitorWithLongClubname2 = generateCompetitor(
             7,
             "Maximilian",
             "Mustermann",
@@ -75,7 +78,7 @@ public class CompetitorDummyData {
             EnumGender.HERREN
     );
 
-    public static DBCompetitor competitorWithLongClubname3 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static Competitor competitorWithLongClubname3 = generateCompetitor(
             8,
             "Maximilian",
             "Mustermann",
@@ -85,7 +88,7 @@ public class CompetitorDummyData {
             EnumGender.HERREN
     );
 
-    public static DBCompetitor competitorWithLongClubname4 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static Competitor competitorWithLongClubname4 = generateCompetitor(
             9,
             "Maximilian",
             "Mustermann",
@@ -95,7 +98,7 @@ public class CompetitorDummyData {
             EnumGender.HERREN
     );
 
-    public static DBCompetitor competitorWithLongCityName = CompetitorDummyDataGenerator.generateCompetitor(
+    public static Competitor competitorWithLongCityName = generateCompetitor(
             10,
             "Maximilian",
             "Mustermann",
@@ -105,9 +108,9 @@ public class CompetitorDummyData {
             EnumGender.HERREN
     );
 
-    public static DBCompetitor competitorX(int startNumber) {
+    public static Competitor competitorX(int startNumber) {
 
-        return CompetitorDummyDataGenerator.generateCompetitor(
+        return generateCompetitor(
                 startNumber,
                 "Max",
                 "Mustermann",
@@ -116,6 +119,87 @@ public class CompetitorDummyData {
                 "1990-01-01",
                 EnumGender.HERREN
         );
+
+    }
+
+    public static List<Competitor> getCompetitors() {
+
+        return List.of(
+                CompetitorDummyData.competitor1,
+                CompetitorDummyData.competitor1,
+                CompetitorDummyData.competitor1,
+                CompetitorDummyData.competitor1,
+                CompetitorDummyData.competitor1,
+                CompetitorDummyData.competitor1,
+                CompetitorDummyData.competitor1,
+                CompetitorDummyData.competitor2,
+                CompetitorDummyData.competitor2,
+                CompetitorDummyData.competitor2,
+                CompetitorDummyData.competitor2,
+                CompetitorDummyData.competitor3,
+                CompetitorDummyData.competitor3,
+                CompetitorDummyData.competitor3,
+                CompetitorDummyData.competitor3,
+                CompetitorDummyData.competitor3,
+                CompetitorDummyData.competitor3,
+                CompetitorDummyData.competitor3,
+                CompetitorDummyData.competitor4,
+                CompetitorDummyData.competitor4,
+                CompetitorDummyData.competitor4,
+                CompetitorDummyData.competitor4,
+                CompetitorDummyData.competitor4,
+                CompetitorDummyData.competitor4,
+                CompetitorDummyData.competitor4,
+                CompetitorDummyData.competitor4
+        );
+
+    }
+
+    public static List<Competitor> geCompetitorsWithLongStrings() {
+
+        return List.of(
+
+                CompetitorDummyData.competitor1,
+                CompetitorDummyData.competitor2,
+                CompetitorDummyData.competitor3,
+                CompetitorDummyData.competitor4,
+                CompetitorDummyData.competitorWithLongName1,
+                CompetitorDummyData.competitorWithLongClubname1,
+                CompetitorDummyData.competitorWithLongClubname2,
+                CompetitorDummyData.competitorWithLongClubname3,
+                CompetitorDummyData.competitorWithLongClubname4,
+                CompetitorDummyData.competitorWithLongCityName,
+                CompetitorDummyData.competitorX(11),
+                CompetitorDummyData.competitorX(12),
+                CompetitorDummyData.competitorX(13),
+                CompetitorDummyData.competitorX(14),
+                CompetitorDummyData.competitorX(15),
+                CompetitorDummyData.competitorX(16)
+
+        );
+
+
+    }
+
+    private static Competitor generateCompetitor(int startNumber,
+                                                String firstName,
+                                                String lastName,
+                                                String city,
+                                                String club,
+                                                String dateOfBirth,
+                                                EnumGender gender) {
+
+        Competitor competitor = new Competitor();
+
+        competitor.setStartNumber(startNumber);
+        competitor.setFirstName(firstName);
+        competitor.setLastName(lastName);
+        competitor.setCity(city);
+        competitor.setClub(club);
+        competitor.setDateOfBirth(LocalDate.parse(dateOfBirth));
+        competitor.setGender(gender);
+
+        return competitor;
 
     }
 

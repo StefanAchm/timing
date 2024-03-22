@@ -1,18 +1,53 @@
-package com.asi.timer.backend.pdfprinter.drawing;
+package com.asi.timer.backend.pdfprinter.utils;
 
-import com.asi.timer.backend.pdfprinter.model.PdfContentContainer;
+import com.asi.timer.backend.pdfprinter.model.Pdf;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
 public class TitleGenerator {
 
+    public static void addTitleForResultList(Document document, Pdf pdf) throws DocumentException {
+
+        String genderName = switch (pdf.getGender()) {
+            case HERREN -> "Herren";
+            case DAMEN -> "Damen";
+        };
+
+        String subtitle = genderName;
+
+        TitleGenerator.addTitle(
+                document,
+                "Ergebnisliste",
+                pdf.getEventTitle(),
+                subtitle
+        );
+
+    }
+
+    public static void addTitleForStartList(Document document, Pdf pdf) throws DocumentException {
+
+        String genderName = switch (pdf.getGender()) {
+            case HERREN -> "Herren";
+            case DAMEN -> "Damen";
+        };
+
+        String subtitle = genderName + ": Runde " + pdf.getRound();
+
+        TitleGenerator.addTitle(
+                document,
+                "Startliste",
+                pdf.getEventTitle(),
+                subtitle
+        );
+
+    }
+
     public static void addTitle(
             Document document,
             String pdfTitle,
             String eventTitle,
-            String subTitle,
-            String date
+            String subTitle
     ) throws DocumentException {
 
         PdfPTable table = new PdfPTable(2);
@@ -67,41 +102,4 @@ public class TitleGenerator {
 
     }
 
-    public static void addTitleForResultList(Document document, PdfContentContainer pdfContentContainer) throws DocumentException {
-
-        String subTitle = switch (pdfContentContainer.getGender()) {
-            case "HERREN" -> "Herren";
-            case "DAMEN" -> "Damen";
-            default -> throw new IllegalStateException("Unexpected value: " + pdfContentContainer.getGender());
-        };
-
-        TitleGenerator.addTitle(
-                document,
-                "Ergebnisliste",
-                pdfContentContainer.getEventTile(),
-                subTitle,
-                pdfContentContainer.getDateForPdf()
-        );
-
-    }
-
-    public static void addTitleForStartList(Document document, PdfContentContainer pdfContentContainer) throws DocumentException {
-
-        String genderName = switch (pdfContentContainer.getGender()) {
-            case "HERREN" -> "Herren";
-            case "DAMEN" -> "Damen";
-            default -> throw new IllegalStateException("Unexpected value: " + pdfContentContainer.getGender());
-        };
-
-        String subtitle = genderName + ": Runde " + pdfContentContainer.getRound();
-
-        TitleGenerator.addTitle(
-                document,
-                "Startliste",
-                pdfContentContainer.getEventTile(),
-                subtitle,
-                pdfContentContainer.getDateForPdf()
-        );
-
-    }
 }

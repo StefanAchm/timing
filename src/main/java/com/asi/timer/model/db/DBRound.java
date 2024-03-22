@@ -1,6 +1,7 @@
 package com.asi.timer.model.db;
 
 import com.asi.timer.enums.EnumGender;
+import com.asi.timer.model.view.APIRound;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -25,6 +26,14 @@ public class DBRound {
     private Set<DBCompetitorRound> competitorRounds;
 
     public DBRound() {
+    }
+
+    public static DBRound fromAPIRound(APIRound apiRound) {
+        DBRound dbRound = new DBRound();
+        dbRound.setRoundNumber(apiRound.getRoundNumber());
+        dbRound.setMaxHolds(apiRound.getMaxHolds());
+        dbRound.setGender(apiRound.getGender());
+        return dbRound;
     }
 
     public UUID getId() {

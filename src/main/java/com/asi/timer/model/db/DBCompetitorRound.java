@@ -1,5 +1,6 @@
 package com.asi.timer.model.db;
 
+import com.asi.timer.backend.model.CompetitorRound;
 import com.asi.timer.enums.EnumCompetitorRoundStatus;
 import com.asi.timer.enums.EnumHoldType;
 
@@ -89,4 +90,17 @@ public class DBCompetitorRound {
     public void setCompetitorRoundStatus(EnumCompetitorRoundStatus competitorRoundStatus) {
         this.competitorRoundStatus = competitorRoundStatus;
     }
+
+    public CompetitorRound toBackendCompetitorRound() {
+        CompetitorRound competitorRound = new CompetitorRound();
+        competitorRound.setId(this.id);
+        competitorRound.setRoundNumber(this.round.getRoundNumber());
+        competitorRound.setHoldNumber(this.holdNumber);
+        competitorRound.setHoldType(this.holdType);
+        competitorRound.setTryNumber(this.tryNumber);
+        competitorRound.setCompetitorRoundStatus(this.competitorRoundStatus);
+        competitorRound.setCompetitor(this.competitor.toBackendCompetitor());
+        return competitorRound;
+    }
+
 }

@@ -1,7 +1,8 @@
 package com.asi.timer.backend.score;
 
+import com.asi.timer.backend.model.CompetitorRound;
+import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.enums.EnumHoldType;
-import com.asi.timer.model.db.DBCompetitorRound;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,7 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 import java.util.stream.Stream;
 
-class ScoreCalculatorTest {
+class ScoreUtilTest {
 
     private record CompetitorRoundTestInputParams(int holdNumber, EnumHoldType holdType, int tryNumber) {
     }
@@ -56,13 +57,13 @@ class ScoreCalculatorTest {
         double expectedScore = arguments.getDouble(0);
         CompetitorRoundTestInputParams competitorRoundTestInputParams = arguments.get(1, CompetitorRoundTestInputParams.class);
 
-        DBCompetitorRound competitorRound = new DBCompetitorRound();
+        CompetitorRound competitorRound = new CompetitorRound();
         competitorRound.setHoldNumber(competitorRoundTestInputParams.holdNumber());
         competitorRound.setHoldType(competitorRoundTestInputParams.holdType());
         competitorRound.setTryNumber(competitorRoundTestInputParams.tryNumber());
 
 
-        double actualScore = ScoreCalculator.calculateScore(competitorRound);
+        double actualScore = ScoreUtil.calculateScore(competitorRound);
 
         Assertions.assertEquals(expectedScore, actualScore);
 
@@ -73,30 +74,30 @@ class ScoreCalculatorTest {
 
         // Competitor 1
 
-        DBCompetitorRound competitorRound1 = new DBCompetitorRound();
+        CompetitorRound competitorRound1 = new CompetitorRound();
         competitorRound1.setHoldNumber(15);
         competitorRound1.setHoldType(EnumHoldType.TOUCHED);
         competitorRound1.setTryNumber(1);
 
-        DBCompetitorRound competitorRound2 = new DBCompetitorRound();
+        CompetitorRound competitorRound2 = new CompetitorRound();
         competitorRound2.setHoldNumber(15);
         competitorRound2.setHoldType(EnumHoldType.HELD);
         competitorRound2.setTryNumber(1);
 
         // Competitor 2
 
-        DBCompetitorRound competitorRound3 = new DBCompetitorRound();
+        CompetitorRound competitorRound3 = new CompetitorRound();
         competitorRound3.setHoldNumber(15);
         competitorRound3.setHoldType(EnumHoldType.HELD);
         competitorRound3.setTryNumber(1);
 
-        DBCompetitorRound competitorRound4 = new DBCompetitorRound();
+        CompetitorRound competitorRound4 = new CompetitorRound();
         competitorRound4.setHoldNumber(15);
         competitorRound4.setHoldType(EnumHoldType.TOUCHED);
         competitorRound4.setTryNumber(1);
 
-        double scoreCompetitor1 = ScoreCalculator.calculateScore(List.of(competitorRound1, competitorRound2));
-        double scoreCompetitor2 = ScoreCalculator.calculateScore(List.of(competitorRound3, competitorRound4));
+        double scoreCompetitor1 = ScoreUtil.calculateScore(List.of(competitorRound1, competitorRound2));
+        double scoreCompetitor2 = ScoreUtil.calculateScore(List.of(competitorRound3, competitorRound4));
 
         Assertions.assertTrue(scoreCompetitor1 > scoreCompetitor2,
                 "Competitor 1 {" + scoreCompetitor1 + "} should have a higher score than competitor 2 {" + scoreCompetitor2 + "}");

@@ -1,8 +1,9 @@
 package com.asi.timer.service;
 
 import com.asi.timer.backend.pdfprinter.PdfGenerator;
-import com.asi.timer.backend.score.CompetitorScoreCalculator;
-import com.asi.timer.backend.score.model.CompetitorScore;
+import com.asi.timer.backend.pdfprinter.model.Pdf;
+import com.asi.timer.backend.utils.CompetitorScoreUtil;
+import com.asi.timer.backend.model.CompetitorScore;
 import com.asi.timer.components.FileStorageProperties;
 import com.asi.timer.enums.EnumPrintType;
 import com.asi.timer.model.db.DBCompetitor;
@@ -69,21 +70,24 @@ public class PrintService {
                 .toList();
 
         List<CompetitorScore> competitorScores = type.equals(EnumPrintType.RESULT_LIST)
-                ? CompetitorScoreCalculator.fromCompetitorRound(round.getCompetitorRounds().stream().toList())
+                ? CompetitorScoreUtil.fromCompetitorRound(round.getCompetitorRounds().stream().map(DBCompetitorRound::toBackendCompetitorRound).toList())
                 : null;
 
         LocalDate date = LocalDate.now();
 
-        return PdfGenerator.generatePdf(
-                fileStorageProperties.getUploadDir(),
-                "KIOT Bouldercup 2024", // todo
-                type,
-                round.getGender().toString(),
-                round.getRoundNumber(),
-                date,
-                competitors,
-                competitorScores
-        );
+        String eventTitle = "KIOT Boulder Cup 2024"; // todo
+
+        Pdf pdf = Pdf.newBuilder()
+                .eventTitle(eventTitle)
+                .type(type)
+                .gender(round.getGender().toBackendEnum())
+                .round(round.getRoundNumber())
+                .date(date)
+                .competitors(competitors.stream().map(DBCompetitor::toBackendCompetitor).toList())
+                .competitorScores(competitorScores)
+                .build();
+
+        return PdfGenerator.generatePdf(fileStorageProperties.getUploadDir(), pdf);
 
     }
 

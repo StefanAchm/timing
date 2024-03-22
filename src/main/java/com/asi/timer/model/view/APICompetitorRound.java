@@ -1,6 +1,6 @@
 package com.asi.timer.model.view;
 
-import com.asi.timer.backend.score.ScoreCalculator;
+import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.enums.EnumCompetitorRoundStatus;
 import com.asi.timer.enums.EnumHoldType;
 import com.asi.timer.model.db.DBCompetitorRound;
@@ -34,7 +34,7 @@ public class APICompetitorRound {
         apiCompetitorRound.setCompetitorRoundStatus(competitorRound.getCompetitorRoundStatus());
 
         if(competitorRound.getCompetitorRoundStatus().equals(EnumCompetitorRoundStatus.COMPLETED)) {
-            apiCompetitorRound.setScore(ScoreCalculator.calculateScore(competitorRound));
+            apiCompetitorRound.setScore(ScoreUtil.calculateScore(competitorRound.toBackendCompetitorRound()));
         } else {
             apiCompetitorRound.setScore(null);
         }

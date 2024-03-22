@@ -1,6 +1,6 @@
 package com.asi.timer.service;
 
-import com.asi.timer.backend.score.ScoreCalculator;
+import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.enums.EnumGender;
 import com.asi.timer.enums.EnumHoldType;
 import com.asi.timer.model.db.DBCompetitor;
@@ -8,8 +8,6 @@ import com.asi.timer.model.db.DBCompetitorRound;
 import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.APICompetitor;
 import com.asi.timer.model.view.APICompetitorRound;
-import com.asi.timer.model.view.APIRound;
-import com.asi.timer.model.view.APIScore;
 import com.asi.timer.repositories.CompetitorRepository;
 import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
@@ -88,7 +86,7 @@ public class CompetitorRoundService {
 
         this.competitorRoundRepository.save(competitorRound);
 
-        return ScoreCalculator.calculateScore(competitorRound);
+        return ScoreUtil.calculateScore(competitorRound.toBackendCompetitorRound());
 
     }
 
@@ -105,26 +103,15 @@ public class CompetitorRoundService {
     }
 
     /**
-     * Find possible candidates for the round and add them to the round
-     * @param apiRound the round
+     * Add all possible competitors to the round
      */
-    public void autoAddCompetitorsToRound(APIRound apiRound) {
-
-        // 1. Find all possible candidates for the round
-
-        List<DBCompetitor> competitors = competitorService.findPossibleCandidatesForRound(apiRound);
-
-        DBRound round = this.roundRepository
-                .findById(apiRound.getId())
-                .orElseThrow(() -> new RuntimeException("Round with id " + apiRound.getId() + " not found"));
-
-        // 2. Add all to the round
+    public void addCompetitorsToRound(List<DBCompetitor> competitors, DBRound dbRound) {
 
         competitors.forEach(competitor -> {
 
             DBCompetitorRound competitorRound = new DBCompetitorRound();
             competitorRound.setCompetitor(competitor);
-            competitorRound.setRound(round);
+            competitorRound.setRound(dbRound);
 
             this.competitorRoundRepository.save(competitorRound);
 
@@ -158,7 +145,7 @@ public class CompetitorRoundService {
 
         this.competitorRoundRepository.save(competitorRound);
 
-        return ScoreCalculator.calculateScore(competitorRound);
+        return ScoreUtil.calculateScore(competitorRound.toBackendCompetitorRound());
 
     }
 

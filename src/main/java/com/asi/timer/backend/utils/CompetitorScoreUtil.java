@@ -1,17 +1,16 @@
-package com.asi.timer.backend.score;
+package com.asi.timer.backend.utils;
 
-import com.asi.timer.backend.score.model.CompetitorScore;
-import com.asi.timer.enums.EnumCompetitorRoundStatus;
-import com.asi.timer.model.db.DBCompetitorRound;
+import com.asi.timer.backend.model.CompetitorRound;
+import com.asi.timer.backend.model.CompetitorScore;
 
 import java.util.List;
 
-public class CompetitorScoreCalculator {
+public class CompetitorScoreUtil {
 
-    public static List<CompetitorScore> fromCompetitorRound(List<DBCompetitorRound> competitorRound) {
+    public static List<CompetitorScore> fromCompetitorRound(List<CompetitorRound> competitorRound) {
 
         List<CompetitorScore> competitorScores = competitorRound.stream()
-                .map(CompetitorScoreCalculator::fromCompetitorRound)
+                .map(CompetitorScoreUtil::fromCompetitorRound)
                 .sorted((o1, o2) -> Double.compare(o2.getScore(), o1.getScore()))
                 .toList();
 
@@ -27,11 +26,11 @@ public class CompetitorScoreCalculator {
 
     }
 
-    public static CompetitorScore fromCompetitorRound(DBCompetitorRound competitorRound) {
+    public static CompetitorScore fromCompetitorRound(CompetitorRound competitorRound) {
 
         CompetitorScore competitorScore = new CompetitorScore();
 
-        competitorScore.setScore(ScoreCalculator.calculateScore(competitorRound));
+        competitorScore.setScore(ScoreUtil.calculateScore(competitorRound));
 
         competitorScore.setLastRound(competitorRound);
         competitorScore.setCompetitor(competitorRound.getCompetitor());

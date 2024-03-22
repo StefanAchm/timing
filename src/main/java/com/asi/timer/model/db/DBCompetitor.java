@@ -1,5 +1,6 @@
 package com.asi.timer.model.db;
 
+import com.asi.timer.backend.model.Competitor;
 import com.asi.timer.enums.EnumGender;
 import com.asi.timer.model.view.APICompetitor;
 
@@ -42,7 +43,6 @@ public class DBCompetitor {
     public static DBCompetitor fromAPICompetitor(APICompetitor competitor) {
 
         DBCompetitor dbCompetitor = new DBCompetitor();
-        dbCompetitor.setId(competitor.getId());
         dbCompetitor.setStartNumber(competitor.getStartNumber());
         dbCompetitor.setFirstName(competitor.getFirstName());
         dbCompetitor.setLastName(competitor.getLastName());
@@ -127,27 +127,26 @@ public class DBCompetitor {
         this.competitorRounds = competitorRounds;
     }
 
-    // Custom
-
-    public String getFullName() {
-        return firstName + " " + lastName;
-    }
-
-    /**
-     *
-     * @return the date like dd-mm-yyyy
-     */
-    public String getDateOfBirthAsString() {
-
-        return dateOfBirth.getDayOfMonth() + "-" + dateOfBirth.getMonthValue() + "-" + dateOfBirth.getYear();
-
-    }
-
     public boolean isDeleted() {
         return deleted;
     }
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Competitor toBackendCompetitor() {
+
+        Competitor competitor = new Competitor();
+        competitor.setId(this.id);
+        competitor.setStartNumber(this.startNumber);
+        competitor.setFirstName(this.firstName);
+        competitor.setLastName(this.lastName);
+        competitor.setCity(this.city);
+        competitor.setClub(this.club);
+        competitor.setDateOfBirth(this.dateOfBirth);
+
+        return competitor;
+
     }
 }
