@@ -1,8 +1,11 @@
 package com.asi.timer.model.view;
 
+import com.asi.timer.enums.EnumGender;
+import com.asi.timer.model.db.DBRound;
+
 import java.util.UUID;
 
-public class RoundResponse {
+public class APIRound {
 
     private UUID id;
 
@@ -10,13 +13,27 @@ public class RoundResponse {
 
     private int maxHolds;
 
-    private String gender;
+    private EnumGender gender;
 
     private int successScore;
 
+    private APIScore apiScore;
+
     private int numberOfCompetitors;
 
-    public RoundResponse() {
+    public static APIRound fromDBRound(DBRound dbRound) {
+
+        APIRound apiRound = new APIRound();
+
+        apiRound.setId(dbRound.getId());
+        apiRound.setRoundNumber(dbRound.getRoundNumber());
+        apiRound.setMaxHolds(dbRound.getMaxHolds());
+        apiRound.setGender(dbRound.getGender());
+
+        apiRound.setNumberOfCompetitors(dbRound.getCompetitorRounds().size());
+
+        return apiRound;
+
     }
 
     public UUID getId() {
@@ -43,11 +60,11 @@ public class RoundResponse {
         this.maxHolds = maxHolds;
     }
 
-    public String getGender() {
+    public EnumGender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(EnumGender gender) {
         this.gender = gender;
     }
 
@@ -57,6 +74,14 @@ public class RoundResponse {
 
     public void setSuccessScore(int successScore) {
         this.successScore = successScore;
+    }
+
+    public APIScore getApiScore() {
+        return apiScore;
+    }
+
+    public void setApiScore(APIScore apiScore) {
+        this.apiScore = apiScore;
     }
 
     public int getNumberOfCompetitors() {

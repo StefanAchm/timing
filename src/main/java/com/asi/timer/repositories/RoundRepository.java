@@ -1,5 +1,6 @@
 package com.asi.timer.repositories;
 
+import com.asi.timer.enums.EnumGender;
 import com.asi.timer.model.db.DBRound;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,6 @@ import java.util.UUID;
 @Repository
 public interface RoundRepository extends JpaRepository<DBRound, UUID> {
 
-    Optional<DBRound> findByRoundNumberAndGender(int roundNumber, String gender);
+    Optional<DBRound> findByRoundNumberAndGender(int roundNumber, EnumGender gender);
 
 }

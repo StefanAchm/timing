@@ -1,13 +1,13 @@
 package com.asi.timer.controller;
 
-import com.asi.timer.model.view.CompetitorRequest;
-import com.asi.timer.model.view.CompetitorResponse;
-import com.asi.timer.model.view.RoundRequest;
+import com.asi.timer.model.view.APICompetitor;
+import com.asi.timer.model.view.APIRound;
 import com.asi.timer.service.CompetitorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/competitor")
@@ -20,27 +20,27 @@ public class CompetitorController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> createCompetitor(@RequestBody CompetitorRequest competitorRequest) {
+    public ResponseEntity<String> createCompetitor(@RequestBody APICompetitor competitorRequest) {
         return ResponseEntity.ok(this.competitorService.createCompetitor(competitorRequest).getId().toString());
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updateCompetitor(@RequestBody CompetitorRequest competitorRequest) {
+    public ResponseEntity<String> updateCompetitor(@RequestBody APICompetitor competitorRequest) {
         return ResponseEntity.ok(this.competitorService.updateCompetitor(competitorRequest).getId().toString());
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteCompetitor(@RequestBody CompetitorRequest competitorRequest) {
-        return ResponseEntity.ok(this.competitorService.deleteCompetitor(competitorRequest, false).getId().toString());
+    public ResponseEntity<String> deleteCompetitor(@RequestBody UUID competitorId) {
+        return ResponseEntity.ok(this.competitorService.deleteCompetitor(competitorId, false).getId().toString());
     }
 
     @GetMapping("/getCompetitors")
-    public ResponseEntity<List<CompetitorResponse>> getCompetitors() {
+    public ResponseEntity<List<APICompetitor>> getCompetitors() {
         return ResponseEntity.ok(this.competitorService.getCompetitors());
     }
 
     @GetMapping("/getPossibleCompetitors")
-    public ResponseEntity<List<CompetitorResponse>> getPossibleCompetitors(@RequestParam RoundRequest roundRequest) {
+    public ResponseEntity<List<APICompetitor>> getPossibleCompetitors(@RequestParam APIRound roundRequest) {
         return ResponseEntity.ok(this.competitorService.getPossibleCompetitors(roundRequest));
     }
 

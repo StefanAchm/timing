@@ -2,13 +2,13 @@ package com.asi.timer.service;
 
 import com.asi.timer.backend.utils.StartNumberUtil;
 import com.asi.timer.model.db.DBCompetitor;
-import com.asi.timer.model.view.CompetitorRequest;
-import com.asi.timer.model.view.CompetitorResponse;
-import com.asi.timer.model.view.RoundRequest;
+import com.asi.timer.model.view.APICompetitor;
+import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.CompetitorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CompetitorService {
@@ -19,22 +19,15 @@ public class CompetitorService {
         this.competitorRepository = competitorRepository;
     }
 
-    public DBCompetitor createCompetitor(CompetitorRequest competitorRequest) {
+    public DBCompetitor createCompetitor(APICompetitor competitorRequest) {
 
-        DBCompetitor competitor = new DBCompetitor();
-        competitor.setStartNumber(competitorRequest.getStartNumber());
-        competitor.setFirstName(competitorRequest.getFirstName());
-        competitor.setLastName(competitorRequest.getLastName());
-        competitor.setCity(competitorRequest.getCity());
-        competitor.setClub(competitorRequest.getClub());
-        competitor.setDateOfBirth(competitorRequest.getDateOfBirth());
-        competitor.setGender(competitorRequest.getGender());
+        DBCompetitor competitor = DBCompetitor.fromAPICompetitor(competitorRequest);
 
         return this.competitorRepository.save(competitor);
 
     }
 
-    public DBCompetitor updateCompetitor(CompetitorRequest competitorRequest) {
+    public DBCompetitor updateCompetitor(APICompetitor competitorRequest) {
 
         DBCompetitor competitor = this.competitorRepository
                 .findById(competitorRequest.getId())
@@ -56,11 +49,11 @@ public class CompetitorService {
 
     }
 
-    public DBCompetitor deleteCompetitor(CompetitorRequest competitorRequest, boolean soft) {
+    public DBCompetitor deleteCompetitor(UUID competitorId, boolean soft) {
 
         DBCompetitor competitor = this.competitorRepository
-                .findById(competitorRequest.getId())
-                .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorRequest.getId() + " not found"));
+                .findById(competitorId)
+                .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorId + " not found"));
 
         // TODO: attention, if the competitor is already in a round, this will not work!
 
@@ -75,15 +68,15 @@ public class CompetitorService {
 
     }
 
-    public List<CompetitorResponse> getCompetitors() {
+    public List<APICompetitor> getCompetitors() {
 
         return this.competitorRepository.findAllByDeletedFalse()
                 .stream()
-                .map(competitor -> CompetitorResponse.fromDBCompetitorRound(competitor)).toList();
+                .map(competitor -> APICompetitor.fromDBCompetitorRound(competitor)).toList();
 
     }
 
-    public List<CompetitorResponse> getPossibleCompetitors(RoundRequest roundRequest) {
+    public List<APICompetitor> getPossibleCompetitors(APIRound roundRequest) {
 
         return List.of(); // TODO: implement
 

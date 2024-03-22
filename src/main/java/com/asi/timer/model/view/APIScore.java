@@ -2,16 +2,13 @@ package com.asi.timer.model.view;
 
 import com.asi.timer.enums.EnumHoldType;
 
-public class CompetitorRoundScoreRequest {
+public class APIScore {
 
     private EnumHoldType holdType;
 
     private int holdNumber;
 
     private int tryNumber;
-
-    public CompetitorRoundScoreRequest() {
-    }
 
     public EnumHoldType getHoldType() {
         return holdType;
@@ -36,5 +33,4 @@ public class CompetitorRoundScoreRequest {
     public void setTryNumber(int tryNumber) {
         this.tryNumber = tryNumber;
     }
-
 }

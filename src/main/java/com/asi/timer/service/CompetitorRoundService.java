@@ -4,9 +4,9 @@ import com.asi.timer.backend.score.ScoreCalculator;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
 import com.asi.timer.model.db.DBRound;
-import com.asi.timer.model.view.CompetitorResponse;
-import com.asi.timer.model.view.CompetitorRoundScoreRequest;
-import com.asi.timer.model.view.Score;
+import com.asi.timer.model.view.APICompetitor;
+import com.asi.timer.model.view.APICompetitorRound;
+import com.asi.timer.model.view.APIScore;
 import com.asi.timer.repositories.CompetitorRepository;
 import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
@@ -72,15 +72,15 @@ public class CompetitorRoundService {
 
     }
 
-    public double updateScore(UUID competitorRoundID, CompetitorRoundScoreRequest competitorRoundScoreRequest) {
+    public double updateScore(UUID competitorRoundID, APICompetitorRound competitorRoundRequest) {
 
         DBCompetitorRound competitorRound = this.competitorRoundRepository
                 .findById(competitorRoundID)
                 .orElseThrow(() -> new RuntimeException("CompetitorRound with id " + competitorRoundID + " not found"));
 
-        competitorRound.setHoldNumber(competitorRoundScoreRequest.getHoldNumber());
-        competitorRound.setHoldType(competitorRoundScoreRequest.getHoldType());
-        competitorRound.setTryNumber(competitorRoundScoreRequest.getTryNumber());
+        competitorRound.setHoldNumber(competitorRoundRequest.getHoldNumber());
+        competitorRound.setHoldType(competitorRoundRequest.getHoldType());
+        competitorRound.setTryNumber(competitorRoundRequest.getTryNumber());
 
         this.competitorRoundRepository.save(competitorRound);
 
@@ -88,28 +88,28 @@ public class CompetitorRoundService {
 
     }
 
-    public List<CompetitorResponse> getCompetitors(int roundNumber, String gender) {
+    public List<APICompetitor> getCompetitors(int roundNumber, String gender) {
 
         List<DBCompetitorRound> competitorRounds = this.competitorRoundRepository
                 .findByRound_RoundNumberAndRound_Gender(roundNumber, gender);
 
         return competitorRounds
                 .stream()
-                .map(competitorRound -> CompetitorResponse.fromDBCompetitorRound(competitorRound.getCompetitor()))
+                .map(competitorRound -> APICompetitor.fromDBCompetitorRound(competitorRound.getCompetitor()))
                 .toList();
 
     }
 
     /**
      * Find possible candidates for the round and add them to the round
-     * @param score minimum score
+     * @param APIScore minimum score
      * @param round Round
      */
-    public void autoAddCompetitorsToRound(Score score, DBRound round) {
+    public void autoAddCompetitorsToRound(APIScore APIScore, DBRound round) {
 
         // 1. Find all possible candidates for the round
 
-        List<DBCompetitor> competitors = findPossibleCandidatesForRound(round, score);
+        List<DBCompetitor> competitors = findPossibleCandidatesForRound(round, APIScore);
 
         // 2. Add all to the round
 
@@ -125,7 +125,7 @@ public class CompetitorRoundService {
 
     }
 
-    private List<DBCompetitor> findPossibleCandidatesForRound(DBRound round, Score score) {
+    private List<DBCompetitor> findPossibleCandidatesForRound(DBRound round, APIScore APIScore) {
 
         if(round.getRoundNumber() == 1) {
 
@@ -136,9 +136,9 @@ public class CompetitorRoundService {
             // Find all, where holdNumber >= holdNumber and holdType == holdType and tryNumber >= tryNumber
 
             double minimumScore = ScoreCalculator.calculateScore(
-                    score.getHoldNumber(),
-                    score.getHoldType(),
-                    score.getTryNumber()
+                    APIScore.getHoldNumber(),
+                    APIScore.getHoldType(),
+                    APIScore.getTryNumber()
             );
 
             List<DBCompetitor> allByGenderAndDeletedFalse = this.competitorRepository.findAllByGenderAndDeletedFalse(round.getGender());

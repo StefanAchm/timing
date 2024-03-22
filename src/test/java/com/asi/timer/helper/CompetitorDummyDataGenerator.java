@@ -1,5 +1,6 @@
 package com.asi.timer.helper;
 
+import com.asi.timer.enums.EnumGender;
 import com.asi.timer.model.db.DBCompetitor;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ public class CompetitorDummyDataGenerator {
                                                   String city,
                                                   String club,
                                                   String dateOfBirth,
-                                                  String gender) {
+                                                  EnumGender gender) {
 
         DBCompetitor competitor = new DBCompetitor();
 

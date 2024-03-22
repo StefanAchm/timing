@@ -5,7 +5,7 @@ import com.asi.timer.model.db.DBCompetitorRound;
 
 import java.util.UUID;
 
-public class CompetitorRoundResponse {
+public class APICompetitorRound {
 
     private UUID id;
 
@@ -15,16 +15,17 @@ public class CompetitorRoundResponse {
 
     private int tryNumber;
 
-    public static CompetitorRoundResponse fromDBCompetitorRound(DBCompetitorRound competitorRound) {
 
-        CompetitorRoundResponse competitorRoundResponse = new CompetitorRoundResponse();
+    public static APICompetitorRound fromDBCompetitorRound(DBCompetitorRound competitorRound) {
 
-        competitorRoundResponse.setId(competitorRound.getId());
-        competitorRoundResponse.setHoldType(competitorRound.getHoldType());
-        competitorRoundResponse.setHoldNumber(competitorRound.getHoldNumber());
-        competitorRoundResponse.setTryNumber(competitorRound.getTryNumber());
+        APICompetitorRound apiCompetitorRound = new APICompetitorRound();
 
-        return competitorRoundResponse;
+        apiCompetitorRound.setId(competitorRound.getId());
+        apiCompetitorRound.setHoldType(competitorRound.getHoldType());
+        apiCompetitorRound.setHoldNumber(competitorRound.getHoldNumber());
+        apiCompetitorRound.setTryNumber(competitorRound.getTryNumber());
+
+        return apiCompetitorRound;
 
 
     }
@@ -60,4 +61,5 @@ public class CompetitorRoundResponse {
     public void setTryNumber(int tryNumber) {
         this.tryNumber = tryNumber;
     }
+
 }

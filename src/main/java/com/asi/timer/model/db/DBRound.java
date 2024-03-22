@@ -1,5 +1,7 @@
 package com.asi.timer.model.db;
 
+import com.asi.timer.enums.EnumGender;
+
 import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
@@ -16,7 +18,7 @@ public class DBRound {
 
     private int maxHolds;
 
-    private String gender;
+    private EnumGender gender;
 
     @OneToMany(mappedBy = "round")
     private Set<DBCompetitorRound> competitorRounds;
@@ -48,11 +50,11 @@ public class DBRound {
         this.maxHolds = maxHolds;
     }
 
-    public String getGender() {
+    public EnumGender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(EnumGender gender) {
         this.gender = gender;
     }
 

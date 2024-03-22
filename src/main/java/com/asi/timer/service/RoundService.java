@@ -1,13 +1,12 @@
 package com.asi.timer.service;
 
 import com.asi.timer.model.db.DBRound;
-import com.asi.timer.model.view.CreateRoundRequest;
-import com.asi.timer.model.view.RoundRequest;
-import com.asi.timer.model.view.RoundResponse;
+import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,31 +21,22 @@ public class RoundService {
         this.competitorRoundService = competitorRoundService;
     }
 
-    public List<RoundResponse> getRounds() {
+    public List<APIRound> getRounds() {
 
-        return this.roundRepository.findAll().stream().map(round -> {
-
-            RoundResponse roundResponse = new RoundResponse();
-            roundResponse.setId(round.getId());
-            roundResponse.setRoundNumber(round.getRoundNumber());
-            roundResponse.setMaxHolds(round.getMaxHolds());
-            roundResponse.setGender(round.getGender());
-
-            roundResponse.setNumberOfCompetitors(round.getCompetitorRounds().size());
-
-            return roundResponse;
-
-        }).collect(Collectors.toList());
+        return this.roundRepository.findAll()
+                .stream()
+                .map(APIRound::fromDBRound)
+                .collect(Collectors.toList());
 
     }
 
-    public DBRound createRound(CreateRoundRequest createRoundRequest, boolean addCompetitors) {
+    public DBRound createRound(APIRound apiRound, boolean addCompetitors) {
 
         DBRound round = new DBRound();
 
-        round.setRoundNumber(createRoundRequest.getRoundRequest().getRoundNumber());
-        round.setMaxHolds(createRoundRequest.getRoundRequest().getMaxHolds());
-        round.setGender(createRoundRequest.getRoundRequest().getGender());
+        round.setRoundNumber(apiRound.getRoundNumber());
+        round.setMaxHolds(apiRound.getMaxHolds());
+        round.setGender(apiRound.getGender());
 
         DBRound roundCreated = this.roundRepository.save(round);
 
@@ -55,7 +45,7 @@ public class RoundService {
 
         if (addCompetitors) {
 
-            this.competitorRoundService.autoAddCompetitorsToRound(createRoundRequest.getScore(), roundCreated);
+            this.competitorRoundService.autoAddCompetitorsToRound(apiRound.getApiScore(), roundCreated);
 
         }
 
@@ -63,15 +53,15 @@ public class RoundService {
 
     }
 
-    public DBRound updateRound(RoundRequest roundRequest) {
+    public DBRound updateRound(APIRound apiRound) {
 
         DBRound round = this.roundRepository
-                .findById(roundRequest.getId())
-                .orElseThrow(() -> new RuntimeException("Round with id " + roundRequest.getId() + " not found"));
+                .findById(apiRound.getId())
+                .orElseThrow(() -> new RuntimeException("Round with id " + apiRound.getId() + " not found"));
 
-        round.setRoundNumber(roundRequest.getRoundNumber());
-        round.setMaxHolds(roundRequest.getMaxHolds());
-        round.setGender(roundRequest.getGender());
+        round.setRoundNumber(apiRound.getRoundNumber());
+        round.setMaxHolds(apiRound.getMaxHolds());
+        round.setGender(apiRound.getGender());
 
         // TODO: attention
 
@@ -81,11 +71,11 @@ public class RoundService {
 
     }
 
-    public DBRound deleteRound(RoundRequest roundRequest) {
+    public DBRound deleteRound(UUID roundId) {
 
         DBRound round = this.roundRepository
-                .findById(roundRequest.getId())
-                .orElseThrow(() -> new RuntimeException("Round with id " + roundRequest.getId() + " not found"));
+                .findById(roundId)
+                .orElseThrow(() -> new RuntimeException("Round with id " + roundId + " not found"));
 
         // TODO: attention
 
@@ -95,16 +85,16 @@ public class RoundService {
 
     }
 
-    public RoundResponse preview(CreateRoundRequest createRoundRequest) {
+    public APIRound preview(APIRound apiRound) {
 
-        RoundResponse roundResponse = new RoundResponse();
-        roundResponse.setRoundNumber(createRoundRequest.getRoundRequest().getRoundNumber());
-        roundResponse.setMaxHolds(createRoundRequest.getRoundRequest().getMaxHolds());
-        roundResponse.setGender(createRoundRequest.getRoundRequest().getGender());
+        APIRound roundResponse = new APIRound();
+        roundResponse.setRoundNumber(apiRound.getRoundNumber());
+        roundResponse.setMaxHolds(apiRound.getMaxHolds());
+        roundResponse.setGender(apiRound.getGender());
         roundResponse.setSuccessScore(0);
 
         // TODO
-//        roundResponse.setNumberOfCompetitors(createRoundRequest.getScore().getCompetitors().size());
+//        roundResponse.setNumberOfCompetitors(apiRound.getScore().getCompetitors().size());
 
         return roundResponse;
 

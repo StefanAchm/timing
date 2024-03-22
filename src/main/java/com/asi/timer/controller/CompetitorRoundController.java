@@ -1,7 +1,7 @@
 package com.asi.timer.controller;
 
-import com.asi.timer.model.view.CompetitorResponse;
-import com.asi.timer.model.view.CompetitorRoundScoreRequest;
+import com.asi.timer.model.view.APICompetitor;
+import com.asi.timer.model.view.APICompetitorRound;
 import com.asi.timer.service.CompetitorRoundService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,25 +27,17 @@ public class CompetitorRoundController {
 
     }
 
-//    @PostMapping("/addCompetitorsToRound")
-//    public ResponseEntity<String> addCompetitorsToRound(@RequestParam List<UUID> competitorIds,
-//                                                        @RequestParam UUID roundId) {
-//
-//        return ResponseEntity.ok(this.competitorRoundService.addCompetitorsToRound(competitorIds, roundId));
-//
-//    }
-
     @PostMapping("/updateScore")
     public ResponseEntity<Double> updateScore(@RequestParam UUID competitorRoundID,
-                                              @RequestBody CompetitorRoundScoreRequest competitorRoundScoreRequest) {
+                                              @RequestBody APICompetitorRound competitorRoundRequest) {
 
-        return ResponseEntity.ok(this.competitorRoundService.updateScore(competitorRoundID, competitorRoundScoreRequest));
+        return ResponseEntity.ok(this.competitorRoundService.updateScore(competitorRoundID, competitorRoundRequest));
 
     }
 
     @GetMapping("/getCompetitors")
-    public ResponseEntity<List<CompetitorResponse>> getCompetitors(@RequestParam int roundNumber,
-                                                                   @RequestParam String gender) {
+    public ResponseEntity<List<APICompetitor>> getCompetitors(@RequestParam int roundNumber,
+                                                              @RequestParam String gender) {
 
         return ResponseEntity.ok(this.competitorRoundService.getCompetitors(roundNumber, gender));
 

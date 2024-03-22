@@ -1,5 +1,6 @@
 package com.asi.timer.helper;
 
+import com.asi.timer.enums.EnumGender;
 import com.asi.timer.model.db.DBCompetitor;
 
 public class CompetitorDummyData {
@@ -11,7 +12,7 @@ public class CompetitorDummyData {
             "Musterstadt",
             "Musterclub",
             "1990-01-01",
-            "male"
+            EnumGender.HERREN
     );
 
     public static DBCompetitor competitor2 = CompetitorDummyDataGenerator.generateCompetitor(
@@ -21,7 +22,7 @@ public class CompetitorDummyData {
             "Musterstadt",
             "Musterclub",
             "1990-01-01",
-            "female"
+            EnumGender.DAMEN
     );
 
     public static DBCompetitor competitor3 = CompetitorDummyDataGenerator.generateCompetitor(
@@ -31,7 +32,7 @@ public class CompetitorDummyData {
             "Musterstadt",
             "Musterclub",
             "1990-01-01",
-            "male"
+            EnumGender.HERREN
     );
 
     public static DBCompetitor competitor4 = CompetitorDummyDataGenerator.generateCompetitor(
@@ -41,7 +42,7 @@ public class CompetitorDummyData {
             "Musterstadt",
             "Musterclub",
             "1990-01-01",
-            "male"
+            EnumGender.HERREN
     );
 
     public static DBCompetitor competitorWithLongName1 = CompetitorDummyDataGenerator.generateCompetitor(
@@ -51,7 +52,7 @@ public class CompetitorDummyData {
             "Musterstadt",
             "Musterclub",
             "1990-01-01",
-            "male"
+            EnumGender.HERREN
     );
 
     public static DBCompetitor competitorWithLongClubname1 = CompetitorDummyDataGenerator.generateCompetitor(
@@ -61,7 +62,7 @@ public class CompetitorDummyData {
             "Musterstadt",
             "AV - ABCDEFGHIJKL",
             "1990-01-01",
-            "male"
+            EnumGender.HERREN
     );
 
     public static DBCompetitor competitorWithLongClubname2 = CompetitorDummyDataGenerator.generateCompetitor(
@@ -71,7 +72,7 @@ public class CompetitorDummyData {
             "Musterstadt",
             "ABC ABCDEFGHI",
             "1990-01-01",
-            "male"
+            EnumGender.HERREN
     );
 
     public static DBCompetitor competitorWithLongClubname3 = CompetitorDummyDataGenerator.generateCompetitor(
@@ -81,7 +82,7 @@ public class CompetitorDummyData {
             "Musterstadt",
             "Kletterverein ABCDEFGHI",
             "1990-01-01",
-            "male"
+            EnumGender.HERREN
     );
 
     public static DBCompetitor competitorWithLongClubname4 = CompetitorDummyDataGenerator.generateCompetitor(
@@ -91,7 +92,7 @@ public class CompetitorDummyData {
             "Musterstadt",
             "ÖAV ABCDEFGHI",
             "1990-01-01",
-            "male"
+            EnumGender.HERREN
     );
 
     public static DBCompetitor competitorWithLongCityName = CompetitorDummyDataGenerator.generateCompetitor(
@@ -101,7 +102,7 @@ public class CompetitorDummyData {
             "ABCDEFGHIJKLMNOPQRST",
             "ÖAV ABCDEFGHI",
             "1990-01-01",
-            "male"
+            EnumGender.HERREN
     );
 
     public static DBCompetitor competitorX(int startNumber) {
@@ -113,7 +114,7 @@ public class CompetitorDummyData {
                 "Musterstadt",
                 "Musterclub",
                 "1990-01-01",
-                "male"
+                EnumGender.HERREN
         );
 
     }

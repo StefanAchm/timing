@@ -1,13 +1,12 @@
 package com.asi.timer.controller;
 
-import com.asi.timer.model.view.CreateRoundRequest;
-import com.asi.timer.model.view.RoundRequest;
-import com.asi.timer.model.view.RoundResponse;
+import com.asi.timer.model.view.APIRound;
 import com.asi.timer.service.RoundService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/round")
@@ -21,31 +20,31 @@ public class RoundController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createRound(@RequestParam boolean addCompetitors,
-                                              @RequestBody CreateRoundRequest createRoundRequest) {
+                                              @RequestBody APIRound createRoundRequest) {
 
         return ResponseEntity.ok(this.roundService.createRound(createRoundRequest, addCompetitors).getId().toString());
 
     }
 
     @PostMapping("/preview")
-    public ResponseEntity<RoundResponse> preview(@RequestBody CreateRoundRequest createRoundRequest) {
+    public ResponseEntity<APIRound> preview(@RequestBody APIRound createRoundRequest) {
 
         return ResponseEntity.ok(this.roundService.preview(createRoundRequest));
 
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updateRound(@RequestBody RoundRequest roundRequest) {
+    public ResponseEntity<String> updateRound(@RequestBody APIRound roundRequest) {
         return ResponseEntity.ok(this.roundService.updateRound(roundRequest).getId().toString());
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteRound(@RequestBody RoundRequest roundRequest) {
-        return ResponseEntity.ok(this.roundService.deleteRound(roundRequest).getId().toString());
+    public ResponseEntity<String> deleteRound(@RequestBody UUID roundId) {
+        return ResponseEntity.ok(this.roundService.deleteRound(roundId).getId().toString());
     }
 
     @GetMapping("/getRounds")
-    public ResponseEntity<List<RoundResponse>> getRounds() {
+    public ResponseEntity<List<APIRound>> getRounds() {
         return ResponseEntity.ok(this.roundService.getRounds());
     }
 

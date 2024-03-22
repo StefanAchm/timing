@@ -1,10 +1,11 @@
 package com.asi.timer.helper;
 
+import com.asi.timer.enums.EnumGender;
 import com.asi.timer.model.db.DBRound;
 
 public class RoundDummyDataGenerator {
 
-    public static DBRound generateRound(int roundNumber, String gender) {
+    public static DBRound generateRound(int roundNumber, EnumGender gender) {
 
         DBRound round = new DBRound();
         round.setRoundNumber(roundNumber);

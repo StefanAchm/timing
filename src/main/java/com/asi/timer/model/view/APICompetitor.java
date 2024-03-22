@@ -1,14 +1,14 @@
 package com.asi.timer.model.view;
 
+import com.asi.timer.enums.EnumGender;
 import com.asi.timer.model.db.DBCompetitor;
-import com.asi.timer.model.db.DBCompetitorRound;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CompetitorResponse {
+public class APICompetitor {
+
 
     private UUID id;
 
@@ -24,17 +24,13 @@ public class CompetitorResponse {
 
     private LocalDate dateOfBirth;
 
-    private String gender;
+    private EnumGender gender;
 
-    private List<CompetitorRoundResponse> competitorRounds;
+    private List<APICompetitorRound> competitorRounds;
 
-    public CompetitorResponse() {
-        this.competitorRounds = new ArrayList<>();
-    }
+    public static APICompetitor fromDBCompetitorRound(DBCompetitor competitor) {
 
-    public static CompetitorResponse fromDBCompetitorRound(DBCompetitor competitor) {
-
-        CompetitorResponse competitorResponse = new CompetitorResponse();
+        APICompetitor competitorResponse = new APICompetitor();
         competitorResponse.setId(competitor.getId());
         competitorResponse.setStartNumber(competitor.getStartNumber());
         competitorResponse.setFirstName(competitor.getFirstName());
@@ -45,12 +41,13 @@ public class CompetitorResponse {
         competitorResponse.setGender(competitor.getGender());
 
         competitor.getCompetitorRounds().forEach(competitorRound -> competitorResponse.getCompetitorRounds().add(
-                CompetitorRoundResponse.fromDBCompetitorRound(competitorRound))
+                APICompetitorRound.fromDBCompetitorRound(competitorRound))
         );
 
         return competitorResponse;
 
     }
+
 
     public UUID getId() {
         return id;
@@ -108,19 +105,19 @@ public class CompetitorResponse {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getGender() {
+    public EnumGender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(EnumGender gender) {
         this.gender = gender;
     }
 
-    public List<CompetitorRoundResponse> getCompetitorRounds() {
+    public List<APICompetitorRound> getCompetitorRounds() {
         return competitorRounds;
     }
 
-    public void setCompetitorRounds(List<CompetitorRoundResponse> competitorRounds) {
+    public void setCompetitorRounds(List<APICompetitorRound> competitorRounds) {
         this.competitorRounds = competitorRounds;
     }
 }

@@ -1,5 +1,6 @@
 package com.asi.timer.repositories;
 
+import com.asi.timer.enums.EnumGender;
 import com.asi.timer.model.db.DBCompetitor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface CompetitorRepository extends JpaRepository<DBCompetitor, UUID> {
 
-    List<DBCompetitor> findAllByGenderAndDeletedFalse(String gender);
+    List<DBCompetitor> findAllByGenderAndDeletedFalse(EnumGender gender);
 
     // Find all, where delete = false
     List<DBCompetitor> findAllByDeletedFalse();

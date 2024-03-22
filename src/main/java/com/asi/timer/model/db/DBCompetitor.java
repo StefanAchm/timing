@@ -1,5 +1,8 @@
 package com.asi.timer.model.db;
 
+import com.asi.timer.enums.EnumGender;
+import com.asi.timer.model.view.APICompetitor;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
@@ -25,7 +28,7 @@ public class DBCompetitor {
 
     private LocalDate dateOfBirth;
 
-    private String gender;
+    private EnumGender gender;
 
     private boolean deleted;
 
@@ -33,6 +36,22 @@ public class DBCompetitor {
     private Set<DBCompetitorRound> competitorRounds;
 
     public DBCompetitor() {
+    }
+
+    public static DBCompetitor fromAPICompetitor(APICompetitor competitor) {
+
+        DBCompetitor dbCompetitor = new DBCompetitor();
+        dbCompetitor.setId(competitor.getId());
+        dbCompetitor.setStartNumber(competitor.getStartNumber());
+        dbCompetitor.setFirstName(competitor.getFirstName());
+        dbCompetitor.setLastName(competitor.getLastName());
+        dbCompetitor.setClub(competitor.getClub());
+        dbCompetitor.setCity(competitor.getCity());
+        dbCompetitor.setDateOfBirth(competitor.getDateOfBirth());
+        dbCompetitor.setGender(competitor.getGender());
+
+        return dbCompetitor;
+
     }
 
     public UUID getId() {
@@ -91,11 +110,11 @@ public class DBCompetitor {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getGender() {
+    public EnumGender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(EnumGender gender) {
         this.gender = gender;
     }
 
