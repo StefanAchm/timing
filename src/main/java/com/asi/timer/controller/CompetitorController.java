@@ -1,12 +1,13 @@
 package com.asi.timer.controller;
 
 import com.asi.timer.model.view.CompetitorRequest;
+import com.asi.timer.model.view.CompetitorResponse;
+import com.asi.timer.model.view.RoundRequest;
 import com.asi.timer.service.CompetitorService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/competitor")
@@ -30,7 +31,24 @@ public class CompetitorController {
 
     @PostMapping("/delete")
     public ResponseEntity<String> deleteCompetitor(@RequestBody CompetitorRequest competitorRequest) {
-        return ResponseEntity.ok(this.competitorService.deleteCompetitor(competitorRequest).getId().toString());
+        return ResponseEntity.ok(this.competitorService.deleteCompetitor(competitorRequest, false).getId().toString());
     }
+
+    @GetMapping("/getCompetitors")
+    public ResponseEntity<List<CompetitorResponse>> getCompetitors() {
+        return ResponseEntity.ok(this.competitorService.getCompetitors());
+    }
+
+    @GetMapping("/getPossibleCompetitors")
+    public ResponseEntity<List<CompetitorResponse>> getPossibleCompetitors(@RequestParam RoundRequest roundRequest) {
+        return ResponseEntity.ok(this.competitorService.getPossibleCompetitors(roundRequest));
+    }
+
+
+    @GetMapping("/generateStartNumber")
+    public ResponseEntity<Integer> generateStartNumber() {
+        return ResponseEntity.ok(this.competitorService.generateStartNumber());
+    }
+
 
 }

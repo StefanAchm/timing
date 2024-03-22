@@ -1,9 +1,14 @@
 package com.asi.timer.service;
 
-import com.asi.timer.model.db.Competitor;
+import com.asi.timer.backend.utils.StartNumberUtil;
+import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.view.CompetitorRequest;
+import com.asi.timer.model.view.CompetitorResponse;
+import com.asi.timer.model.view.RoundRequest;
 import com.asi.timer.repositories.CompetitorRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CompetitorService {
@@ -14,13 +19,13 @@ public class CompetitorService {
         this.competitorRepository = competitorRepository;
     }
 
-    public Competitor createCompetitor(CompetitorRequest competitorRequest) {
+    public DBCompetitor createCompetitor(CompetitorRequest competitorRequest) {
 
-        Competitor competitor = new Competitor();
+        DBCompetitor competitor = new DBCompetitor();
         competitor.setStartNumber(competitorRequest.getStartNumber());
         competitor.setFirstName(competitorRequest.getFirstName());
         competitor.setLastName(competitorRequest.getLastName());
-        competitor.setCity(competitorRequest.getDomicil());
+        competitor.setCity(competitorRequest.getCity());
         competitor.setClub(competitorRequest.getClub());
         competitor.setDateOfBirth(competitorRequest.getDateOfBirth());
         competitor.setGender(competitorRequest.getGender());
@@ -29,16 +34,16 @@ public class CompetitorService {
 
     }
 
-    public Competitor updateCompetitor(CompetitorRequest competitorRequest) {
+    public DBCompetitor updateCompetitor(CompetitorRequest competitorRequest) {
 
-        Competitor competitor = this.competitorRepository
+        DBCompetitor competitor = this.competitorRepository
                 .findById(competitorRequest.getId())
                 .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorRequest.getId() + " not found"));
 
         competitor.setStartNumber(competitorRequest.getStartNumber());
         competitor.setFirstName(competitorRequest.getFirstName());
         competitor.setLastName(competitorRequest.getLastName());
-        competitor.setCity(competitorRequest.getDomicil());
+        competitor.setCity(competitorRequest.getCity());
         competitor.setClub(competitorRequest.getClub());
         competitor.setDateOfBirth(competitorRequest.getDateOfBirth());
         competitor.setGender(competitorRequest.getGender());
@@ -51,17 +56,48 @@ public class CompetitorService {
 
     }
 
-    public Competitor deleteCompetitor(CompetitorRequest competitorRequest) {
+    public DBCompetitor deleteCompetitor(CompetitorRequest competitorRequest, boolean soft) {
 
-        Competitor competitor = this.competitorRepository
+        DBCompetitor competitor = this.competitorRepository
                 .findById(competitorRequest.getId())
                 .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorRequest.getId() + " not found"));
 
         // TODO: attention, if the competitor is already in a round, this will not work!
 
-        this.competitorRepository.delete(competitor);
+        if(soft) {
+            competitor.setDeleted(true);
+            this.competitorRepository.save(competitor);
+        } else {
+            this.competitorRepository.delete(competitor);
+        }
 
         return competitor;
 
     }
+
+    public List<CompetitorResponse> getCompetitors() {
+
+        return this.competitorRepository.findAllByDeletedFalse()
+                .stream()
+                .map(competitor -> CompetitorResponse.fromDBCompetitorRound(competitor)).toList();
+
+    }
+
+    public List<CompetitorResponse> getPossibleCompetitors(RoundRequest roundRequest) {
+
+        return List.of(); // TODO: implement
+
+    }
+
+    public Integer generateStartNumber() {
+
+        List<Integer> assignedStartNumbers = this.competitorRepository.findAllByDeletedFalse()
+                .stream()
+                .map(DBCompetitor::getStartNumber)
+                .toList();
+
+        return StartNumberUtil.getRandomStartNumber(assignedStartNumbers);
+
+    }
+
 }

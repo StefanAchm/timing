@@ -1,18 +1,18 @@
 package com.asi.timer.backend.score;
 
 import com.asi.timer.enums.EnumHoldType;
-import com.asi.timer.model.db.CompetitorRound;
+import com.asi.timer.model.db.DBCompetitorRound;
 
 import java.util.List;
 
 public class ScoreCalculator {
 
-    public static double calculateScore(List<CompetitorRound> competitorRounds) {
+    public static double calculateScore(List<DBCompetitorRound> competitorRounds) {
 
         double score = 0;
 
         for (int i = 0; i < competitorRounds.size(); i++) {
-            CompetitorRound competitorRound = competitorRounds.get(i);
+            DBCompetitorRound competitorRound = competitorRounds.get(i);
 
             if(i < competitorRounds.size() - 1) {
                 // There is a next round, therefore use max points here!
@@ -27,15 +27,23 @@ public class ScoreCalculator {
 
     }
 
-    public static double calculateScore(CompetitorRound competitorRound) {
+    public static double calculateScore(DBCompetitorRound competitorRound) {
+
+        return calculateScore(competitorRound.getHoldNumber(),
+                competitorRound.getHoldType(),
+                competitorRound.getTryNumber());
+
+    }
+
+    public static double calculateScore(int holdNumber, EnumHoldType holdType, int tryNumber) {
 
         double points = 0;
 
-        points += getPointsOfHoldNumber(competitorRound.getHoldNumber());
+        points += getPointsOfHoldNumber(holdNumber);
 
-        points += getPointsOfHoldType(competitorRound.getHoldType());
+        points += getPointsOfHoldType(holdType);
 
-        points += getPointsOfTryNumber(competitorRound.getTryNumber());
+        points += getPointsOfTryNumber(tryNumber);
 
         points = Math.round(points * 100.0) / 100.0;
 

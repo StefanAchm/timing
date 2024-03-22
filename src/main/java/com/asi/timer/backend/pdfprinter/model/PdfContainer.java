@@ -7,7 +7,7 @@ import com.asi.timer.backend.pdfprinter.drawing.TableGenerator;
 import com.asi.timer.backend.pdfprinter.drawing.TitleGenerator;
 import com.asi.timer.backend.score.model.CompetitorScore;
 import com.asi.timer.enums.EnumPrintType;
-import com.asi.timer.model.db.Competitor;
+import com.asi.timer.model.db.DBCompetitor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
@@ -32,7 +32,7 @@ public class PdfContainer {
                         String gender,
                         int round,
                         LocalDate date,
-                        List<Competitor> competitors,
+                        List<DBCompetitor> competitors,
                         List<CompetitorScore> competitorScores) throws DocumentException, FileNotFoundException {
 
         this.pdfContentContainer = PdfContentContainerFactory.getContainer(folderPath, eventTitle, type, gender, round, date, competitors, competitorScores);

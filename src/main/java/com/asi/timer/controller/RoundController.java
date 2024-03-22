@@ -1,11 +1,13 @@
 package com.asi.timer.controller;
 
+import com.asi.timer.model.view.CreateRoundRequest;
 import com.asi.timer.model.view.RoundRequest;
+import com.asi.timer.model.view.RoundResponse;
 import com.asi.timer.service.RoundService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/round")
@@ -19,17 +21,16 @@ public class RoundController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createRound(@RequestParam boolean addCompetitors,
-                                              @RequestBody RoundRequest roundRequest) {
+                                              @RequestBody CreateRoundRequest createRoundRequest) {
 
-        return ResponseEntity.ok(this.roundService.createRound(roundRequest, addCompetitors).getId().toString());
+        return ResponseEntity.ok(this.roundService.createRound(createRoundRequest, addCompetitors).getId().toString());
 
     }
 
-    @PostMapping("/updateSuccessScore")
-    public ResponseEntity<String> updateSuccessScore(@RequestParam UUID roundId,
-                                                     @RequestParam int successScore) {
+    @PostMapping("/preview")
+    public ResponseEntity<RoundResponse> preview(@RequestBody CreateRoundRequest createRoundRequest) {
 
-        return ResponseEntity.ok(this.roundService.updateSuccessScore(roundId, successScore).getId().toString());
+        return ResponseEntity.ok(this.roundService.preview(createRoundRequest));
 
     }
 
@@ -42,5 +43,11 @@ public class RoundController {
     public ResponseEntity<String> deleteRound(@RequestBody RoundRequest roundRequest) {
         return ResponseEntity.ok(this.roundService.deleteRound(roundRequest).getId().toString());
     }
+
+    @GetMapping("/getRounds")
+    public ResponseEntity<List<RoundResponse>> getRounds() {
+        return ResponseEntity.ok(this.roundService.getRounds());
+    }
+
 
 }

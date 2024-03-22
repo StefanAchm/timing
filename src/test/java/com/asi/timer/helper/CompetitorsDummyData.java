@@ -1,12 +1,12 @@
 package com.asi.timer.helper;
 
-import com.asi.timer.model.db.Competitor;
+import com.asi.timer.model.db.DBCompetitor;
 
 import java.util.List;
 
 public class CompetitorsDummyData {
 
-    public static List<Competitor> getCompetitors() {
+    public static List<DBCompetitor> getCompetitors() {
 
         return List.of(
                 CompetitorDummyData.competitor1,
@@ -39,7 +39,7 @@ public class CompetitorsDummyData {
 
     }
 
-    public static List<Competitor> geCompetitorsWithLongStrings() {
+    public static List<DBCompetitor> geCompetitorsWithLongStrings() {
 
         return List.of(
 
@@ -52,7 +52,7 @@ public class CompetitorsDummyData {
                 CompetitorDummyData.competitorWithLongClubname2,
                 CompetitorDummyData.competitorWithLongClubname3,
                 CompetitorDummyData.competitorWithLongClubname4,
-                CompetitorDummyData.competitorWithLongDomicil,
+                CompetitorDummyData.competitorWithLongCityName,
                 CompetitorDummyData.competitorX(11),
                 CompetitorDummyData.competitorX(12),
                 CompetitorDummyData.competitorX(13),

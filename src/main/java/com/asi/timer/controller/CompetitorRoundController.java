@@ -21,11 +21,19 @@ public class CompetitorRoundController {
 
     @PostMapping("/addCompetitorToRound")
     public ResponseEntity<String> addCompetitorToRound(@RequestParam UUID competitorId,
-                                                       @RequestParam UUID roundId) {
+                                                       @RequestParam Integer roundNumber) {
 
-        return ResponseEntity.ok(this.competitorRoundService.addCompetitorToRound(competitorId, roundId));
+        return ResponseEntity.ok(this.competitorRoundService.addCompetitorToRound(competitorId, roundNumber));
 
     }
+
+//    @PostMapping("/addCompetitorsToRound")
+//    public ResponseEntity<String> addCompetitorsToRound(@RequestParam List<UUID> competitorIds,
+//                                                        @RequestParam UUID roundId) {
+//
+//        return ResponseEntity.ok(this.competitorRoundService.addCompetitorsToRound(competitorIds, roundId));
+//
+//    }
 
     @PostMapping("/updateScore")
     public ResponseEntity<Double> updateScore(@RequestParam UUID competitorRoundID,

@@ -1,10 +1,10 @@
 package com.asi.timer.helper;
 
-import com.asi.timer.model.db.Competitor;
+import com.asi.timer.model.db.DBCompetitor;
 
 public class CompetitorDummyData {
 
-    public static Competitor competitor1 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static DBCompetitor competitor1 = CompetitorDummyDataGenerator.generateCompetitor(
             1,
             "Max",
             "Mustermann",
@@ -14,7 +14,7 @@ public class CompetitorDummyData {
             "male"
     );
 
-    public static Competitor competitor2 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static DBCompetitor competitor2 = CompetitorDummyDataGenerator.generateCompetitor(
             2,
             "Maxine",
             "Musterfrau",
@@ -24,7 +24,7 @@ public class CompetitorDummyData {
             "female"
     );
 
-    public static Competitor competitor3 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static DBCompetitor competitor3 = CompetitorDummyDataGenerator.generateCompetitor(
             3,
             "Maximilian",
             "Muster",
@@ -34,7 +34,7 @@ public class CompetitorDummyData {
             "male"
     );
 
-    public static Competitor competitor4 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static DBCompetitor competitor4 = CompetitorDummyDataGenerator.generateCompetitor(
             4,
             "Maximilian",
             "Muster",
@@ -44,7 +44,7 @@ public class CompetitorDummyData {
             "male"
     );
 
-    public static Competitor competitorWithLongName1 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static DBCompetitor competitorWithLongName1 = CompetitorDummyDataGenerator.generateCompetitor(
             5,
             "Maximilian",
             "ABCDEFGHIJKLMNOPQ",
@@ -54,7 +54,7 @@ public class CompetitorDummyData {
             "male"
     );
 
-    public static Competitor competitorWithLongClubname1 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static DBCompetitor competitorWithLongClubname1 = CompetitorDummyDataGenerator.generateCompetitor(
             6,
             "Maximilian",
             "Mustermann",
@@ -64,7 +64,7 @@ public class CompetitorDummyData {
             "male"
     );
 
-    public static Competitor competitorWithLongClubname2 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static DBCompetitor competitorWithLongClubname2 = CompetitorDummyDataGenerator.generateCompetitor(
             7,
             "Maximilian",
             "Mustermann",
@@ -74,7 +74,7 @@ public class CompetitorDummyData {
             "male"
     );
 
-    public static Competitor competitorWithLongClubname3 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static DBCompetitor competitorWithLongClubname3 = CompetitorDummyDataGenerator.generateCompetitor(
             8,
             "Maximilian",
             "Mustermann",
@@ -84,7 +84,7 @@ public class CompetitorDummyData {
             "male"
     );
 
-    public static Competitor competitorWithLongClubname4 = CompetitorDummyDataGenerator.generateCompetitor(
+    public static DBCompetitor competitorWithLongClubname4 = CompetitorDummyDataGenerator.generateCompetitor(
             9,
             "Maximilian",
             "Mustermann",
@@ -94,7 +94,7 @@ public class CompetitorDummyData {
             "male"
     );
 
-    public static Competitor competitorWithLongDomicil = CompetitorDummyDataGenerator.generateCompetitor(
+    public static DBCompetitor competitorWithLongCityName = CompetitorDummyDataGenerator.generateCompetitor(
             10,
             "Maximilian",
             "Mustermann",
@@ -104,7 +104,7 @@ public class CompetitorDummyData {
             "male"
     );
 
-    public static Competitor competitorX(int startNumber) {
+    public static DBCompetitor competitorX(int startNumber) {
 
         return CompetitorDummyDataGenerator.generateCompetitor(
                 startNumber,

@@ -1,15 +1,15 @@
 package com.asi.timer.backend.score.model;
 
-import com.asi.timer.model.db.Competitor;
-import com.asi.timer.model.db.CompetitorRound;
+import com.asi.timer.model.db.DBCompetitor;
+import com.asi.timer.model.db.DBCompetitorRound;
 
 public class CompetitorScore {
 
     private int rank;
 
-    private Competitor competitor;
+    private DBCompetitor competitor;
 
-    private CompetitorRound lastRound;
+    private DBCompetitorRound lastRound;
 
     private double score;
 
@@ -24,19 +24,19 @@ public class CompetitorScore {
         this.rank = rank;
     }
 
-    public Competitor getCompetitor() {
+    public DBCompetitor getCompetitor() {
         return competitor;
     }
 
-    public void setCompetitor(Competitor competitor) {
+    public void setCompetitor(DBCompetitor competitor) {
         this.competitor = competitor;
     }
 
-    public CompetitorRound getLastRound() {
+    public DBCompetitorRound getLastRound() {
         return lastRound;
     }
 
-    public void setLastRound(CompetitorRound lastRound) {
+    public void setLastRound(DBCompetitorRound lastRound) {
         this.lastRound = lastRound;
     }
 

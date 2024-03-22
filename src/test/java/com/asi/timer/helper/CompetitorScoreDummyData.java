@@ -105,7 +105,7 @@ public class CompetitorScoreDummyData {
 
     public static CompetitorScore competitorScore9 = CompetitorScoreDummyDataGenerator.generateCompetitorScore(
             9,
-            CompetitorDummyData.competitorWithLongDomicil,
+            CompetitorDummyData.competitorWithLongCityName,
             RoundDummyDataGenerator.generateRound(1, "male"),
             8.0346
     );

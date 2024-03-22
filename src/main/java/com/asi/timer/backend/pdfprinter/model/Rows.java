@@ -1,13 +1,13 @@
 package com.asi.timer.backend.pdfprinter.model;
 
 import com.asi.timer.backend.score.model.CompetitorScore;
-import com.asi.timer.model.db.Competitor;
+import com.asi.timer.model.db.DBCompetitor;
 
 import java.util.List;
 
 public class Rows {
 
-    public static List<Row> getStartListRows(List<Competitor> competitors) {
+    public static List<Row> getStartListRows(List<DBCompetitor> competitors) {
 
         return competitors.stream()
                 .map(competitor -> {

@@ -1,12 +1,12 @@
 package com.asi.timer.helper;
 
-import com.asi.timer.model.db.Round;
+import com.asi.timer.model.db.DBRound;
 
 public class RoundDummyDataGenerator {
 
-    public static Round generateRound(int roundNumber, String gender) {
+    public static DBRound generateRound(int roundNumber, String gender) {
 
-        Round round = new Round();
+        DBRound round = new DBRound();
         round.setRoundNumber(roundNumber);
         round.setGender(gender);
 

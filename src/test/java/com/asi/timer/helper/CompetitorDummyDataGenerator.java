@@ -1,20 +1,20 @@
 package com.asi.timer.helper;
 
-import com.asi.timer.model.db.Competitor;
+import com.asi.timer.model.db.DBCompetitor;
 
 import java.time.LocalDate;
 
 public class CompetitorDummyDataGenerator {
 
-    public static Competitor generateCompetitor(int startNumber,
-                                                String firstName,
-                                                String lastName,
-                                                String city,
-                                                String club,
-                                                String dateOfBirth,
-                                                String gender) {
+    public static DBCompetitor generateCompetitor(int startNumber,
+                                                  String firstName,
+                                                  String lastName,
+                                                  String city,
+                                                  String club,
+                                                  String dateOfBirth,
+                                                  String gender) {
 
-        Competitor competitor = new Competitor();
+        DBCompetitor competitor = new DBCompetitor();
 
         competitor.setStartNumber(startNumber);
         competitor.setFirstName(firstName);

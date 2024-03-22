@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "rounds")
-public class Round {
+public class DBRound {
 
     @Id
     @GeneratedValue
@@ -18,12 +18,10 @@ public class Round {
 
     private String gender;
 
-    private int successScore;
-
     @OneToMany(mappedBy = "round")
-    private Set<CompetitorRound> competitorRounds;
+    private Set<DBCompetitorRound> competitorRounds;
 
-    public Round() {
+    public DBRound() {
     }
 
     public UUID getId() {
@@ -58,19 +56,12 @@ public class Round {
         this.gender = gender;
     }
 
-    public Set<CompetitorRound> getCompetitorRounds() {
+    public Set<DBCompetitorRound> getCompetitorRounds() {
         return competitorRounds;
     }
 
-    public void setCompetitorRounds(Set<CompetitorRound> competitorRounds) {
+    public void setCompetitorRounds(Set<DBCompetitorRound> competitorRounds) {
         this.competitorRounds = competitorRounds;
     }
 
-    public int getSuccessScore() {
-        return successScore;
-    }
-
-    public void setSuccessScore(int successScore) {
-        this.successScore = successScore;
-    }
 }

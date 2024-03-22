@@ -1,7 +1,11 @@
 package com.asi.timer.model.view;
 
+import com.asi.timer.model.db.DBCompetitor;
+import com.asi.timer.model.db.DBCompetitorRound;
+
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class CompetitorResponse {
@@ -14,13 +18,39 @@ public class CompetitorResponse {
 
     private String lastName;
 
-    private String domicil;
+    private String city;
 
     private String club;
 
     private LocalDate dateOfBirth;
 
     private String gender;
+
+    private List<CompetitorRoundResponse> competitorRounds;
+
+    public CompetitorResponse() {
+        this.competitorRounds = new ArrayList<>();
+    }
+
+    public static CompetitorResponse fromDBCompetitorRound(DBCompetitor competitor) {
+
+        CompetitorResponse competitorResponse = new CompetitorResponse();
+        competitorResponse.setId(competitor.getId());
+        competitorResponse.setStartNumber(competitor.getStartNumber());
+        competitorResponse.setFirstName(competitor.getFirstName());
+        competitorResponse.setLastName(competitor.getLastName());
+        competitorResponse.setClub(competitor.getClub());
+        competitorResponse.setCity(competitor.getCity());
+        competitorResponse.setDateOfBirth(competitor.getDateOfBirth());
+        competitorResponse.setGender(competitor.getGender());
+
+        competitor.getCompetitorRounds().forEach(competitorRound -> competitorResponse.getCompetitorRounds().add(
+                CompetitorRoundResponse.fromDBCompetitorRound(competitorRound))
+        );
+
+        return competitorResponse;
+
+    }
 
     public UUID getId() {
         return id;
@@ -54,12 +84,12 @@ public class CompetitorResponse {
         this.lastName = lastName;
     }
 
-    public String getDomicil() {
-        return domicil;
+    public String getCity() {
+        return city;
     }
 
-    public void setDomicil(String domicil) {
-        this.domicil = domicil;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getClub() {
@@ -84,5 +114,13 @@ public class CompetitorResponse {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public List<CompetitorRoundResponse> getCompetitorRounds() {
+        return competitorRounds;
+    }
+
+    public void setCompetitorRounds(List<CompetitorRoundResponse> competitorRounds) {
+        this.competitorRounds = competitorRounds;
     }
 }

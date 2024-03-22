@@ -1,6 +1,6 @@
 package com.asi.timer.repositories;
 
-import com.asi.timer.model.db.Competitor;
+import com.asi.timer.model.db.DBCompetitor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface CompetitorRepository extends JpaRepository<Competitor, UUID> {
+public interface CompetitorRepository extends JpaRepository<DBCompetitor, UUID> {
 
-    List<Competitor> findAllByGender(String gender);
+    List<DBCompetitor> findAllByGenderAndDeletedFalse(String gender);
+
+    // Find all, where delete = false
+    List<DBCompetitor> findAllByDeletedFalse();
 
 }

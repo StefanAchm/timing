@@ -2,13 +2,12 @@ package com.asi.timer.model.db;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "competitors")
-public class Competitor {
+public class DBCompetitor {
 
     @Id
     @GeneratedValue
@@ -28,20 +27,12 @@ public class Competitor {
 
     private String gender;
 
+    private boolean deleted;
+
     @OneToMany(mappedBy = "competitor")
-    private Set<CompetitorRound> competitorRounds;
+    private Set<DBCompetitorRound> competitorRounds;
 
-    public Competitor() {
-    }
-
-    public Competitor(int startNumber, String firstName, String lastName, String city, String club, LocalDate dateOfBirth, String gender) {
-        this.startNumber = startNumber;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.city = city;
-        this.club = club;
-        this.dateOfBirth = dateOfBirth;
-        this.gender = gender;
+    public DBCompetitor() {
     }
 
     public UUID getId() {
@@ -108,11 +99,11 @@ public class Competitor {
         this.gender = gender;
     }
 
-    public Set<CompetitorRound> getCompetitorRounds() {
+    public Set<DBCompetitorRound> getCompetitorRounds() {
         return competitorRounds;
     }
 
-    public void setCompetitorRounds(Set<CompetitorRound> competitorRounds) {
+    public void setCompetitorRounds(Set<DBCompetitorRound> competitorRounds) {
         this.competitorRounds = competitorRounds;
     }
 
@@ -132,4 +123,11 @@ public class Competitor {
 
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }
