@@ -1,6 +1,9 @@
 <template>
 
-  <v-dialog v-model="dialogLocal" max-width="500px">
+  <v-dialog
+      v-if="competitorLocal"
+      v-model="dialogLocal"
+      max-width="500px">
 
     <v-card>
       <v-card-title>
@@ -17,7 +20,7 @@
                   append-outer-icon="mdi-reload"
                   @click:append-outer="generateStartNumber()"
                   type="number"
-                  v-model="startNumber"
+                  v-model="competitorLocal.startNumber"
                   label="Startnummer">
 
               </v-text-field>
@@ -138,8 +141,10 @@ export default {
 
 
   data: () => ({
-    modal:false,
-    startNumber: null,
+    modal: false,
+    competitorLocal: {
+      startNumber: '',
+    }
   }),
 
   computed: {
@@ -155,23 +160,15 @@ export default {
         this.$emit('update:dialog', value)
       }
     },
-    
-    competitorLocal: {
-      get() {
-        console.log('get competitor', this.competitor)
-        return this.competitor
-      },
-      set(value) {
-        console.log('set competitor', value)
-        this.$emit('update:competitor', value)
-      }
-    },
 
   },
 
   watch: {
-
-    
+    dialog(val) {
+      if (val && this.competitor && this.competitor.id) {
+        this.competitorLocal = Object.assign({}, this.competitor);
+      }
+    }
 
   },
 
@@ -187,7 +184,7 @@ export default {
       axios
           .get(Properties.API_IP + '/competitor/generateStartNumber')
           .then(response => {
-            this.startNumber = response.data;
+            this.competitorLocal.startNumber = response.data;
           });
     },
 
@@ -198,7 +195,7 @@ export default {
 
     save() {
 
-      if (!this.competitorLocal.id) {
+      if (this.competitorLocal.id) {
 
         axios.post(Properties.API_IP + '/competitor/update', this.competitorLocal);
         this.close()
