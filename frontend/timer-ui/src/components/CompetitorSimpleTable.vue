@@ -3,12 +3,9 @@
   <v-container>
 
     <v-data-table
-        v-model="selectedCompetitorRoundLocal"
         :headers="headers"
         :items="competitorRounds"
-        :single-select="true"
         item-key="competitor.startNumber"
-        show-select
         class="elevation-1"
         sort-by="competitor.startNumber"
         hide-default-footer
@@ -26,12 +23,34 @@
 
       </template>
 
-      <template v-slot:[`item.competitorInfo`]="{ item }">
-        {{ item.competitor.firstName }} {{ item.competitor.lastName }}
-      </template>
+      <template v-slot:item="{ item }">
+        <tr :class="getRowStyle(item)">
 
-      <template v-slot:[`item.competitorPoints`]="{ item }">
-        {{ item.score }}
+          <td>{{ item.competitor.startNumber }}</td>
+          <td>{{ item.competitor.firstName }} {{ item.competitor.lastName }}</td>
+          <td> {{ item.score }} </td>
+          <td>
+
+            <v-progress-circular
+                v-if="item === selectedCompetitorRoundLocal"
+                indeterminate
+                color="primary"
+                size="20"
+                class="mr-2"
+            ></v-progress-circular>
+
+            <v-icon
+                v-else
+                small class="mr-2"
+                @click="chooseItem(item)">
+              mdi-open-in-new
+            </v-icon>
+
+
+          </td>
+
+        </tr>
+
       </template>
 
     </v-data-table>
@@ -63,6 +82,7 @@ export default {
       {text: 'Startnummer', value: 'competitor.startNumber', sortable: false},
       {text: 'TeilnehmerInn', value: 'competitorInfo', sortable: false},
       {text: 'Punkte', value: 'competitorPoints', sortable: false},
+      {text: '', value: 'action', sortable: false},
     ],
 
   }),
@@ -70,12 +90,11 @@ export default {
   computed: {
     selectedCompetitorRoundLocal: {
       get() {
-        return [this.selectedCompetitorRound];
+        return this.selectedCompetitorRound;
       },
       set(value) {
-        console.log(value[0]);
-        this.$emit('update:selectedCompetitorRound', value[0]);
-
+        console.log('set selectedCompetitorRoundLocal', value);
+        this.$emit('update:selectedCompetitorRound', value);
       }
     }
 
@@ -92,6 +111,18 @@ export default {
   },
 
   methods: {
+
+    getRowStyle(item) {
+      if(item.competitorRoundStatus === 'COMPLETED') {
+        return 'grey lighten-2 grey--text';
+      } else {
+        return '';
+      }
+    },
+
+    chooseItem(item) {
+      this.selectedCompetitorRoundLocal = item;
+    },
 
     loadCompetitors(id) {
 

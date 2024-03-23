@@ -18,7 +18,7 @@
           <v-row>
 
             <HoldTypeSelector
-                :hold-type.sync="holdTypeSelected"
+                :hold-type.sync="competitorRoundLocal.holdType"
                 :selectDisabled="false"
             />
 
@@ -71,19 +71,20 @@ export default {
 
     holdTypes: [],
 
-    holdTypeSelected: null,
+    // holdTypeSelected: null,
 
   }),
 
   created() {
+    console.log('created CompetitorRound');
 
   },
 
   watch: {
 
-    holdTypeSelected(val) {
-      this.competitorRoundLocal.holdType = val;
-    },
+    // holdTypeSelected(val) {
+    //   this.competitorRoundLocal.holdType = val;
+    // },
 
   },
 
@@ -108,9 +109,11 @@ export default {
 
     competitorRoundLocal: {
       get() {
+        console.log('get competitorRoundLocal', this.competitorRound)
         return this.competitorRound
       },
       set(value) {
+        console.log(value)
         this.$emit('update:competitorRound', value)
       }
     },
