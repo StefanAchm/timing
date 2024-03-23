@@ -100,6 +100,7 @@ export default {
         {title: 'Teilnehmer', icon: 'mdi-account-multiple', route: '/competitors'},
         {title: 'Runden', icon: 'mdi-rotate-360', route: '/rounds'},
         {title: 'Veranstaltung', icon: 'mdi-shoe-sneaker', route: '/competition'},
+        {title: 'Veranstaltung2', icon: 'mdi-shoe-sneaker', route: '/competition2'},
       ],
       right: null,
       mini: true,

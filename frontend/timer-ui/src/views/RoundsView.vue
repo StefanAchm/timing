@@ -104,7 +104,7 @@
             :dialog.sync="dialogDelete"
             @dialog-closed="initialize()"
             :itemprop="editedItem"
-            :type="'round'"
+            :type="'selectedRoundId'"
         />
 
 

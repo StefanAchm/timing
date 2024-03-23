@@ -11,6 +11,8 @@
         :selectedRound="selectedRound"
     />
 
+    <CompetitorSimpleTable></CompetitorSimpleTable>
+
   </v-container>
 
 
@@ -21,11 +23,12 @@
 import {defineComponent} from "vue";
 import CompetitorsList from "@/components/CompetitorsList.vue";
 import RoundSelector from "@/components/RoundSelector.vue";
+import CompetitorSimpleTable from "@/components/CompetitorSimpleTable.vue";
 
 
 export default defineComponent({
 
-  components: {RoundSelector, CompetitorsList},
+  components: {CompetitorSimpleTable, RoundSelector, CompetitorsList},
 
   data() {
     return {
