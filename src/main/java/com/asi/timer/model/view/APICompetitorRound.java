@@ -23,6 +23,8 @@ public class APICompetitorRound {
 
     private Double score;
 
+    private int roundNumber;
+
     public static APICompetitorRound fromDBCompetitorRound(DBCompetitorRound competitorRound, boolean deep) {
 
         APICompetitorRound apiCompetitorRound = new APICompetitorRound();
@@ -32,6 +34,7 @@ public class APICompetitorRound {
         apiCompetitorRound.setHoldNumber(competitorRound.getHoldNumber());
         apiCompetitorRound.setTryNumber(competitorRound.getTryNumber());
         apiCompetitorRound.setCompetitorRoundStatus(competitorRound.getCompetitorRoundStatus());
+        apiCompetitorRound.setRoundNumber(competitorRound.getRound().getRoundNumber());
 
         if(competitorRound.getCompetitorRoundStatus().equals(EnumCompetitorRoundStatus.COMPLETED)) {
             apiCompetitorRound.setScore(ScoreUtil.calculateScore(competitorRound.toBackendCompetitorRound()));
@@ -43,6 +46,7 @@ public class APICompetitorRound {
         if(deep) {
             apiCompetitorRound.setCompetitor(APICompetitor.fromDBCompetitor(competitorRound.getCompetitor(), false));
         }
+
 
         return apiCompetitorRound;
 
@@ -102,5 +106,13 @@ public class APICompetitorRound {
 
     public void setScore(Double score) {
         this.score = score;
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public void setRoundNumber(int roundNumber) {
+        this.roundNumber = roundNumber;
     }
 }
