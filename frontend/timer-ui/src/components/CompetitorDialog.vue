@@ -11,107 +11,125 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container>
-          <v-row>
 
-            <v-col>
-              <v-text-field
-                  :disabled="!fullEdit"
-                  append-outer-icon="mdi-reload"
-                  @click:append-outer="generateStartNumber()"
-                  type="number"
-                  v-model="competitorLocal.startNumber"
-                  label="Startnummer">
+        <v-form v-model="isValid">
 
-              </v-text-field>
-            </v-col>
+          <v-container>
+            <v-row>
 
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="competitorLocal.firstName" label="Vorname"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="competitorLocal.lastName" label="Nachname"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="competitorLocal.city" label="Stadt"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-text-field v-model="competitorLocal.club" label="Verein"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-
-              <v-dialog
-                  ref="dialog"
-                  v-model="modal"
-                  :return-value.sync="competitorLocal.dateOfBirth"
-                  persistent
-                  width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                      v-model="competitorLocal.dateOfBirth"
-                      label="Geburtsdatum"
-                      append-outer-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                    v-model="competitorLocal.dateOfBirth"
-                    scrollable
+              <v-col>
+                <v-text-field
+                    :disabled="!fullEdit"
+                    append-outer-icon="mdi-reload"
+                    @click:append-outer="generateStartNumber()"
+                    type="number"
+                    v-model="competitorLocal.startNumber"
+                    label="Startnummer"
+                    required
+                    :error-messages="startNumberErrors"
                 >
-                  <v-spacer></v-spacer>
-                  <v-btn
-                      text
-                      color="primary"
-                      @click="modal = false"
-                  >
-                    Abbrechen
-                  </v-btn>
-                  <v-btn
-                      text
-                      color="primary"
-                      @click="$refs.dialog.save(competitorLocal.dateOfBirth)"
-                  >
-                    OK
-                  </v-btn>
-                </v-date-picker>
-              </v-dialog>
 
-            </v-col>
-          </v-row>
+                </v-text-field>
+              </v-col>
 
-          <v-row>
-            <v-col>
+            </v-row>
+            <v-row>
+              <v-col>
 
-              <v-select
-                  :disabled="!fullEdit"
-                  v-model="competitorLocal.gender"
-                  :items="['HERREN', 'DAMEN']"
-                  label="Geschlecht"/>
+                <v-text-field
+                    v-model="competitorLocal.firstName"
+                    label="Vorname"
+                    :rules="[v => !!v || 'Vorname darf nicht leer sein']"
+                    required
+                />
 
-            </v-col>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
 
-          </v-row>
+                <v-text-field
+                    v-model="competitorLocal.lastName"
+                    label="Nachname"
+                    :rules="[v => !!v || 'Nachname darf nicht leer sein']"
+                    required
+                />
 
-        </v-container>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+
+                <v-text-field
+                    v-model="competitorLocal.city"
+                    label="Stadt"
+                    required
+                />
+
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+
+                <v-text-field
+                    v-model="competitorLocal.club"
+                    label="Verein"
+                    required
+                />
+
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+
+                <BirthdayPickerMenu
+                    :date.sync="competitorLocal.dateOfBirth"
+                ></BirthdayPickerMenu>
+
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col>
+
+                <v-select
+                    :disabled="!fullEdit"
+                    v-model="competitorLocal.gender"
+                    :items="['HERREN', 'DAMEN']"
+                    label="Geschlecht"
+                    required
+                    :rules="[v => !!v || 'Geschlecht darf nicht leer sein']"
+                />
+
+              </v-col>
+
+            </v-row>
+
+          </v-container>
+
+        </v-form>
+
       </v-card-text>
 
       <v-card-actions>
+
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="close">Abbrechen</v-btn>
-        <v-btn color="blue darken-1" text @click="save">Speichern</v-btn>
+
+        <!-- Button not required for now -->
+<!--        <v-btn-->
+<!--            color="blue darken-1"-->
+<!--            text-->
+<!--            @click="close"-->
+<!--        >Abbrechen-->
+<!--        </v-btn>-->
+
+        <v-btn
+            color="blue darken-1"
+            text
+            @click="save"
+            :disabled="!isValid"
+        >Speichern</v-btn>
+
       </v-card-actions>
 
     </v-card>
@@ -122,8 +140,10 @@
 <script>
 import {Properties} from "@/config";
 import axios from "axios";
+import BirthdayPickerMenu from "@/components/BirthdayPickerMenu.vue";
 
 export default {
+  components: {BirthdayPickerMenu},
 
   props: {
     dialog: {
@@ -141,10 +161,16 @@ export default {
 
 
   data: () => ({
+    activePicker: 'YEAR',
     modal: false,
-    competitorLocal: {
+    defaultCompetitor: {
       startNumber: '',
-    }
+    },
+    competitorLocal: {},
+    startNumberErrors: [],
+    isValid: false,
+    closeDialogAfterSave: false,
+
   }),
 
   computed: {
@@ -165,20 +191,61 @@ export default {
 
   watch: {
     dialog(val) {
-      if (val && this.competitor && this.competitor.id) {
-        this.competitorLocal = Object.assign({}, this.competitor);
+
+      if (val) {
+
+        if(this.competitor?.id) {
+
+          this.competitorLocal = Object.assign({}, this.competitor);
+
+        } else {
+
+            this.init()
+
+        }
+
       }
+
+    },
+
+    competitorLocal: {
+      handler(val) {
+
+        if(!val.startNumber) return;
+
+        let queryParams = val.id
+            ? '?id=' + val.id + '&startNumber=' + val.startNumber
+            : '?startNumber=' + val.startNumber;
+
+        axios
+            .get(Properties.API_IP + '/competitor/isStartNumberValid/' + queryParams)
+            .then(response => {
+              console.log(response.data)
+              if (response.data && response.data === true) {
+                this.startNumberErrors = [];
+              } else {
+                this.startNumberErrors = ['Startnummer ' + val.startNumber + ' bereits vergeben'];
+              }
+            });
+
+      },
+      deep: true
     }
 
   },
 
   created() {
 
-    this.generateStartNumber()
+    this.init()
 
   },
 
   methods: {
+
+    init() {
+      this.competitorLocal = Object.assign({}, this.defaultCompetitor);
+      this.generateStartNumber()
+    },
 
     generateStartNumber() {
       axios
@@ -188,27 +255,32 @@ export default {
           });
     },
 
-    close() {
+    close(cf) {
       this.dialogLocal = false;
-      this.competitorLocal = {};
+      this.competitorLocal = this.defaultCompetitor;
+      this.$emit('dialog-closed', cf)
     },
 
     save() {
 
-      if (this.competitorLocal.id) {
+      let path = this.competitorLocal.id ? '/competitor/update' : '/competitor/create';
 
-        axios.post(Properties.API_IP + '/competitor/update', this.competitorLocal);
-        this.close()
+      axios.post(Properties.API_IP + path, this.competitorLocal)
+          .then(() => {
 
-      } else {
+            if (this.competitorLocal.id || this.closeDialogAfterSave) {
+              this.close()
+            } else {
+              this.$emit('dialog-closed', this.competitorLocal)
+              this.init()
+            }
 
-        axios.post(Properties.API_IP + '/competitor/create', this.competitorLocal)
-        this.close();
 
-      }
+          }).catch(error => {
+            console.error(error);
+          });
 
-    },
-
+    }
 
   },
 

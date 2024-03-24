@@ -1,17 +1,33 @@
 <template>
 
 
-  <v-footer padless>
+  <v-footer>
 
-    <v-col>
-      <v-select
-          v-model="selectedRoundIdLocal"
-          :items="rounds"
-          item-text="roundName"
-          item-value="id"
-          label="Runde"
-      ></v-select>
-    </v-col>
+
+    <v-select
+        v-model="selectedRoundIdLocal"
+        :items="rounds"
+        item-text="roundName"
+        item-value="id"
+        label="Runde"
+    ></v-select>
+
+    <RoundDialog
+        :dialog.sync="addDialog"
+        :round="{}"
+    />
+
+    <v-icon
+        @click="addDialog = true"
+    >
+      mdi-plus
+    </v-icon>
+
+<!--    <v-icon-->
+<!--        @click="addDialog = true"-->
+<!--    >-->
+<!--      mdi-pencil-->
+<!--    </v-icon>-->
 
 
     <v-spacer></v-spacer>
@@ -34,8 +50,11 @@
 
 import axios from "axios";
 import {Properties} from "@/config";
+import RoundDialog from "@/components/RoundDialog.vue";
 
 export default {
+
+  components: {RoundDialog},
 
   props: {
     selectedRoundId: {
@@ -45,7 +64,8 @@ export default {
 
   data: () => ({
 
-    rounds: []
+    rounds: [],
+    addDialog: false
 
   }),
 
@@ -85,9 +105,7 @@ export default {
     },
 
     downloadStartList() {
-
       this.download('startList')
-
     },
 
     downloadResultList() {

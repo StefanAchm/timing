@@ -11,7 +11,6 @@ public class StartNumberUtil {
         throw new IllegalStateException("Utility class");
     }
 
-
     public static Integer getRandomStartNumber(List<Integer> assignedStartNumbers) {
 
         Integer min = 1;
@@ -29,6 +28,7 @@ public class StartNumberUtil {
         }
 
         return randomStartNumber;
+
     }
 
     private static List<Integer> createShuffeldList(Integer min, Integer max, List<Integer> assignedStartNumbers) {

@@ -4,11 +4,9 @@ import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.backend.utils.StartNumberUtil;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
-import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.APICompetitor;
 import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.CompetitorRepository;
-import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,6 +29,10 @@ public class CompetitorService {
 
         DBCompetitor competitor = DBCompetitor.fromAPICompetitor(competitorRequest);
 
+        if(!isStartNumberValid(null, competitorRequest.getStartNumber())) {
+            throw new RuntimeException("Start number already in use");
+        }
+
         return this.competitorRepository.save(competitor);
 
     }
@@ -40,6 +42,10 @@ public class CompetitorService {
         DBCompetitor competitor = this.competitorRepository
                 .findById(competitorRequest.getId())
                 .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorRequest.getId() + " not found"));
+
+        if(!isStartNumberValid(competitor.getId(), competitorRequest.getStartNumber())) {
+            throw new RuntimeException("Start number already in use");
+        }
 
         competitor.setStartNumber(competitorRequest.getStartNumber());
         competitor.setFirstName(competitorRequest.getFirstName());
@@ -95,6 +101,18 @@ public class CompetitorService {
 
     }
 
+    public boolean isStartNumberValid(UUID id, Integer startNumber) {
+
+        List<Integer> assignedStartNumbers = this.competitorRepository.findAllByDeletedFalse()
+                .stream()
+                .filter(competitor -> !competitor.getId().equals(id))
+                .map(DBCompetitor::getStartNumber)
+                .toList();
+
+        return !assignedStartNumbers.contains(startNumber);
+
+    }
+
     public List<DBCompetitor> findPossibleCandidatesForRound(APIRound round) {
 
         if (round.getRoundNumber() == 1) {
@@ -144,5 +162,6 @@ public class CompetitorService {
         }
 
     }
+
 
 }

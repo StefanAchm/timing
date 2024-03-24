@@ -1,7 +1,6 @@
 package com.asi.timer.controller;
 
 import com.asi.timer.model.view.APICompetitor;
-import com.asi.timer.model.view.APIRound;
 import com.asi.timer.service.CompetitorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,5 +43,11 @@ public class CompetitorController {
         return ResponseEntity.ok(this.competitorService.generateStartNumber());
     }
 
+    @GetMapping("/isStartNumberValid")
+    public ResponseEntity<Boolean> isStartNumberValid(
+            @RequestParam(required = false) UUID id,
+            @RequestParam Integer startNumber) {
+        return ResponseEntity.ok(this.competitorService.isStartNumberValid(id, startNumber));
+    }
 
 }
