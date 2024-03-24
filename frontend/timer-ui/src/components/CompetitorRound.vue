@@ -117,8 +117,8 @@
 
 <script>
 
-import {Properties} from "@/config";
-import axios from "axios";
+import timerService from "@/plugins/timerService";
+
 import HoldTypeSelector from "@/components/HoldTypeSelector.vue";
 import CompetitorDialog from "@/components/CompetitorDialog.vue";
 
@@ -150,9 +150,7 @@ export default {
 
       this.competitorRoundLocal.competitorRoundStatus = 'COMPLETED';
 
-      axios.post(Properties.API_IP + '/competitor-round/update',
-          JSON.stringify(this.competitorRoundLocal),
-          {headers: {'Content-Type': 'application/json'}})
+      timerService.updateCompetitorRound(this.competitorRoundLocal)
           .then(response => {
             this.competitorRoundLocal.score = response.data;
           })

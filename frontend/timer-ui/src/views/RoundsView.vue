@@ -46,8 +46,9 @@
 </template>
 
 <script>
-import {Properties} from "@/config";
-import axios from "axios";
+
+import timerService from "@/plugins/timerService";
+
 import DeleteDialog from "@/components/DeleteDialog.vue";
 import RoundDialog from "@/components/RoundDialog.vue";
 
@@ -107,11 +108,12 @@ export default {
     },
 
     initialize() {
-      axios
-          .get(Properties.API_IP + '/round/getRounds')
+
+      timerService.getRounds()
           .then(response => {
             this.rounds = response.data;
           });
+
     },
 
   }

@@ -76,8 +76,7 @@
 
 <script>
 
-import {Properties} from "@/config";
-import axios from "axios";
+import timerService from "@/plugins/timerService";
 import CompetitorDialog from "@/components/CompetitorDialog.vue";
 
 export default {
@@ -184,7 +183,7 @@ export default {
         return;
       }
 
-      axios.get(Properties.API_IP + '/competitor-round/getCompetitorRounds' + '?roundId=' + id)
+      timerService.getCompetitorRounds(id)
           .then(response => {
             this.competitorRounds = response.data;
             // Sort list

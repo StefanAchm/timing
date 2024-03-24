@@ -4,12 +4,13 @@
 
     <v-alert
         prominent
-        type="error"
+        type="warning"
         v-if="competitors.filter(competitor => competitor.nrOfRounds === 0).length > 0"
     >
       <v-row align="center">
         <v-col class="grow">
-          Einige Teilnehmer ({{ competitors.filter(competitor => competitor.nrOfRounds === 0).length }}) haben noch keine Runden zugeordnet.
+          Einige Teilnehmer ({{ competitors.filter(competitor => competitor.nrOfRounds === 0).length }}) haben noch
+          keine Runden zugeordnet.
         </v-col>
         <v-col class="shrink">
           <v-btn @click="autoAdd()">Automatisch zuordnen</v-btn>
@@ -42,13 +43,14 @@
               dark
               class="mb-2"
               @click="dialogVisible = true"
-          >TeilnehmerInn hinzufügen</v-btn>
+          >TeilnehmerInn hinzufügen
+          </v-btn>
 
           <CompetitorDialog
-            :competitor.sync="editedItem"
-            :dialog.sync="dialogVisible"
-            @dialog-closed="initialize()"
-            :full-edit="true"/>
+              :competitor.sync="editedItem"
+              :dialog.sync="dialogVisible"
+              @dialog-closed="initialize()"
+              :full-edit="true"/>
 
           <DeleteDialog
               :dialog.sync="dialogDelete"
@@ -77,10 +79,10 @@
 </template>
 
 <script>
-import {Properties} from "@/config";
-import axios from "axios";
 import DeleteDialog from "@/components/DeleteDialog.vue";
 import CompetitorDialog from "@/components/CompetitorDialog.vue";
+
+import timerService from "@/plugins/timerService";
 
 export default {
   components: {CompetitorDialog, DeleteDialog},
@@ -105,13 +107,9 @@ export default {
     editedItem: {},
   }),
 
-  computed: {
+  computed: {},
 
-  },
-
-  watch: {
-
-  },
+  watch: {},
 
   created() {
     this.initialize();
@@ -123,8 +121,8 @@ export default {
 
       this.editedItem = {};
 
-      axios
-          .get(Properties.API_IP + '/competitor/getCompetitors')
+      timerService
+          .getCompetitors()
           .then(response => {
             this.competitors = response.data;
 
@@ -132,41 +130,39 @@ export default {
               element.nrOfRounds = element.competitorRounds.length;
             }
 
-          })
-          .catch();
+          });
 
     },
 
     addRandom() {
 
-        axios
-            .get(Properties.API_IP + '/competitor/generateStartNumber')
-            .then(response => {
+      timerService
+          .getStartNumber()
+          .then(response => {
 
 
-              let randomItem = {
-                startNumber: response.data,
-                firstName: 'Max' + Math.floor(Math.random() * 100),
-                lastName: 'Mustermann',
-                city: 'Musterstadt',
-                club: 'Musterclub',
-                gender: Math.random() > 0.5 ? 'HERREN' : 'DAMEN',
-                dateOfBirth: '1994-02-17'
-              };
+            let randomItem = {
+              startNumber: response.data,
+              firstName: 'Max' + Math.floor(Math.random() * 100),
+              lastName: 'Mustermann',
+              city: 'Musterstadt',
+              club: 'Musterclub',
+              gender: Math.random() > 0.5 ? 'HERREN' : 'DAMEN',
+              dateOfBirth: '1994-02-17'
+            };
 
 
-              axios
-                  .post(Properties.API_IP + '/competitor/create', randomItem)
-                  .then()
-                  .catch()
-                  .finally(() => {
-                    this.initialize();
-                  });
+            timerService
+                .createCompetitor(randomItem)
+                .then()
+                .catch()
+                .finally(() => {
+                  this.initialize();
+                });
 
-            });
+          });
 
     },
-
 
 
     editItem(item) {
@@ -181,12 +177,9 @@ export default {
 
     autoAdd() {
 
-      for(const competitor of this.competitors.filter(competitor => competitor.nrOfRounds === 0)) {
+      for (const competitor of this.competitors.filter(competitor => competitor.nrOfRounds === 0)) {
 
-        axios.post(Properties.API_IP + '/competitor-round/addCompetitorToRound',
-            null,
-            { headers: {'Content-Type': 'application/json'},
-              params: { competitorId: competitor.id, roundNumber: 1 }})
+        timerService.addCompetitorRound(competitor.id, 1)
             .then(() => {
               this.initialize();
             });

@@ -14,8 +14,7 @@
 
 <script>
 
-import {Properties} from "@/config";
-import axios from "axios";
+import timerService from "@/plugins/timerService";
 
 export default {
 
@@ -46,8 +45,7 @@ export default {
   methods: {
 
     getHoldTypes() {
-      axios.get(Properties.API_IP + '/competitor-round/getHoldTypes')
-          .then(response => {
+      timerService.getHoldTypes().then(response => {
             this.holdTypes = response.data;
           });
     }

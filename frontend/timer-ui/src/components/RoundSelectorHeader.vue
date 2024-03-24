@@ -23,11 +23,11 @@
       mdi-plus
     </v-icon>
 
-<!--    <v-icon-->
-<!--        @click="addDialog = true"-->
-<!--    >-->
-<!--      mdi-pencil-->
-<!--    </v-icon>-->
+    <!--    <v-icon-->
+    <!--        @click="addDialog = true"-->
+    <!--    >-->
+    <!--      mdi-pencil-->
+    <!--    </v-icon>-->
 
 
     <v-spacer></v-spacer>
@@ -48,9 +48,8 @@
 
 <script>
 
-import axios from "axios";
-import {Properties} from "@/config";
 import RoundDialog from "@/components/RoundDialog.vue";
+import timerService from "@/plugins/timerService";
 
 export default {
 
@@ -75,7 +74,7 @@ export default {
 
   methods: {
     loadRounds() {
-      axios.get(Properties.API_IP + '/round/getRounds')
+      timerService.getRounds()
           .then(response => {
 
             this.rounds = response.data
@@ -84,12 +83,11 @@ export default {
               element.roundName = element.gender + " " + element.roundNumber;
             }
 
-            this.selectedRoundIdLocal = this.rounds[0].id;
+            if (this.rounds.length > 0) {
+              this.selectedRoundIdLocal = this.rounds[0].id;
+            }
 
           })
-          .catch(error => {
-            console.error(error);
-          });
 
     },
 
@@ -114,7 +112,7 @@ export default {
 
     download(type) {
 
-      axios.get(Properties.API_IP + '/print/' + type + '?id=' + this.selectedRoundIdLocal, {responseType: 'blob'})
+      timerService.print(type, this.selectedRoundIdLocal)
           .then(response => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
@@ -123,9 +121,6 @@ export default {
             document.body.appendChild(link);
             link.click();
             link.remove();
-          })
-          .catch(error => {
-            console.error(error);
           });
     }
 

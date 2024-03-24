@@ -93,8 +93,9 @@
 </template>
 
 <script>
-import {Properties} from "@/config";
-import axios from "axios";
+
+import timerService from "@/plugins/timerService";
+
 import HoldTypeSelector from "@/components/HoldTypeSelector.vue";
 
 
@@ -157,11 +158,10 @@ export default {
 
     roundLocal() {
 
-
-      axios.post(Properties.API_IP + '/round/preview', this.roundLocal)
+      timerService.previewRound(this.roundLocal)
           .then(response => {
             this.maxNumberOfCompetitors = response.data.numberOfCompetitors;
-          }).catch(() => {});
+          });
 
 
     }
@@ -172,7 +172,7 @@ export default {
     scoreRowDisabled() {
       return this.roundLocal.roundNumber <= 1 || !this.roundLocal.roundNumber;
     },
-    
+
     close(cf) {
       this.dialogLocal = false
       this.roundLocal = {
@@ -187,28 +187,14 @@ export default {
 
     save() {
 
-      if (this.roundLocal.id) {
-
-        axios.post(Properties.API_IP + '/round/update', this.roundLocal).then(() => {
-          this.close()
-        });
-
-      } else {
-
-        axios.post(
-            Properties.API_IP + '/round/create',
-            this.roundLocal,
-            {params: {addCompetitors: true}}
-        ).then(() => {
-          this.close()
-        });
-
-      }
-
-    },
+      timerService.updateOrCreateRound(this.roundLocal)
+          .then(response => {
+            this.roundLocal = response.data;
+            this.close()
+          });
+    }
 
   }
-
 
 }
 </script>

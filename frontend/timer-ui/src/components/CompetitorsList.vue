@@ -143,8 +143,7 @@
 
 <script>
 
-import {Properties} from "@/config";
-import axios from "axios";
+import timerService from "@/plugins/timerService";
 import HoldTypeSelector from "@/components/HoldTypeSelector.vue";
 
 export default {
@@ -192,10 +191,10 @@ export default {
 
   methods: {
 
-
-
     loadCompetitors(id) {
-      axios.get(Properties.API_IP + '/competitor-round/getCompetitorRounds' + '?roundId=' + id)
+
+      timerService.getCompetitorRounds(id)
+
           .then(response => {
             this.competitorRounds = response.data;
           })
@@ -208,18 +207,15 @@ export default {
 
       this.selectedCompetitorRound.competitorRoundStatus = 'COMPLETED';
 
-      axios.post(Properties.API_IP + '/competitor-round/update',
-          JSON.stringify(this.selectedCompetitorRound),
-          {headers: {'Content-Type': 'application/json'}})
+      timerService.updateCompetitorRound(this.selectedCompetitorRound)
           .then(response => {
-
             this.selectedCompetitorRound.score = response.data;
             this.selectedCompetitorRoundIndex += 1;
           })
     },
 
     getHoldTypes() {
-      axios.get(Properties.API_IP + '/competitor-round/getHoldTypes')
+      timerService.getHoldTypes()
           .then(response => {
             this.holdTypes = response.data;
           });

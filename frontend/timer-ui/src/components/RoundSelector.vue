@@ -43,8 +43,7 @@
 
 <script>
 
-import axios from "axios";
-import {Properties} from "@/config";
+import timerService from "@/plugins/timerService";
 
 export default {
 
@@ -66,7 +65,7 @@ export default {
 
   methods: {
     loadRounds() {
-      axios.get(Properties.API_IP + '/round/getRounds')
+      timerService.getRounds()
           .then(response => {
 
             this.rounds = response.data
@@ -77,9 +76,6 @@ export default {
 
             this.selectedRoundLocalId = this.rounds[0].id;
 
-          })
-          .catch(error => {
-            console.error(error);
           });
 
       },
@@ -107,7 +103,7 @@ export default {
 
     download(type) {
 
-      axios.get(Properties.API_IP + '/print/' + type + '?id=' + this.selectedRoundLocalId, {responseType: 'blob'})
+      timerService.print(type, this.selectedRoundLocalId)
           .then(response => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
@@ -116,9 +112,6 @@ export default {
             document.body.appendChild(link);
             link.click();
             link.remove();
-          })
-          .catch(error => {
-            console.error(error);
           });
     }
 

@@ -15,6 +15,7 @@
         <v-form v-model="isValid">
 
           <v-container>
+
             <v-row>
 
               <v-col>
@@ -138,8 +139,9 @@
 </template>
 
 <script>
-import {Properties} from "@/config";
-import axios from "axios";
+
+import timerService from "@/plugins/timerService";
+
 import BirthdayPickerMenu from "@/components/BirthdayPickerMenu.vue";
 
 export default {
@@ -213,14 +215,8 @@ export default {
 
         if(!val.startNumber) return;
 
-        let queryParams = val.id
-            ? '?id=' + val.id + '&startNumber=' + val.startNumber
-            : '?startNumber=' + val.startNumber;
-
-        axios
-            .get(Properties.API_IP + '/competitor/isStartNumberValid/' + queryParams)
+        timerService.isStartNumberValid(val)
             .then(response => {
-              console.log(response.data)
               if (response.data && response.data === true) {
                 this.startNumberErrors = [];
               } else {
@@ -248,8 +244,8 @@ export default {
     },
 
     generateStartNumber() {
-      axios
-          .get(Properties.API_IP + '/competitor/generateStartNumber')
+
+      timerService.getStartNumber()
           .then(response => {
             this.competitorLocal.startNumber = response.data;
           });
@@ -263,9 +259,7 @@ export default {
 
     save() {
 
-      let path = this.competitorLocal.id ? '/competitor/update' : '/competitor/create';
-
-      axios.post(Properties.API_IP + path, this.competitorLocal)
+      timerService.updateOrCreateCompetitor(this.competitorLocal)
           .then(() => {
 
             if (this.competitorLocal.id || this.closeDialogAfterSave) {
@@ -275,9 +269,6 @@ export default {
               this.init()
             }
 
-
-          }).catch(error => {
-            console.error(error);
           });
 
     }

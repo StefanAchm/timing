@@ -6,7 +6,6 @@
         :selectedRound.sync="selectedRound"
     />
 
-    <!-- TODO: set prop -->
     <CompetitorsList
         :selectedRound="selectedRound"
     />
