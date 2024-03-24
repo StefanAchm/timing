@@ -82,7 +82,7 @@
 import DeleteDialog from "@/components/DeleteDialog.vue";
 import CompetitorDialog from "@/components/CompetitorDialog.vue";
 
-import timerService from "@/plugins/timerService";
+import TimerApiService from "@/plugins/timer-api";
 
 export default {
   components: {CompetitorDialog, DeleteDialog},
@@ -121,7 +121,7 @@ export default {
 
       this.editedItem = {};
 
-      timerService
+      TimerApiService
           .getCompetitors()
           .then(response => {
             this.competitors = response.data;
@@ -136,7 +136,7 @@ export default {
 
     addRandom() {
 
-      timerService
+      TimerApiService
           .getStartNumber()
           .then(response => {
 
@@ -152,7 +152,7 @@ export default {
             };
 
 
-            timerService
+            TimerApiService
                 .createCompetitor(randomItem)
                 .then()
                 .catch()
@@ -179,7 +179,7 @@ export default {
 
       for (const competitor of this.competitors.filter(competitor => competitor.nrOfRounds === 0)) {
 
-        timerService.addCompetitorRound(competitor.id, 1)
+        TimerApiService.addCompetitorRound(competitor.id, 1)
             .then(() => {
               this.initialize();
             });

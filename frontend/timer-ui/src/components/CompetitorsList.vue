@@ -143,7 +143,7 @@
 
 <script>
 
-import timerService from "@/plugins/timerService";
+import TimerApiService from "@/plugins/timer-api";
 import HoldTypeSelector from "@/components/HoldTypeSelector.vue";
 
 export default {
@@ -193,7 +193,7 @@ export default {
 
     loadCompetitors(id) {
 
-      timerService.getCompetitorRounds(id)
+      TimerApiService.getCompetitorRounds(id)
 
           .then(response => {
             this.competitorRounds = response.data;
@@ -207,7 +207,7 @@ export default {
 
       this.selectedCompetitorRound.competitorRoundStatus = 'COMPLETED';
 
-      timerService.updateCompetitorRound(this.selectedCompetitorRound)
+      TimerApiService.updateCompetitorRound(this.selectedCompetitorRound)
           .then(response => {
             this.selectedCompetitorRound.score = response.data;
             this.selectedCompetitorRoundIndex += 1;
@@ -215,7 +215,7 @@ export default {
     },
 
     getHoldTypes() {
-      timerService.getHoldTypes()
+      TimerApiService.getHoldTypes()
           .then(response => {
             this.holdTypes = response.data;
           });

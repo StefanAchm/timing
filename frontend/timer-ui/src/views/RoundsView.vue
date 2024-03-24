@@ -47,7 +47,7 @@
 
 <script>
 
-import timerService from "@/plugins/timerService";
+import TimerApiService from "@/plugins/timer-api";
 
 import DeleteDialog from "@/components/DeleteDialog.vue";
 import RoundDialog from "@/components/RoundDialog.vue";
@@ -109,7 +109,7 @@ export default {
 
     initialize() {
 
-      timerService.getRounds()
+      TimerApiService.getRounds()
           .then(response => {
             this.rounds = response.data;
           });

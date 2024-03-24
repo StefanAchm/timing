@@ -14,7 +14,7 @@
 
 <script>
 
-import timerService from "@/plugins/timerService";
+import TimerApiService from "@/plugins/timer-api";
 
 export default {
 
@@ -45,7 +45,7 @@ export default {
   methods: {
 
     getHoldTypes() {
-      timerService.getHoldTypes().then(response => {
+      TimerApiService.getHoldTypes().then(response => {
             this.holdTypes = response.data;
           });
     }

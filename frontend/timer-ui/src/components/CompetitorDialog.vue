@@ -140,7 +140,7 @@
 
 <script>
 
-import timerService from "@/plugins/timerService";
+import TimerApiService from "@/plugins/timer-api";
 
 import BirthdayPickerMenu from "@/components/BirthdayPickerMenu.vue";
 
@@ -215,7 +215,7 @@ export default {
 
         if(!val.startNumber) return;
 
-        timerService.isStartNumberValid(val)
+        TimerApiService.isStartNumberValid(val)
             .then(response => {
               if (response.data && response.data === true) {
                 this.startNumberErrors = [];
@@ -245,7 +245,7 @@ export default {
 
     generateStartNumber() {
 
-      timerService.getStartNumber()
+      TimerApiService.getStartNumber()
           .then(response => {
             this.competitorLocal.startNumber = response.data;
           });
@@ -259,7 +259,7 @@ export default {
 
     save() {
 
-      timerService.updateOrCreateCompetitor(this.competitorLocal)
+      TimerApiService.updateOrCreateCompetitor(this.competitorLocal)
           .then(() => {
 
             if (this.competitorLocal.id || this.closeDialogAfterSave) {

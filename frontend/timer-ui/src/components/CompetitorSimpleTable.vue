@@ -76,7 +76,7 @@
 
 <script>
 
-import timerService from "@/plugins/timerService";
+import TimerApiService from "@/plugins/timer-api";
 import CompetitorDialog from "@/components/CompetitorDialog.vue";
 
 export default {
@@ -183,7 +183,7 @@ export default {
         return;
       }
 
-      timerService.getCompetitorRounds(id)
+      TimerApiService.getCompetitorRounds(id)
           .then(response => {
             this.competitorRounds = response.data;
             // Sort list

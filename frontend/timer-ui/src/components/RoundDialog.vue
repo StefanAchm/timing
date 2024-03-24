@@ -94,7 +94,7 @@
 
 <script>
 
-import timerService from "@/plugins/timerService";
+import TimerApiService from "@/plugins/timer-api";
 
 import HoldTypeSelector from "@/components/HoldTypeSelector.vue";
 
@@ -158,7 +158,7 @@ export default {
 
     roundLocal() {
 
-      timerService.previewRound(this.roundLocal)
+      TimerApiService.previewRound(this.roundLocal)
           .then(response => {
             this.maxNumberOfCompetitors = response.data.numberOfCompetitors;
           });
@@ -187,7 +187,7 @@ export default {
 
     save() {
 
-      timerService.updateOrCreateRound(this.roundLocal)
+      TimerApiService.updateOrCreateRound(this.roundLocal)
           .then(response => {
             this.roundLocal = response.data;
             this.close()

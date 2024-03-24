@@ -43,7 +43,7 @@
 
 <script>
 
-import timerService from "@/plugins/timerService";
+import TimerApiService from "@/plugins/timer-api";
 
 export default {
 
@@ -65,7 +65,7 @@ export default {
 
   methods: {
     loadRounds() {
-      timerService.getRounds()
+      TimerApiService.getRounds()
           .then(response => {
 
             this.rounds = response.data
@@ -103,7 +103,7 @@ export default {
 
     download(type) {
 
-      timerService.print(type, this.selectedRoundLocalId)
+      TimerApiService.print(type, this.selectedRoundLocalId)
           .then(response => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');

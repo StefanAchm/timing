@@ -12,20 +12,3 @@ new Vue({
 }).$mount('#app')
 
 Vue.use(vuetify);
-
-// Vue.prototype.$errorHandler = function (message) {
-//
-//   console.error('asdf' + message);
-//
-//   console.log(this.$vuetify);
-//
-//   // This.$vuetify is undefined, because it is not a Vue instance
-//   //
-//
-//   this.$vuetify.snackbar = {
-//     show: true,
-//     color: 'error',
-//     message: message,
-//   };
-//
-// };

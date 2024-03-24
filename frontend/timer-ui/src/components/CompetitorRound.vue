@@ -117,7 +117,7 @@
 
 <script>
 
-import timerService from "@/plugins/timerService";
+import TimerApiService from "@/plugins/timer-api";
 
 import HoldTypeSelector from "@/components/HoldTypeSelector.vue";
 import CompetitorDialog from "@/components/CompetitorDialog.vue";
@@ -150,7 +150,7 @@ export default {
 
       this.competitorRoundLocal.competitorRoundStatus = 'COMPLETED';
 
-      timerService.updateCompetitorRound(this.competitorRoundLocal)
+      TimerApiService.updateCompetitorRound(this.competitorRoundLocal)
           .then(response => {
             this.competitorRoundLocal.score = response.data;
           })

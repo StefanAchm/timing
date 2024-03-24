@@ -16,7 +16,7 @@
 
 <script>
 
-import timerService from "@/plugins/timerService";
+import TimerApiService from "@/plugins/timer-api";
 
 export default {
 
@@ -40,7 +40,7 @@ export default {
 
     deleteItemConfirm() {
 
-      timerService.delete(this.type, this.editItem.id)
+      TimerApiService.delete(this.type, this.editItem.id)
           .finally(() => {
             this.close(this.editItem)
           });
