@@ -42,9 +42,9 @@ public class PrintService {
 
     }
 
-    public ByteArrayResource getList(UUID id, EnumPrintType type) {
+    public ByteArrayResource getList(UUID roundId, EnumPrintType type) {
 
-        File file = getFileForStartList(id, type);
+        File file = createPdf(roundId, type);
 
         Path path = Paths.get(file.getAbsolutePath());
 
@@ -56,12 +56,11 @@ public class PrintService {
 
     }
 
-    // Return the start list as a string
-    public File getFileForStartList(UUID id, EnumPrintType type) {
+    private File createPdf(UUID roundId, EnumPrintType type) {
 
         DBRound round = this.roundRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Round with id " + id + " not found"));
+                .findById(roundId)
+                .orElseThrow(() -> new RuntimeException("Round with id " + roundId + " not found"));
 
         List<DBCompetitor> competitors = round.getCompetitorRounds()
                 .stream()
@@ -75,7 +74,7 @@ public class PrintService {
 
         LocalDate date = LocalDate.now();
 
-        String eventTitle = "KIOT Boulder Cup 2024"; // todo
+        String eventTitle = "KIOT Bouldercup 2024"; // todo
 
         Pdf pdf = Pdf.newBuilder()
                 .eventTitle(eventTitle)

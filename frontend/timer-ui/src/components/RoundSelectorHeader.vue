@@ -112,12 +112,22 @@ export default {
 
     download(type) {
 
+      let round = this.rounds.find(round => round.id === this.selectedRoundIdLocal)
+
+      let filename = '';
+
+      if(type === 'startList') {
+        filename = 'startList-' + round.gender + '-' + round.roundNumber + '.pdf';
+      } else {
+        filename = 'resultList-' + round.gender + '.pdf';
+      }
+
       TimerApiService.print(type, this.selectedRoundIdLocal)
           .then(response => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url
-            link.setAttribute('download', 'startList.pdf');
+            link.setAttribute('download', filename);
             document.body.appendChild(link);
             link.click();
             link.remove();
