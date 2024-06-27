@@ -33,8 +33,12 @@
                 </v-text-field>
               </v-col>
 
+              <v-col></v-col>
+
             </v-row>
+
             <v-row>
+
               <v-col>
 
                 <v-text-field
@@ -45,8 +49,7 @@
                 />
 
               </v-col>
-            </v-row>
-            <v-row>
+
               <v-col>
 
                 <v-text-field
@@ -57,40 +60,11 @@
                 />
 
               </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
 
-                <v-text-field
-                    v-model="competitorLocal.city"
-                    label="Stadt"
-                    required
-                />
-
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-
-                <v-text-field
-                    v-model="competitorLocal.club"
-                    label="Verein"
-                    required
-                />
-
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-
-                <BirthdayPickerMenu
-                    :date.sync="competitorLocal.dateOfBirth"
-                ></BirthdayPickerMenu>
-
-              </v-col>
             </v-row>
 
             <v-row>
+
               <v-col>
 
                 <v-select
@@ -100,6 +74,38 @@
                     label="Geschlecht"
                     required
                     :rules="[v => !!v || 'Geschlecht darf nicht leer sein']"
+                />
+
+              </v-col>
+
+              <v-col>
+
+                <BirthdayPickerMenu
+                    :date.sync="competitorLocal.dateOfBirth"
+                ></BirthdayPickerMenu>
+
+              </v-col>
+
+            </v-row>
+
+            <v-row>
+
+              <v-col>
+
+                <v-text-field
+                    v-model="competitorLocal.city"
+                    label="Stadt"
+                    required
+                />
+
+              </v-col>
+
+              <v-col>
+
+                <v-text-field
+                    v-model="competitorLocal.club"
+                    label="Verein"
+                    required
                 />
 
               </v-col>
@@ -117,12 +123,12 @@
         <v-spacer></v-spacer>
 
         <!-- Button not required for now -->
-<!--        <v-btn-->
-<!--            color="blue darken-1"-->
-<!--            text-->
-<!--            @click="close"-->
-<!--        >Abbrechen-->
-<!--        </v-btn>-->
+        <v-btn
+            color="blue darken-1"
+            text
+            @click="close"
+        >Abbrechen
+        </v-btn>
 
         <v-btn
             color="blue darken-1"
@@ -142,7 +148,7 @@
 
 import TimerApiService from "@/plugins/timer-api";
 
-import BirthdayPickerMenu from "@/components/BirthdayPickerMenu.vue";
+import BirthdayPickerMenu from "@/components/competitor/BirthdayPickerMenu.vue";
 
 export default {
   components: {BirthdayPickerMenu},

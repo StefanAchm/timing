@@ -48,7 +48,7 @@
 
 <script>
 
-import RoundDialog from "@/components/RoundDialog.vue";
+import RoundDialog from "@/components/round/RoundDialog.vue";
 import TimerApiService from "@/plugins/timer-api";
 
 export default {
@@ -102,27 +102,14 @@ export default {
 
     },
 
+
     downloadStartList() {
-      this.download('startList')
-    },
-
-    downloadResultList() {
-      this.download('resultList')
-    },
-
-    download(type) {
 
       let round = this.rounds.find(round => round.id === this.selectedRoundIdLocal)
 
-      let filename = '';
+      let filename = 'startList-' + round.gender + '-' + round.roundNumber + '.pdf';
 
-      if(type === 'startList') {
-        filename = 'startList-' + round.gender + '-' + round.roundNumber + '.pdf';
-      } else {
-        filename = 'resultList-' + round.gender + '.pdf';
-      }
-
-      TimerApiService.print(type, this.selectedRoundIdLocal)
+      TimerApiService.printStartList(this.selectedRoundIdLocal)
           .then(response => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
@@ -132,7 +119,26 @@ export default {
             link.click();
             link.remove();
           });
-    }
+    },
+
+    downloadResultList() {
+
+      let round = this.rounds.find(round => round.id === this.selectedRoundIdLocal)
+
+      let filename = 'resultList-' + round.gender + '.pdf';
+
+      TimerApiService.printResultList(round.gender)
+          .then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+          });
+
+    },
 
   },
 

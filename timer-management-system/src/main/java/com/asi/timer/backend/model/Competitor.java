@@ -3,6 +3,7 @@ package com.asi.timer.backend.model;
 import com.asi.timer.enums.EnumGender;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Competitor {
@@ -103,4 +104,23 @@ public class Competitor {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Competitor that = (Competitor) o;
+        return startNumber == that.startNumber
+                && Objects.equals(id, that.id)
+                && Objects.equals(firstName, that.firstName)
+                && Objects.equals(lastName, that.lastName)
+                && Objects.equals(city, that.city)
+                && Objects.equals(club, that.club)
+                && Objects.equals(dateOfBirth, that.dateOfBirth)
+                && gender == that.gender;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, startNumber, firstName, lastName, city, club, dateOfBirth, gender);
+    }
 }

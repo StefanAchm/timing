@@ -1,5 +1,6 @@
 package com.asi.timer.model.db;
 
+import com.asi.timer.backend.model.Round;
 import com.asi.timer.enums.EnumGender;
 import com.asi.timer.model.view.APIRound;
 
@@ -76,4 +77,10 @@ public class DBRound {
         this.competitorRounds = competitorRounds;
     }
 
+    public Round toBackendRound() {
+        Round round = new Round();
+        round.setMaxHolds(this.maxHolds);
+        round.setRoundNumber(this.roundNumber);
+        return round;
+    }
 }

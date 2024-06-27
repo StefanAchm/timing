@@ -57,6 +57,7 @@
               @dialog-closed="initialize()"
               :itemprop="editedItem"
               :type="'competitor'"
+              :warning="deleteWarning"
           />
 
 
@@ -80,7 +81,7 @@
 
 <script>
 import DeleteDialog from "@/components/DeleteDialog.vue";
-import CompetitorDialog from "@/components/CompetitorDialog.vue";
+import CompetitorDialog from "@/components/competitor/CompetitorDialog.vue";
 
 import TimerApiService from "@/plugins/timer-api";
 
@@ -90,6 +91,7 @@ export default {
   data: () => ({
 
     dialogDelete: false,
+    deleteWarning: '',
     dialogVisible: false,
 
     competitors: [],
@@ -100,7 +102,7 @@ export default {
       {text: 'Stadt', value: 'city'},
       {text: 'Verein', value: 'club'},
       {text: 'Geburtsdatum', value: 'dateOfBirth'},
-      {text: 'Geschlect', value: 'gender'},
+      {text: 'Geschlecht', value: 'gender'},
       {text: 'Runden', value: 'nrOfRounds'},
       {text: 'Aktionen', value: 'actions', sortable: false}
     ],
@@ -144,11 +146,11 @@ export default {
             let randomItem = {
               startNumber: response.data,
               firstName: 'Max' + Math.floor(Math.random() * 100),
-              lastName: 'Mustermann',
-              city: 'Musterstadt',
-              club: 'Musterclub',
+              lastName: 'Mustermann' + Math.floor(Math.random() * 100),
+              city: 'Musterstadt'  + Math.floor(Math.random() * 100),
+              club: 'Musterclub' + Math.floor(Math.random() * 100),
               gender: Math.random() > 0.5 ? 'HERREN' : 'DAMEN',
-              dateOfBirth: '1994-02-17'
+              dateOfBirth: '1994-01-' + Math.floor(Math.random() * 30 + 1),
             };
 
 
@@ -173,6 +175,13 @@ export default {
     deleteItem(item) {
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
+
+      if(this.editedItem.nrOfRounds > 0) {
+        this.deleteWarning = 'Achtung: Der Teilnehmer hat bereits Runden zugeordnet.'
+      } else {
+        this.deleteWarning = ''
+      }
+
     },
 
     autoAdd() {

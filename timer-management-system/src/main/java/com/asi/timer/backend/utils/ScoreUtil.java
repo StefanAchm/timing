@@ -1,6 +1,7 @@
 package com.asi.timer.backend.utils;
 
 import com.asi.timer.backend.model.CompetitorRound;
+import com.asi.timer.backend.model.Round;
 import com.asi.timer.enums.EnumHoldType;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public class ScoreUtil {
 
     @Deprecated
-    public static double calculateScore(List<CompetitorRound> competitorRounds) {
+    public static double calculateTotalScore(List<CompetitorRound> competitorRounds, List<Round> rounds) {
 
         double score = 0;
 
@@ -16,8 +17,15 @@ public class ScoreUtil {
             CompetitorRound competitorRound = competitorRounds.get(i);
 
             if(i < competitorRounds.size() - 1) {
-                // There is a next round, therefore use max points here!
-                score += 100;
+
+                int maxHolds = rounds.stream()
+                        .filter(round -> round.getRoundNumber() == competitorRound.getRoundNumber())
+                        .findFirst()
+                        .map(Round::getMaxHolds)
+                        .orElseThrow(() -> new RuntimeException("Round not found"));
+
+                score += maxHolds;
+
             } else {
                 score += calculateScore(competitorRound);
             }

@@ -4,9 +4,12 @@ import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.backend.utils.StartNumberUtil;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
+import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.APICompetitor;
 import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.CompetitorRepository;
+import com.asi.timer.repositories.CompetitorRoundRepository;
+import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,10 +21,17 @@ import java.util.UUID;
 public class CompetitorService {
 
     private final CompetitorRepository competitorRepository;
+    private final CompetitorRoundRepository competitorRoundRepository;
+    private final RoundRepository roundRepository;
 
-    public CompetitorService(CompetitorRepository competitorRepository) {
+    public CompetitorService(CompetitorRepository competitorRepository,
+                             CompetitorRoundRepository competitorRoundRepository,
+                             RoundRepository roundRepository
+    ) {
 
         this.competitorRepository = competitorRepository;
+        this.competitorRoundRepository = competitorRoundRepository;
+        this.roundRepository = roundRepository;
 
     }
 
@@ -29,7 +39,7 @@ public class CompetitorService {
 
         DBCompetitor competitor = DBCompetitor.fromAPICompetitor(competitorRequest);
 
-        if(!isStartNumberValid(null, competitorRequest.getStartNumber())) {
+        if (!isStartNumberValid(null, competitorRequest.getStartNumber())) {
             throw new RuntimeException("Start number already in use");
         }
 
@@ -43,7 +53,7 @@ public class CompetitorService {
                 .findById(competitorRequest.getId())
                 .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorRequest.getId() + " not found"));
 
-        if(!isStartNumberValid(competitor.getId(), competitorRequest.getStartNumber())) {
+        if (!isStartNumberValid(competitor.getId(), competitorRequest.getStartNumber())) {
             throw new RuntimeException("Start number already in use");
         }
 
@@ -53,11 +63,38 @@ public class CompetitorService {
         competitor.setCity(competitorRequest.getCity());
         competitor.setClub(competitorRequest.getClub());
         competitor.setDateOfBirth(competitorRequest.getDateOfBirth());
+
+        boolean genderChanged = !competitor.getGender().equals(competitorRequest.getGender());
         competitor.setGender(competitorRequest.getGender());
 
         // TODO: attention, if the competitor is already in a round, this will not work!
 
         this.competitorRepository.save(competitor);
+
+        if (genderChanged) {
+
+            // Each competitorround is mapped to a round, which is mapped to a gender
+            // if the gender of a competitor changes, the competitorrounds relation has to be updated to the correct round
+            // this is done by updating the round of the competitorround to the round with the same number but the correct gender
+
+            List<DBCompetitorRound> competitorRounds = this.competitorRoundRepository.findAllByCompetitorId(competitor.getId());
+
+            for (DBCompetitorRound competitorRound : competitorRounds) {
+
+                this.roundRepository.findByRoundNumberAndGender(
+                        competitorRound.getRound().getRoundNumber(),
+                        competitorRequest.getGender()
+                ).ifPresentOrElse(
+                        competitorRound::setRound,
+                        () -> {throw new RuntimeException("Round not found");}
+                );
+
+                this.competitorRoundRepository.save(competitorRound);
+
+            }
+
+
+        }
 
         return competitor;
 
@@ -69,9 +106,7 @@ public class CompetitorService {
                 .findById(competitorId)
                 .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorId + " not found"));
 
-        // TODO: attention, if the competitor is already in a round, this will not work!
-
-        if(soft) {
+        if (soft) {
             competitor.setDeleted(true);
             this.competitorRepository.save(competitor);
         } else {

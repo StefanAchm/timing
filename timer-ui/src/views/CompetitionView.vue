@@ -20,9 +20,9 @@
 <script>
 
 import {defineComponent} from "vue";
-import CompetitorsList from "@/components/CompetitorsList.vue";
-import RoundSelector from "@/components/RoundSelector.vue";
-import CompetitorSimpleTable from "@/components/CompetitorSimpleTable.vue";
+import CompetitorsList from "@/components/competitor/CompetitorsList.vue";
+import RoundSelector from "@/components/round/RoundSelector.vue";
+import CompetitorSimpleTable from "@/components/competitor/CompetitorSimpleTable.vue";
 
 
 export default defineComponent({

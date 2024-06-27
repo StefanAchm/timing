@@ -39,7 +39,7 @@
 
             <v-col>
 
-                Runde {{ competitorRoundLocal.roundNumber }}
+              Runde {{ competitorRoundLocal.roundNumber }}
 
             </v-col>
 
@@ -78,6 +78,15 @@
         </v-container>
 
         <v-card-actions>
+
+          <v-btn
+              v-if="competitorRoundLocal.competitorRoundStatus!== 'COMPLETED'"
+              color="blue darken-1"
+              text
+              @click="setRandomScore">
+            Random
+          </v-btn>
+
           <v-spacer></v-spacer>
 
           <v-btn
@@ -120,7 +129,7 @@
 import TimerApiService from "@/plugins/timer-api";
 
 import HoldTypeSelector from "@/components/HoldTypeSelector.vue";
-import CompetitorDialog from "@/components/CompetitorDialog.vue";
+import CompetitorDialog from "@/components/competitor/CompetitorDialog.vue";
 
 export default {
 
@@ -140,6 +149,11 @@ export default {
   }),
 
   created() {
+
+    TimerApiService.getHoldTypes().then(response => {
+      this.holdTypes = response.data;
+    });
+
   },
 
   watch: {},
@@ -159,6 +173,16 @@ export default {
     edit() {
 
       this.dialogVisible = true;
+
+    },
+
+    setRandomScore() {
+
+      this.competitorRoundLocal.holdType = this.holdTypes[Math.floor(Math.random() * this.holdTypes.length)];
+      this.competitorRoundLocal.holdNumber = Math.floor(Math.random() * 10) + 1;
+      this.competitorRoundLocal.tryNumber = Math.floor(Math.random() * 3) + 1;
+
+      this.save()
 
     }
 

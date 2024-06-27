@@ -1,5 +1,10 @@
 <template>
-  <v-data-table :headers="headers" :items="rounds" sort-by="roundNumber" class="elevation-1">
+  <v-data-table
+      :headers="headers"
+      :items="rounds"
+      sort-by="roundNumber"
+      class="elevation-1"
+  >
 
     <template v-slot:top>
       <v-toolbar flat>
@@ -34,7 +39,8 @@
 
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-      <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+      <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+      <v-icon small class="mr-2" @click="goToCompetitorRounds(item)">mdi-open-in-new</v-icon>
     </template>
 
     <template v-slot:no-data>
@@ -50,7 +56,7 @@
 import TimerApiService from "@/plugins/timer-api";
 
 import DeleteDialog from "@/components/DeleteDialog.vue";
-import RoundDialog from "@/components/RoundDialog.vue";
+import RoundDialog from "@/components/round/RoundDialog.vue";
 
 
 export default {
@@ -68,6 +74,7 @@ export default {
       {text: 'Typ', value: 'gender'},
       {text: 'Anzahl Griffe', value: 'maxHolds'},
       {text: 'Anzahl Teilnehmer', value: 'numberOfCompetitors'},
+      {text: 'Abgeschlossene Teilnehmer', value: 'completedCompetitors'},
       {text: 'Aktionen', value: 'actions', sortable: false}
     ],
 
@@ -94,6 +101,11 @@ export default {
   },
 
   methods: {
+
+    goToCompetitorRounds(item) {
+      console.log(item)
+      this.$router.push({name: 'round', params: {roundId: item.id}})
+    },
 
     editItem(item) {
       this.editedIndex = this.competitors.indexOf(item)

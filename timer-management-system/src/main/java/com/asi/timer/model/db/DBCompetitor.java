@@ -34,7 +34,7 @@ public class DBCompetitor {
 
     private boolean deleted;
 
-    @OneToMany(mappedBy = "competitor")
+    @OneToMany(mappedBy = "competitor", cascade = CascadeType.ALL)
     private Set<DBCompetitorRound> competitorRounds;
 
     public DBCompetitor() {

@@ -28,7 +28,7 @@ public class CompetitorController {
         return ResponseEntity.ok(this.competitorService.updateCompetitor(competitorRequest).getId().toString());
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<String> deleteCompetitor(@RequestParam UUID id) {
         return ResponseEntity.ok(this.competitorService.deleteCompetitor(id, false).getId().toString());
     }

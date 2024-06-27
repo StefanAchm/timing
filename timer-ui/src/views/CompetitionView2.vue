@@ -32,9 +32,9 @@
 <script>
 
 import {defineComponent} from "vue";
-import CompetitorSimpleTable from "@/components/CompetitorSimpleTable.vue";
-import RoundSelectorHeader from "@/components/RoundSelectorHeader.vue";
-import CompetitorRound from "@/components/CompetitorRound.vue";
+import CompetitorSimpleTable from "@/components/competitor/CompetitorSimpleTable.vue";
+import RoundSelectorHeader from "@/components/round/RoundSelectorHeader.vue";
+import CompetitorRound from "@/components/competitor/CompetitorRound.vue";
 
 
 export default defineComponent({
@@ -48,7 +48,7 @@ export default defineComponent({
       selectedCompetitorRound: null,
 
     }
-  },
+  }
 
 })
 </script>

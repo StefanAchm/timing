@@ -52,10 +52,17 @@ export default {
         return apiClient.get('/round/getRounds');
     },
 
-    print(type, id) {
-        return apiClient.get('/print/' + type, {
+    printStartList(id) {
+        return apiClient.get('/print/' + 'startList', {
             responseType: 'blob',
             params: {id: id}
+        });
+    },
+
+    printResultList(gender) {
+        return apiClient.get('/print/' + 'resultList', {
+            responseType: 'blob',
+            params: {gender: gender}
         });
     },
 

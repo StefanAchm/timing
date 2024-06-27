@@ -14,10 +14,16 @@
           <v-row>
 
             <v-col>
-              <v-text-field v-model="roundLocal.roundNumber" label="Rundennummer"></v-text-field>
+              <v-text-field
+                  type="number"
+                  v-model="roundLocal.roundNumber"
+                  label="Rundennummer"></v-text-field>
             </v-col>
             <v-col>
-              <v-text-field v-model="roundLocal.maxHolds" label="Anzahl Griffe"></v-text-field>
+              <v-text-field
+                  type="number"
+                  v-model="roundLocal.maxHolds"
+                  label="Anzahl Griffe"></v-text-field>
             </v-col>
 
             <v-col>
@@ -46,6 +52,7 @@
             <v-col>
 
               <v-text-field
+                  type="number"
                   :disabled="scoreRowDisabled()"
                   v-model="roundLocal.score.holdNumber"
                   label="Griff Nummer"></v-text-field>
@@ -55,6 +62,7 @@
             <v-col>
 
               <v-text-field
+                  type="number"
                   :disabled="scoreRowDisabled()"
                   v-model="roundLocal.score.tryNumber"
                   label="Versuch"></v-text-field>
@@ -156,14 +164,16 @@ export default {
       this.roundLocal.score.holdType = val;
     },
 
-    roundLocal() {
+    // watch deep, use:
 
-      TimerApiService.previewRound(this.roundLocal)
-          .then(response => {
-            this.maxNumberOfCompetitors = response.data.numberOfCompetitors;
-          });
-
-
+    roundLocal: {
+      handler(newVal) {
+        TimerApiService.previewRound(newVal)
+            .then(response => {
+              this.maxNumberOfCompetitors = response.data.numberOfCompetitors;
+            });
+      },
+      deep: true
     }
 
   },

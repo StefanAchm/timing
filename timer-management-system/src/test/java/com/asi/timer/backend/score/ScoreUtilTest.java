@@ -52,7 +52,7 @@ class ScoreUtilTest {
 
     @ParameterizedTest
     @MethodSource("provideCompetitorRounds")
-    void testCalculateScore(ArgumentsAccessor arguments) {
+    void testCalculateTotalScore(ArgumentsAccessor arguments) {
 
         double expectedScore = arguments.getDouble(0);
         CompetitorRoundTestInputParams competitorRoundTestInputParams = arguments.get(1, CompetitorRoundTestInputParams.class);
@@ -96,8 +96,8 @@ class ScoreUtilTest {
         competitorRound4.setHoldType(EnumHoldType.TOUCHED);
         competitorRound4.setTryNumber(1);
 
-        double scoreCompetitor1 = ScoreUtil.calculateScore(List.of(competitorRound1, competitorRound2));
-        double scoreCompetitor2 = ScoreUtil.calculateScore(List.of(competitorRound3, competitorRound4));
+        double scoreCompetitor1 = ScoreUtil.calculateTotalScore(List.of(competitorRound1, competitorRound2), rounds);
+        double scoreCompetitor2 = ScoreUtil.calculateTotalScore(List.of(competitorRound3, competitorRound4), rounds);
 
         Assertions.assertTrue(scoreCompetitor1 > scoreCompetitor2,
                 "Competitor 1 {" + scoreCompetitor1 + "} should have a higher score than competitor 2 {" + scoreCompetitor2 + "}");

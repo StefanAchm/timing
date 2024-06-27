@@ -3,6 +3,12 @@
   <v-dialog v-model="dialogVisible" max-width="500px">
     <v-card>
       <v-card-title class="text-h5">Wirklich Löschen?</v-card-title>
+
+      <v-card-text v-if="warning">
+        <p>{{ warning }}</p>
+
+      </v-card-text>
+
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="close">Abbrechen</v-btn>
@@ -23,7 +29,8 @@ export default {
   props: {
     dialog: Boolean,
     itemprop: Object,
-    type: String
+    type: String,
+    warning: String
   },
 
   data() {

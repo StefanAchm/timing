@@ -77,7 +77,7 @@
 <script>
 
 import TimerApiService from "@/plugins/timer-api";
-import CompetitorDialog from "@/components/CompetitorDialog.vue";
+import CompetitorDialog from "@/components/competitor/CompetitorDialog.vue";
 
 export default {
   components: {CompetitorDialog},

@@ -1,10 +1,13 @@
 package com.asi.timer.service;
 
+import com.asi.timer.backend.model.CompetitorRound;
+import com.asi.timer.backend.model.Round;
 import com.asi.timer.backend.pdfprinter.PdfGenerator;
 import com.asi.timer.backend.pdfprinter.model.Pdf;
 import com.asi.timer.backend.utils.CompetitorScoreUtil;
 import com.asi.timer.backend.model.CompetitorScore;
 import com.asi.timer.components.FileStorageProperties;
+import com.asi.timer.enums.EnumGender;
 import com.asi.timer.enums.EnumPrintType;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
@@ -42,6 +45,53 @@ public class PrintService {
 
     }
 
+    public ByteArrayResource getList(EnumGender gender, EnumPrintType type) {
+
+        File file = createPdf(gender, type);
+
+        Path path = Paths.get(file.getAbsolutePath());
+
+        try {
+            return new ByteArrayResource(Files.readAllBytes(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private File createPdf(EnumGender gender, EnumPrintType type) {
+
+        List<CompetitorRound> competitorRounds = this.competitorRoundRepository.findByCompetitor_Gender(gender)
+                .stream()
+                .map(DBCompetitorRound::toBackendCompetitorRound)
+                .toList();
+
+        List<Round> rounds = this.roundRepository.findByGender(gender)
+                .stream()
+                .map(DBRound::toBackendRound)
+                .toList();
+
+        List<CompetitorScore> competitorScores = CompetitorScoreUtil.fromCompetitorRounds2(competitorRounds, rounds);
+
+        LocalDate date = LocalDate.now();
+
+        String eventTitle = "KIOT Bouldercup 2024"; // todo
+
+        Pdf pdf = Pdf.newBuilder()
+                .eventTitle(eventTitle)
+                .type(type)
+                .gender(gender.toBackendEnum())
+                .round(0)
+                .date(date)
+                .competitors(null)
+                .competitorScores(competitorScores)
+                .build();
+
+        return PdfGenerator.generatePdf(fileStorageProperties.getUploadDir(), pdf);
+
+
+    }
+
     public ByteArrayResource getList(UUID roundId, EnumPrintType type) {
 
         File file = createPdf(roundId, type);
@@ -69,7 +119,7 @@ public class PrintService {
                 .toList();
 
         List<CompetitorScore> competitorScores = type.equals(EnumPrintType.RESULT_LIST)
-                ? CompetitorScoreUtil.fromCompetitorRound(round.getCompetitorRounds().stream().map(DBCompetitorRound::toBackendCompetitorRound).toList())
+                ? CompetitorScoreUtil.fromCompetitorRounds(round.getCompetitorRounds().stream().map(DBCompetitorRound::toBackendCompetitorRound).toList())
                 : null;
 
         LocalDate date = LocalDate.now();

@@ -1,5 +1,6 @@
 package com.asi.timer.model.view;
 
+import com.asi.timer.enums.EnumCompetitorRoundStatus;
 import com.asi.timer.enums.EnumGender;
 import com.asi.timer.model.db.DBRound;
 
@@ -21,6 +22,8 @@ public class APIRound {
 
     private int numberOfCompetitors;
 
+    private int completedCompetitors;
+
     public static APIRound fromDBRound(DBRound dbRound) {
 
         APIRound apiRound = new APIRound();
@@ -31,6 +34,14 @@ public class APIRound {
         apiRound.setGender(dbRound.getGender());
 
         apiRound.setNumberOfCompetitors(dbRound.getCompetitorRounds().size());
+
+        int completedCompetitors = dbRound.getCompetitorRounds()
+                .stream()
+                .filter(dbCompetitorRound -> dbCompetitorRound.getCompetitorRoundStatus().equals(EnumCompetitorRoundStatus.COMPLETED))
+                .toList()
+                .size();
+
+        apiRound.setCompletedCompetitors(completedCompetitors);
 
         return apiRound;
 
@@ -90,5 +101,13 @@ public class APIRound {
 
     public void setNumberOfCompetitors(int numberOfCompetitors) {
         this.numberOfCompetitors = numberOfCompetitors;
+    }
+
+    public int getCompletedCompetitors() {
+        return completedCompetitors;
+    }
+
+    public void setCompletedCompetitors(int completedCompetitors) {
+        this.completedCompetitors = completedCompetitors;
     }
 }
