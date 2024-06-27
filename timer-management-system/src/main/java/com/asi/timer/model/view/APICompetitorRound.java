@@ -42,7 +42,6 @@ public class APICompetitorRound {
             apiCompetitorRound.setScore(null);
         }
 
-
         if(deep) {
             apiCompetitorRound.setCompetitor(APICompetitor.fromDBCompetitor(competitorRound.getCompetitor(), false));
         }

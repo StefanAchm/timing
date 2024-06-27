@@ -17,12 +17,14 @@
             color="primary"
             dark
             class="mb-2"
-            @click="addDialog = true"
-        >Runde hinzufügen</v-btn>
+            @click="addItem()"
+        >Runde hinzufügen
+        </v-btn>
 
         <RoundDialog
-            :dialog.sync="addDialog"
-            :round="{}"
+            :dialog.sync="roundDialog"
+            :round="editedItem"
+            :rounds="rounds"
             @dialog-closed="initialize()"
         />
 
@@ -66,7 +68,7 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
-    addDialog: false,
+    roundDialog: false,
 
     rounds: [],
     headers: [
@@ -108,18 +110,36 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.competitors.indexOf(item)
+      console.log(item)
       this.editedItem = Object.assign({}, item)
-      this.dialogVisible = true
+      this.roundDialog = true
     },
 
     deleteItem(item) {
-      this.editedIndex = this.rounds.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
+    addItem() {
+      this.editedItem = {
+        score: {
+          holdType: null,
+          holdNumber: null,
+          tryNumber: null
+        }
+      };
+      this.roundDialog = true
+    },
+
     initialize() {
+
+      this.editedItem = {
+        score: {
+          holdType: null,
+          holdNumber: null,
+          tryNumber: null
+        }
+      };
 
       TimerApiService.getRounds()
           .then(response => {

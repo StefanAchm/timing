@@ -2,6 +2,7 @@ package com.asi.timer.model.db;
 
 import com.asi.timer.backend.model.Round;
 import com.asi.timer.enums.EnumGender;
+import com.asi.timer.enums.EnumHoldType;
 import com.asi.timer.model.view.APIRound;
 
 import javax.persistence.*;

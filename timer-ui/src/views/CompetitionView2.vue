@@ -34,7 +34,7 @@
 import {defineComponent} from "vue";
 import CompetitorSimpleTable from "@/components/competitor/CompetitorSimpleTable.vue";
 import RoundSelectorHeader from "@/components/round/RoundSelectorHeader.vue";
-import CompetitorRound from "@/components/competitor/CompetitorRound.vue";
+import CompetitorRound from "@/components/competitorRound/CompetitorRound.vue";
 
 
 export default defineComponent({

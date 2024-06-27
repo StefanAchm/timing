@@ -2,6 +2,7 @@ package com.asi.timer.backend.utils;
 
 import com.asi.timer.backend.model.CompetitorRound;
 import com.asi.timer.backend.model.Round;
+import com.asi.timer.enums.EnumCompetitorRoundStatus;
 import com.asi.timer.enums.EnumHoldType;
 
 import java.util.List;
@@ -38,9 +39,15 @@ public class ScoreUtil {
 
     public static double calculateScore(CompetitorRound competitorRound) {
 
-        return calculateScore(competitorRound.getHoldNumber(),
-                competitorRound.getHoldType(),
-                competitorRound.getTryNumber());
+        if(competitorRound.getCompetitorRoundStatus().equals(EnumCompetitorRoundStatus.COMPLETED)) {
+
+            return calculateScore(competitorRound.getHoldNumber(),
+                    competitorRound.getHoldType(),
+                    competitorRound.getTryNumber());
+
+        } else {
+            return 0;
+        }
 
     }
 

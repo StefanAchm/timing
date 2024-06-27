@@ -122,7 +122,6 @@
 
         <v-spacer></v-spacer>
 
-        <!-- Button not required for now -->
         <v-btn
             color="blue darken-1"
             text

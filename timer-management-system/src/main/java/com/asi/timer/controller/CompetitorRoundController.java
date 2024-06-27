@@ -56,4 +56,16 @@ public class CompetitorRoundController {
 
     }
 
+    @GetMapping("/getAllCompetitorRounds")
+    public ResponseEntity<List<APICompetitorRound>> getCompetitorRounds() {
+
+        return ResponseEntity.ok(this.competitorRoundService.getCompetitorRounds());
+
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteCompetitorRound(@RequestParam UUID id) {
+        return ResponseEntity.ok(this.competitorRoundService.deleteCompetitorRound(id));
+    }
+
 }

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import CompetitorRoundTable from "@/components/CompetitorRoundTable.vue";
+import CompetitorRoundTable from "@/components/competitorRound/CompetitorRoundTable.vue";
 import TimerApi from "@/plugins/timer-api";
 
 export default {

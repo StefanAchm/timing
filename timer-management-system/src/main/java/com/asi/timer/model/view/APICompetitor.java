@@ -1,7 +1,12 @@
 package com.asi.timer.model.view;
 
+import com.asi.timer.backend.model.CompetitorRound;
+import com.asi.timer.backend.model.Round;
+import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.enums.EnumGender;
 import com.asi.timer.model.db.DBCompetitor;
+import com.asi.timer.model.db.DBCompetitorRound;
+import com.asi.timer.model.db.DBRound;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,7 +14,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class APICompetitor {
-
 
     private UUID id;
 
@@ -27,6 +31,8 @@ public class APICompetitor {
 
     private EnumGender gender;
 
+    private double totalScore;
+
     private List<APICompetitorRound> competitorRounds;
 
     public APICompetitor() {
@@ -35,23 +41,39 @@ public class APICompetitor {
 
     public static APICompetitor fromDBCompetitor(DBCompetitor competitor, boolean deep) {
 
-        APICompetitor competitorResponse = new APICompetitor();
-        competitorResponse.setId(competitor.getId());
-        competitorResponse.setStartNumber(competitor.getStartNumber());
-        competitorResponse.setFirstName(competitor.getFirstName());
-        competitorResponse.setLastName(competitor.getLastName());
-        competitorResponse.setClub(competitor.getClub());
-        competitorResponse.setCity(competitor.getCity());
-        competitorResponse.setDateOfBirth(competitor.getDateOfBirth());
-        competitorResponse.setGender(competitor.getGender());
+        APICompetitor apiCompetitor = new APICompetitor();
+        apiCompetitor.setId(competitor.getId());
+        apiCompetitor.setStartNumber(competitor.getStartNumber());
+        apiCompetitor.setFirstName(competitor.getFirstName());
+        apiCompetitor.setLastName(competitor.getLastName());
+        apiCompetitor.setClub(competitor.getClub());
+        apiCompetitor.setCity(competitor.getCity());
+        apiCompetitor.setDateOfBirth(competitor.getDateOfBirth());
+        apiCompetitor.setGender(competitor.getGender());
 
         if(deep) {
-            competitor.getCompetitorRounds().forEach(competitorRound -> competitorResponse.getCompetitorRounds().add(
-                    APICompetitorRound.fromDBCompetitorRound(competitorRound, false))
-            );
+
+            competitor.getCompetitorRounds()
+                    .forEach(competitorRound -> apiCompetitor.getCompetitorRounds().add(
+                            APICompetitorRound.fromDBCompetitorRound(competitorRound, false))
+                    );
+
+            List<CompetitorRound> competitorRounds = competitor.getCompetitorRounds()
+                    .stream()
+                    .map(DBCompetitorRound::toBackendCompetitorRound)
+                    .toList();
+
+            List<Round> rounds = competitor.getCompetitorRounds()
+                    .stream()
+                    .map(DBCompetitorRound::getRound)
+                    .map(DBRound::toBackendRound)
+                    .toList();
+
+            apiCompetitor.setTotalScore(ScoreUtil.calculateTotalScore(competitorRounds, rounds));
+
         }
 
-        return competitorResponse;
+        return apiCompetitor;
 
     }
 
@@ -125,5 +147,13 @@ public class APICompetitor {
 
     public void setCompetitorRounds(List<APICompetitorRound> competitorRounds) {
         this.competitorRounds = competitorRounds;
+    }
+
+    public double getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(double totalScore) {
+        this.totalScore = totalScore;
     }
 }

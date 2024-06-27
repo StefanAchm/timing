@@ -105,10 +105,15 @@ export default {
 
     getCompetitorRounds(roundId) {
 
-        // '/competitor-round/getCompetitorRounds' + '?roundId=' + id
         return apiClient.get('/competitor-round/getCompetitorRounds', {
             params: {roundId: roundId}
         });
+    },
+
+    getAllCompetitorRounds() {
+
+        return apiClient.get('/competitor-round/getAllCompetitorRounds');
+
     },
 
     updateCompetitorRound(competitorRound) {
@@ -117,6 +122,13 @@ export default {
             {
                 headers: {'Content-Type': 'application/json'}
             });
+    },
+
+    deleteCompetitorRound(competitorRoundId) {
+        return apiClient.delete('/competitor-round/delete', {
+            params: {id: competitorRoundId}
+        });
+
     },
 
     ///////////////////////////////////////////////////////////////////////////////////
@@ -136,6 +148,5 @@ export default {
             params: queryParams
         });
     },
-
 
 };

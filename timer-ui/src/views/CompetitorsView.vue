@@ -9,7 +9,7 @@
     >
       <v-row align="center">
         <v-col class="grow">
-          Einige Teilnehmer ({{ competitors.filter(competitor => competitor.nrOfRounds === 0).length }}) haben noch
+          Einige Teilnehmer ({{ competitorsWithoutRounds.length }}) haben noch
           keine Runden zugeordnet.
         </v-col>
         <v-col class="shrink">
@@ -109,7 +109,14 @@ export default {
     editedItem: {},
   }),
 
-  computed: {},
+  computed: {
+
+    competitorsWithoutRounds() {
+      return this.competitors.filter(competitor => competitor.nrOfRounds === 0);
+    }
+
+
+  },
 
   watch: {},
 
@@ -150,7 +157,7 @@ export default {
               city: 'Musterstadt'  + Math.floor(Math.random() * 100),
               club: 'Musterclub' + Math.floor(Math.random() * 100),
               gender: Math.random() > 0.5 ? 'HERREN' : 'DAMEN',
-              dateOfBirth: '1994-01-' + Math.floor(Math.random() * 30 + 1),
+              dateOfBirth: '1994-01-01',
             };
 
 
@@ -186,15 +193,20 @@ export default {
 
     autoAdd() {
 
-      for (const competitor of this.competitors.filter(competitor => competitor.nrOfRounds === 0)) {
+      console.log(this.competitorsWithoutRounds)
 
-        TimerApiService.addCompetitorRound(competitor.id, 1)
-            .then(() => {
-              this.initialize();
-            });
+      let promises = [];
+
+      for(const competitor of this.competitorsWithoutRounds) {
+
+          promises.push(TimerApiService.addCompetitorRound(competitor.id, 1));
 
       }
 
+      Promise.all(promises)
+        .then(() => {
+          this.initialize();
+        });
 
     }
 

@@ -1,5 +1,7 @@
 package com.asi.timer.service;
 
+import com.asi.timer.backend.model.CompetitorRound;
+import com.asi.timer.backend.model.Round;
 import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.enums.EnumGender;
 import com.asi.timer.enums.EnumHoldType;
@@ -14,6 +16,7 @@ import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CompetitorRoundService {
@@ -27,7 +30,7 @@ public class CompetitorRoundService {
                                   RoundRepository roundRepository,
                                   CompetitorRoundRepository competitorRoundRepository,
                                   CompetitorService competitorService
-                                  ) {
+    ) {
 
         this.competitorRepository = competitorRepository;
         this.roundRepository = roundRepository;
@@ -120,7 +123,6 @@ public class CompetitorRoundService {
     }
 
 
-
     public List<APICompetitorRound> getCompetitorRounds(UUID roundId) {
 
         List<DBCompetitorRound> competitorRounds = this.competitorRoundRepository.findByRound_Id(roundId);
@@ -152,6 +154,70 @@ public class CompetitorRoundService {
     public List<EnumHoldType> getHoldTypes() {
 
         return Arrays.stream(EnumHoldType.values()).toList();
+
+    }
+
+    public List<APICompetitorRound> getCompetitorRounds() {
+
+        List<APICompetitorRound> competitorRoundsResponse = this.competitorRoundRepository.findAll()
+                .stream()
+                .map(competitorRound -> APICompetitorRound.fromDBCompetitorRound(competitorRound, true))
+                .collect(Collectors.toList());
+
+        // add competitors, which are not in a round yet
+
+        this.competitorRepository
+                .findAll()
+                .stream()
+                .filter(competitor -> competitor.getCompetitorRounds().isEmpty())
+                .forEach(competitor -> {
+                    APICompetitorRound competitorRound = new APICompetitorRound();
+                    competitorRound.setCompetitor(APICompetitor.fromDBCompetitor(competitor, false));
+                    competitorRoundsResponse.add(competitorRound);
+                });
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Update all scores for all competitors:
+
+        List<Round> rounds = this.roundRepository.findAll()
+                .stream()
+                .map(DBRound::toBackendRound)
+                .toList();
+
+        Map<UUID, Double> scores = new HashMap<>();
+        for(DBCompetitor competitor : competitorRepository.findAll()) {
+
+            List<CompetitorRound> competitorRounds = competitor.getCompetitorRounds()
+                    .stream()
+                    .map(DBCompetitorRound::toBackendCompetitorRound)
+                    .toList();
+
+
+            scores.put(competitor.getId(), ScoreUtil.calculateTotalScore(competitorRounds, rounds));
+
+        }
+
+        for(APICompetitorRound competitorRound : competitorRoundsResponse) {
+
+            if(competitorRound.getCompetitor() != null) {
+                competitorRound.getCompetitor().setTotalScore(scores.get(competitorRound.getCompetitor().getId()));
+            }
+
+        }
+
+        return competitorRoundsResponse;
+
+    }
+
+    public String deleteCompetitorRound(UUID id) {
+
+        DBCompetitorRound competitorRound = this.competitorRoundRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("CompetitorRound with id " + id + " not found"));
+
+        this.competitorRoundRepository.delete(competitorRound);
+
+        return "CompetitorRound with id " + id + " deleted";
 
     }
 

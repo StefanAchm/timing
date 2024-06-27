@@ -22,9 +22,7 @@ public class CompetitorScoreUtil {
      * @return
      */
     public static List<CompetitorScore> fromCompetitorRounds2(List<CompetitorRound> competitorRounds,
-                                                              List<Round> rounds
-
-    ) {
+                                                              List<Round> rounds) {
 
         Map<Competitor, List<CompetitorRound>> competitorRoundMap = getCompetitorRoundMap(competitorRounds);
 

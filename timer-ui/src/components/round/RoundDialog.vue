@@ -1,7 +1,11 @@
 <template>
 
 
-  <v-dialog v-model="dialogLocal" max-width="1000px">
+  <v-dialog
+      v-model="dialogLocal"
+      max-width="1000px"
+      @click:outside="close"
+  >
 
     <v-card>
       <v-card-title>
@@ -14,10 +18,24 @@
           <v-row>
 
             <v-col>
+
+              <v-select
+                  :disabled="!!round.id"
+                  v-model="roundLocal.gender"
+                  :items="['HERREN', 'DAMEN']"
+                  label="Geschlecht"
+                  @change="updateRoundNumber"
+              />
+
+            </v-col>
+
+            <v-col>
               <v-text-field
                   type="number"
                   v-model="roundLocal.roundNumber"
-                  label="Rundennummer"></v-text-field>
+                  label="Rundennummer"
+                  :disabled="!!round.id"
+              ></v-text-field>
             </v-col>
             <v-col>
               <v-text-field
@@ -26,14 +44,7 @@
                   label="Anzahl Griffe"></v-text-field>
             </v-col>
 
-            <v-col>
 
-              <v-select
-                  v-model="roundLocal.gender"
-                  :items="['HERREN', 'DAMEN']"
-                  label="Geschlecht"/>
-
-            </v-col>
 
           </v-row>
 
@@ -119,6 +130,9 @@ export default {
     },
     round: {
       type: Object,
+    },
+    rounds: {
+      type: Array,
     }
   },
 
@@ -138,7 +152,7 @@ export default {
   computed: {
 
     formTitle() {
-      return this.editedIndex === -1 ? 'Ändern' : 'Neu'
+      return this.round.id ? 'Ändern' : 'Neu'
     },
 
     dialogLocal: {
@@ -155,7 +169,7 @@ export default {
   watch: {
 
     dialog(val) {
-      if (val && this.round && this.round.id) {
+      if (val) {
         this.roundLocal = Object.assign({}, this.round);
       }
     },
@@ -177,7 +191,21 @@ export default {
     }
 
   },
+
   methods: {
+
+    updateRoundNumber() {
+
+      // If the round number is already set, do nothing, otherwise set the next round number
+
+      let highestRoundNumber = this.rounds
+          .filter(round => round.gender === this.roundLocal.gender)
+          .map(round => round.roundNumber)
+          .reduce((a, b) => Math.max(a, b), 0);
+
+      this.roundLocal.roundNumber = highestRoundNumber + 1;
+
+    },
 
     scoreRowDisabled() {
       return this.roundLocal.roundNumber <= 1 || !this.roundLocal.roundNumber;

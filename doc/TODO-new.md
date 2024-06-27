@@ -9,8 +9,8 @@
   - [ ] doppelte Startnummern verhindern!
   - [x] Startnummer automatisch vergeben
   - [ ] Nachträgliches bereinigen der Startnummern (hintereinander ohne Lücken)
-- [ ] Geschlecht:
-  - [ ] Bei änderung --> ändern der Runden ???
+- [x] Geschlecht:
+  - [x] Bei änderung --> ändern der Runden ???
 
 
 # Runden view:
