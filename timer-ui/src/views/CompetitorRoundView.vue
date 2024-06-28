@@ -1,12 +1,9 @@
 <template>
-  <CompetitorRoundTable
-      :competitor-rounds="selectedCompetitorRounds"
-  />
+  <CompetitorRoundTable/>
 </template>
 
 <script>
 import CompetitorRoundTable from "@/components/competitorRound/CompetitorRoundTable.vue";
-import TimerApi from "@/plugins/timer-api";
 
 export default {
 
@@ -14,17 +11,9 @@ export default {
 
   data: () => ({
 
-    selectedCompetitorRounds: [],
-
   }),
 
   created() {
-
-    TimerApi
-        .getCompetitorRounds(this.$route.params.roundId)
-        .then(response => {
-          this.selectedCompetitorRounds = response.data;
-        })
 
   }
 
