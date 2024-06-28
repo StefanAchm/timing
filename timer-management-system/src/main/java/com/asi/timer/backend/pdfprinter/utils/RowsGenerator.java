@@ -23,19 +23,28 @@ public class RowsGenerator {
 
     public static List<Row> getStartListRows(List<Competitor> competitors) {
 
-        return competitors.stream()
-                .map(competitor -> {
-                    Row row = new Row();
-                    row.setCells(List.of(
-                            String.valueOf(competitor.getStartNumber()),
-                            competitor.getFullName(),
-                            competitor.getCity(),
-                            competitor.getClub(),
-                            competitor.getDateOfBirthAsString()
-                    ));
-                    return row;
-                })
-                .toList();
+        List<Row> list = new ArrayList<>();
+
+        for (int i = 0; i < competitors.size(); i++) {
+
+            int currentStartNumber = i + 1;
+
+            Competitor competitor1 = competitors.get(i);
+
+            Row row = new Row();
+            row.setCells(List.of(
+
+                    currentStartNumber + " (" + competitor1.getStartNumber() + ")",
+                    competitor1.getFullName(),
+                    competitor1.getCity(),
+                    competitor1.getClub(),
+                    competitor1.getDateOfBirthAsString()
+            ));
+
+            list.add(row);
+        }
+
+        return list;
 
     }
 
