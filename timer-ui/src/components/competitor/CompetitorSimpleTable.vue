@@ -17,9 +17,13 @@
 
         <v-toolbar flat>
 
-          <v-toolbar-title>Teilnehmer</v-toolbar-title>
+          <v-toolbar-title>
 
-          <v-divider class="mx-4" inset vertical></v-divider>
+            ({{ competitorRoundsCompleted.length }}/{{ competitorRounds.length }}) Teilnehmer
+            in Runde {{ competitorRounds[0]?.roundNumber }}
+            der {{ competitorRounds[0]?.competitor.gender }}
+
+          </v-toolbar-title>
 
           <v-spacer></v-spacer>
 
@@ -76,24 +80,24 @@
 
 <script>
 
-import TimerApiService from "@/plugins/timer-api";
+
 import CompetitorDialog from "@/components/competitor/CompetitorDialog.vue";
 
 export default {
   components: {CompetitorDialog},
 
   props: {
-    roundId: {
-      type: String
-    },
     selectedCompetitorRound: {
       type: Object
+    },
+    competitorRounds: {
+      type: Array
     }
   },
 
   data: () => ({
 
-    competitorRounds: [],
+    // competitorRounds: [],
     headers: [
       {text: '#', value: 'competitor.startNumber', sortable: false},
       {text: '+/-', value: 'competitorNumber', sortable: false},
@@ -107,6 +111,7 @@ export default {
   }),
 
   computed: {
+
     selectedCompetitorRoundLocal: {
       get() {
         return this.selectedCompetitorRound;
@@ -116,19 +121,14 @@ export default {
       }
     },
 
-
-  },
-
-  watch: {
-    roundId: function (newVal) {
-      this.loadCompetitors(newVal);
-      this.selectedCompetitorRoundLocal = null;
-    },
+    competitorRoundsCompleted() {
+      return this.competitorRounds.filter(competitorRound => competitorRound.competitorRoundStatus === 'CREATED');
+    }
 
   },
 
   created() {
-    this.loadCompetitors(this.roundId);
+
   },
 
   methods: {
@@ -158,24 +158,6 @@ export default {
           cr.competitorNumber = '+' + (i - index);
         }
       });
-    },
-
-    loadCompetitors(id) {
-
-      if(!id) {
-        return;
-      }
-
-      TimerApiService.getCompetitorRounds(id)
-          .then(response => {
-            this.competitorRounds = response.data;
-            // Sort list
-
-            this.competitorRounds.sort((a, b) => {
-              return a.competitor.startNumber - b.competitor.startNumber;
-            });
-
-          });
     },
 
   },

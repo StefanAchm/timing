@@ -114,7 +114,6 @@ export default {
       return this.competitors.filter(competitor => competitor.nrOfRounds === 0);
     }
 
-
   },
 
   watch: {},
@@ -148,14 +147,17 @@ export default {
           .getStartNumber()
           .then(response => {
 
+            let gender = Math.random() > 0.5 ? 'HERREN' : 'DAMEN';
+
+            let firstName = gender === 'HERREN' ? 'Max' : 'Maria';
 
             let randomItem = {
               startNumber: response.data,
-              firstName: 'Max' + Math.floor(Math.random() * 100),
+              firstName: firstName + Math.floor(Math.random() * 100),
               lastName: 'Mustermann' + Math.floor(Math.random() * 100),
               city: 'Musterstadt'  + Math.floor(Math.random() * 100),
               club: 'Musterclub' + Math.floor(Math.random() * 100),
-              gender: Math.random() > 0.5 ? 'HERREN' : 'DAMEN',
+              gender: gender,
               dateOfBirth: '1994-01-01',
             };
 

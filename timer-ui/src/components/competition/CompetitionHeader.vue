@@ -1,7 +1,9 @@
 <template>
 
 
-  <v-footer>
+  <v-footer
+      color="neutral"
+  >
 
 
     <v-select
@@ -9,12 +11,12 @@
         :items="rounds"
         item-text="roundName"
         item-value="id"
-        label="Runde"
     ></v-select>
 
     <RoundDialog
         :dialog.sync="addDialog"
-        :round="{}"
+        :round="round"
+        @dialog-closed="initialize()"
     />
 
     <v-icon
@@ -64,15 +66,40 @@ export default {
   data: () => ({
 
     rounds: [],
-    addDialog: false
+    addDialog: false,
+
+    round: {
+      score: {
+        holdType: null,
+        holdNumber: null,
+        tryNumber: null
+      }
+    }
 
   }),
 
   created() {
-    this.loadRounds();
+    this.initialize();
   },
 
   methods: {
+
+    initialize() {
+
+      this.round = {
+        score: {
+          holdType: null,
+          holdNumber: null,
+          tryNumber: null
+        }
+      }
+
+      this.addDialog = false;
+      this.loadRounds()
+
+    },
+
+
     loadRounds() {
       TimerApiService.getRounds()
           .then(response => {
@@ -140,13 +167,15 @@ export default {
 
     },
 
-  },
+  }
+  ,
 
   computed: {
     selectedRoundIdLocal: {
       get() {
         return this.selectedRoundId
-      },
+      }
+      ,
       set(value) {
         this.$emit('update:selectedRoundId', value)
       }

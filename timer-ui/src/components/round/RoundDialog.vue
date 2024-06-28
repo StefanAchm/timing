@@ -184,7 +184,7 @@ export default {
       handler(newVal) {
         TimerApiService.previewRound(newVal)
             .then(response => {
-              this.maxNumberOfCompetitors = response.data.numberOfCompetitors;
+              this.maxNumberOfCompetitors = response.data?.numberOfCompetitors;
             });
       },
       deep: true

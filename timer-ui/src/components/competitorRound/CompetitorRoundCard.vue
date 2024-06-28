@@ -168,6 +168,7 @@ export default {
           .then(response => {
             this.competitorRoundLocal.score = response.data;
             this.$root.snackbar.showSuccess({message: 'Gespeichert'})
+            this.$emit('updated', this.competitorRoundLocal)
           })
     },
 
