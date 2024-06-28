@@ -7,11 +7,8 @@ import java.util.UUID;
 
 public class FileUtils {
 
-    public static void createFolderIfNotExists(String folderPath) {
-        File folder = new File(folderPath);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
+    private FileUtils() {
+        throw new IllegalStateException("Utility class");
     }
 
     public static void openFile(File file) {

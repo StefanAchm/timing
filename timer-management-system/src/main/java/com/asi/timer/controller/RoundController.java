@@ -26,16 +26,16 @@ public class RoundController {
 
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<String> updateRound(@RequestBody APIRound roundRequest) {
+        return ResponseEntity.ok(this.roundService.updateRound(roundRequest).getId().toString());
+    }
+
     @PostMapping("/preview")
     public ResponseEntity<APIRound> preview(@RequestBody APIRound createRoundRequest) {
 
         return ResponseEntity.ok(this.roundService.preview(createRoundRequest));
 
-    }
-
-    @PostMapping("/update")
-    public ResponseEntity<String> updateRound(@RequestBody APIRound roundRequest) {
-        return ResponseEntity.ok(this.roundService.updateRound(roundRequest).getId().toString());
     }
 
     @DeleteMapping("/delete")

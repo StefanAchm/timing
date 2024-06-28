@@ -37,7 +37,7 @@
             Timer
           </v-list-item-title>
           <v-list-item-subtitle>
-            by Stefan
+
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -76,9 +76,9 @@
 
     </v-main>
 
-    <v-footer app>
-      <!-- -->
-    </v-footer>
+<!--    <v-footer app>-->
+<!--      &lt;!&ndash; &ndash;&gt;-->
+<!--    </v-footer>-->
 
   </v-app>
 
@@ -97,12 +97,10 @@ export default {
   data() {
     return {
       items: [
-        {title: 'Home', icon: 'mdi-bank', route: '/'},
         {title: 'Teilnehmer', icon: 'mdi-account-multiple', route: '/competitors'},
         {title: 'Runden', icon: 'mdi-rotate-360', route: '/rounds'},
         {title: 'Teilnehmer Runden', icon: 'mdi-rotate-3d', route: '/competitor-rounds'},
-        // {title: 'Veranstaltung', icon: 'mdi-shoe-sneaker', route: '/competition'},
-        {title: 'Veranstaltung', icon: 'mdi-shoe-sneaker', route: '/competition2'},
+        {title: 'Veranstaltung', icon: 'mdi-shoe-sneaker', route: '/competition'},
       ],
       right: null,
       mini: true,

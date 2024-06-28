@@ -9,7 +9,10 @@ import java.util.List;
 
 public class ScoreUtil {
 
-    @Deprecated
+    private ScoreUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static double calculateTotalScore(List<CompetitorRound> competitorRounds, List<Round> rounds) {
 
         double score = 0;

@@ -3,7 +3,6 @@ package com.asi.timer.service;
 import com.asi.timer.backend.model.CompetitorRound;
 import com.asi.timer.backend.model.Round;
 import com.asi.timer.backend.utils.ScoreUtil;
-import com.asi.timer.enums.EnumGender;
 import com.asi.timer.enums.EnumHoldType;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
@@ -24,33 +23,14 @@ public class CompetitorRoundService {
     private final CompetitorRepository competitorRepository;
     private final RoundRepository roundRepository;
     private final CompetitorRoundRepository competitorRoundRepository;
-    private final CompetitorService competitorService;
 
     public CompetitorRoundService(CompetitorRepository competitorRepository,
                                   RoundRepository roundRepository,
-                                  CompetitorRoundRepository competitorRoundRepository,
-                                  CompetitorService competitorService
-    ) {
+                                  CompetitorRoundRepository competitorRoundRepository) {
 
         this.competitorRepository = competitorRepository;
         this.roundRepository = roundRepository;
         this.competitorRoundRepository = competitorRoundRepository;
-        this.competitorService = competitorService;
-
-    }
-
-    public String addCompetitorToRound(UUID competitorId, UUID roundId) {
-
-        DBCompetitor competitor = this.competitorRepository
-                .findById(competitorId)
-                .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorId + " not found"));
-
-
-        DBRound round = this.roundRepository
-                .findById(roundId)
-                .orElseThrow(() -> new RuntimeException("Round with id " + roundId + " not found"));
-
-        return add(competitor, round);
 
     }
 
@@ -74,34 +54,6 @@ public class CompetitorRoundService {
                 .orElseThrow(() -> new RuntimeException("Round with number " + roundNumber + " for gender " + competitor.getGender() + " not found"));
 
         return add(competitor, round);
-
-    }
-
-    public double updateScore(UUID competitorRoundID, APICompetitorRound competitorRoundRequest) {
-
-        DBCompetitorRound competitorRound = this.competitorRoundRepository
-                .findById(competitorRoundID)
-                .orElseThrow(() -> new RuntimeException("CompetitorRound with id " + competitorRoundID + " not found"));
-
-        competitorRound.setHoldNumber(competitorRoundRequest.getHoldNumber());
-        competitorRound.setHoldType(competitorRoundRequest.getHoldType());
-        competitorRound.setTryNumber(competitorRoundRequest.getTryNumber());
-
-        this.competitorRoundRepository.save(competitorRound);
-
-        return ScoreUtil.calculateScore(competitorRound.toBackendCompetitorRound());
-
-    }
-
-    public List<APICompetitor> getCompetitors(int roundNumber, EnumGender gender) {
-
-        List<DBCompetitorRound> competitorRounds = this.competitorRoundRepository
-                .findByRound_RoundNumberAndRound_Gender(roundNumber, gender);
-
-        return competitorRounds
-                .stream()
-                .map(competitorRound -> APICompetitor.fromDBCompetitor(competitorRound.getCompetitor(), true))
-                .toList();
 
     }
 

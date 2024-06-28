@@ -2,15 +2,27 @@
 
   <v-container>
 
-    <RoundSelector
-        :selectedRound.sync="selectedRound"
+    <CompetitionHeader
+        :selectedRoundId.sync="selectedRoundId"
     />
 
-    <CompetitorsList
-        :selectedRound="selectedRound"
-    />
+    <v-row>
 
-    <CompetitorSimpleTable></CompetitorSimpleTable>
+      <v-col>
+        <CompetitorSimpleTable
+            :roundId="selectedRoundId"
+            :selectedCompetitorRound.sync="selectedCompetitorRound"
+        />
+
+      </v-col>
+
+      <v-col>
+        <CompetitorRoundCard
+            :competitor-round="selectedCompetitorRound"
+        ></CompetitorRoundCard>
+      </v-col>
+
+    </v-row>
 
   </v-container>
 
@@ -20,22 +32,23 @@
 <script>
 
 import {defineComponent} from "vue";
-import CompetitorsList from "@/components/competitor/CompetitorsList.vue";
-import RoundSelector from "@/components/round/RoundSelector.vue";
 import CompetitorSimpleTable from "@/components/competitor/CompetitorSimpleTable.vue";
+import CompetitorRoundCard from "@/components/competitorRound/CompetitorRoundCard.vue";
+import CompetitionHeader from "@/components/competition/CompetitionHeader.vue";
 
 
 export default defineComponent({
 
-  components: {CompetitorSimpleTable, RoundSelector, CompetitorsList},
+  components: {CompetitorRoundCard, CompetitionHeader, CompetitorSimpleTable},
 
   data() {
     return {
 
-      selectedRound: null,
+      selectedRoundId: null,
+      selectedCompetitorRound: null,
 
     }
-  },
+  }
 
 })
 </script>

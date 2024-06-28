@@ -27,14 +27,6 @@ public class CompetitorRoundController {
 
     }
 
-    @PostMapping("/updateScore")
-    public ResponseEntity<Double> updateScore(@RequestParam UUID competitorRoundID,
-                                              @RequestBody APICompetitorRound competitorRoundRequest) {
-
-        return ResponseEntity.ok(this.competitorRoundService.updateScore(competitorRoundID, competitorRoundRequest));
-
-    }
-
     @PostMapping("/update")
     public ResponseEntity<Double> update(@RequestBody APICompetitorRound competitorRoundRequest) {
 
