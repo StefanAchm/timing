@@ -12,7 +12,7 @@
 
       <v-row>
 
-        <v-col>
+        <v-col :cols="4">
 
           <v-text-field
               v-model="search"
@@ -39,6 +39,15 @@
             label="Runde"
             v-model="roundFilter"
             :items="nrOfRounds"
+          ></v-select>
+        </v-col>
+
+        <v-col>
+          <v-select
+              :disabled="roundFilter === 'ALLE'"
+              label="Status"
+              v-model="statusFilter"
+              :items="['Dabei', 'Nicht dabei', 'Abgeschlossen', 'Noch nicht gestartet']"
           ></v-select>
         </v-col>
 
@@ -111,6 +120,7 @@ export default {
 
     genderFilter: 'ALLE',
     roundFilter: 'ALLE',
+    statusFilter: 'Dabei',
 
     competitorRoundDialog: false,
     selectedCompetitorRound: {}
@@ -132,8 +142,32 @@ export default {
             .filter(competitor => competitor.competitor.gender === this.genderFilter);
       }
       if(this.roundFilter !== 'ALLE') {
-        filteredCompetitors = filteredCompetitors
-            .filter(competitor => competitor['round' + this.roundFilter]);
+
+        if(this.statusFilter === 'Dabei') {
+
+            filteredCompetitors = filteredCompetitors
+                .filter(competitor => competitor['round' + this.roundFilter]);
+
+        } else if(this.statusFilter === 'Nicht dabei') {
+
+          // Filter all, which do not have a round of the selected round number
+
+          filteredCompetitors = filteredCompetitors
+              .filter(competitor => !competitor['round' + this.roundFilter]);
+
+        } else if(this.statusFilter === 'Abgeschlossen') {
+
+
+          filteredCompetitors = filteredCompetitors
+              .filter(competitor => competitor['round' + this.roundFilter]?.competitorRoundStatus === 'COMPLETED');
+
+        } else if(this.statusFilter === 'Noch nicht gestartet') {
+
+          filteredCompetitors = filteredCompetitors
+              .filter(competitor => competitor['round' + this.roundFilter]?.competitorRoundStatus === 'CREATED');
+
+        }
+
       }
 
       return filteredCompetitors.filter(item =>
@@ -200,6 +234,8 @@ export default {
         competitor['round' + competitorRound.roundNumber] = {};
 
         competitor['round' + competitorRound.roundNumber].id = competitorRound.id;
+        competitor['round' + competitorRound.roundNumber].competitorRoundStatus = competitorRound.competitorRoundStatus;
+
 
         if (competitorRound.competitorRoundStatus === 'COMPLETED') {
           competitor['round' + competitorRound.roundNumber].score = competitorRound.score;
@@ -249,6 +285,7 @@ export default {
 
       TimerApi.deleteCompetitorRound(competitorRoundId)
           .then(() => {
+            this.$root.snackbar.showWarning({message: 'Gelöscht'})
             this.init();
           })
 

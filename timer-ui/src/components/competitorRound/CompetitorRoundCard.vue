@@ -167,6 +167,7 @@ export default {
       TimerApiService.updateCompetitorRound(this.competitorRoundLocal)
           .then(response => {
             this.competitorRoundLocal.score = response.data;
+            this.$root.snackbar.showSuccess({message: 'Gespeichert'})
           })
     },
 

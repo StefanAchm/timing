@@ -267,6 +267,13 @@ export default {
       TimerApiService.updateOrCreateCompetitor(this.competitorLocal)
           .then(() => {
 
+              let message =
+                  this.competitorLocal.firstName + ' ' + this.competitorLocal.lastName
+                  + ' mit Startnummer ' + this.competitorLocal.startNumber
+                  + ' gespeichert';
+
+            this.$root.snackbar.showSuccess({message: message});
+
             if (this.competitorLocal.id || this.closeDialogAfterSave) {
               this.close()
             } else {

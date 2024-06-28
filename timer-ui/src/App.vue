@@ -76,6 +76,8 @@
 
     </v-main>
 
+    <snackbar ref="snackbar"></snackbar>
+
 <!--    <v-footer app>-->
 <!--      &lt;!&ndash; &ndash;&gt;-->
 <!--    </v-footer>-->
@@ -89,18 +91,19 @@
 
 import ErrorSnackbar from "@/components/ErrorSnackbar.vue";
 import {EventBus} from "@/plugins/event-bus";
+import snackbar from "@/components/SnackBar.vue";
 
 export default {
   name: 'App',
-  components: {ErrorSnackbar},
+  components: {snackbar, ErrorSnackbar},
 
   data() {
     return {
       items: [
-        {title: 'Teilnehmer', icon: 'mdi-account-multiple', route: '/competitors'},
+        {title: 'Teilnehmer', icon: 'mdi-account-multiple-outline', route: '/competitors'},
         {title: 'Runden', icon: 'mdi-rotate-360', route: '/rounds'},
-        {title: 'Teilnehmer Runden', icon: 'mdi-rotate-3d', route: '/competitor-rounds'},
-        {title: 'Veranstaltung', icon: 'mdi-shoe-sneaker', route: '/competition'},
+        {title: 'Teilnehmer Runden', icon: 'mdi-account-convert-outline', route: '/competitor-rounds'},
+        {title: 'Veranstaltung', icon: 'mdi-scoreboard-outline', route: '/competition'},
       ],
       right: null,
       mini: true,
@@ -113,10 +116,12 @@ export default {
 
   },
 
+  mounted() {
+    this.$root.snackbar = this.$refs.snackbar;
+  },
+
   created() {
     EventBus.$on('show-snackbar', (message) => {
-
-      console.log('show-snackbar', message)
 
       this.snackbar = {
         show: true,

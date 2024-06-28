@@ -49,6 +49,7 @@ export default {
 
       TimerApiService.delete(this.type, this.editItem.id)
           .finally(() => {
+            this.$root.snackbar.showWarning({message: 'Gelöscht'})
             this.close(this.editItem)
           });
 

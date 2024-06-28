@@ -204,6 +204,7 @@ export default {
 
       Promise.all(promises)
           .then(() => {
+            this.$root.snackbar.showSuccess({message: promises.length + ' Runden zugeordnet'})
             this.initialize();
           });
 

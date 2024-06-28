@@ -125,23 +125,6 @@ export default {
       this.selectedCompetitorRoundLocal = null;
     },
 
-
-
-    // TODO: need a sorted list of competitorRounds!
-    // selectedCompetitorRoundLocal: {
-    //   handler(newVal) {
-    //     console.log('selectedCompetitorRoundLocal', newVal);
-    //
-    //     if(newVal.competitorRoundStatus === 'COMPLETED') {
-    //       let index = this.competitorRounds.indexOf(newVal);
-    //       if(index < this.competitorRounds.length - 1) {
-    //         this.selectedCompetitorRoundLocal = this.competitorRounds[index + 1];
-    //       }
-    //     }
-    //   }, deep: true
-    //
-    // }
-
   },
 
   created() {
