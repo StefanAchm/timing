@@ -2,7 +2,7 @@
 
   <v-container>
 
-    <RoundSelectorHeader
+    <CompetitionHeader
         :selectedRoundId.sync="selectedRoundId"
     />
 
@@ -33,13 +33,13 @@
 
 import {defineComponent} from "vue";
 import CompetitorSimpleTable from "@/components/competitor/CompetitorSimpleTable.vue";
-import RoundSelectorHeader from "@/components/round/RoundSelectorHeader.vue";
 import CompetitorRoundCard from "@/components/competitorRound/CompetitorRoundCard.vue";
+import CompetitionHeader from "@/components/competition/CompetitionHeader.vue";
 
 
 export default defineComponent({
 
-  components: {CompetitorRoundCard, RoundSelectorHeader, CompetitorSimpleTable},
+  components: {CompetitorRoundCard, CompetitionHeader, CompetitorSimpleTable},
 
   data() {
     return {

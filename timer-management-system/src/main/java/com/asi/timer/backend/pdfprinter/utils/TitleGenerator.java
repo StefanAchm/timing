@@ -7,6 +7,10 @@ import com.itextpdf.text.pdf.PdfPTable;
 
 public class TitleGenerator {
 
+    private TitleGenerator() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static void addTitleForResultList(Document document, Pdf pdf) throws DocumentException {
 
         String genderName = switch (pdf.getGender()) {

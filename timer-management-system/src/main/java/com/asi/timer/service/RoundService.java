@@ -1,7 +1,6 @@
 package com.asi.timer.service;
 
 import com.asi.timer.model.db.DBCompetitor;
-import com.asi.timer.model.db.DBCompetitorRound;
 import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.CompetitorRoundRepository;
@@ -90,7 +89,7 @@ public class RoundService {
                 .orElseThrow(() -> new RuntimeException("Round with id " + roundId + " not found"));
 
         // TODO: attention
-        this.competitorRoundRepository.deleteAll(round.getCompetitorRounds()); // TODO: attention
+        this.competitorRoundRepository.deleteAll(round.getCompetitorRounds());
         this.roundRepository.delete(round);
 
         return round;

@@ -11,10 +11,6 @@ import java.util.UUID;
 @Repository
 public interface CompetitorRoundRepository extends JpaRepository<DBCompetitorRound, UUID> {
 
-    List<DBCompetitorRound> findByRound_RoundNumber(int roundNumber);
-
-    List<DBCompetitorRound> findByRound_RoundNumberAndRound_Gender(int roundNumber, EnumGender gender);
-
     List<DBCompetitorRound> findByRound_Id(UUID roundId);
 
     List<DBCompetitorRound> findAllByCompetitorId(UUID id);

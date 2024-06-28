@@ -24,7 +24,8 @@ apiClient.interceptors.response.use(
 
 export default {
 
-    ///
+    ///////////////////////////////////////////////////////////////////////////////////
+    // Common
 
     delete(type, id) {
         return apiClient.delete('/' + type + '/delete', {
@@ -35,35 +36,8 @@ export default {
     ///////////////////////////////////////////////////////////////////////////////////
     // Competitor
 
-    getCompetitors() {
-        return apiClient.get('/competitor/getCompetitors');
-    },
-
-    getStartNumber() {
-        return apiClient.get('/competitor/generateStartNumber');
-    },
-
-    // @deprecated
     createCompetitor(competitor) {
         return apiClient.post('/competitor/create', competitor);
-    },
-
-    getRounds() {
-        return apiClient.get('/round/getRounds');
-    },
-
-    printStartList(id) {
-        return apiClient.get('/print/' + 'startList', {
-            responseType: 'blob',
-            params: {id: id}
-        });
-    },
-
-    printResultList(gender) {
-        return apiClient.get('/print/' + 'resultList', {
-            responseType: 'blob',
-            params: {gender: gender}
-        });
     },
 
     updateOrCreateCompetitor(competitor) {
@@ -71,6 +45,14 @@ export default {
         let path = competitor.id ? '/competitor/update' : '/competitor/create';
         return apiClient.post(path, competitor);
 
+    },
+
+    getCompetitors() {
+        return apiClient.get('/competitor/getCompetitors');
+    },
+
+    getStartNumber() {
+        return apiClient.get('/competitor/generateStartNumber');
     },
 
     isStartNumberValid(competitor) {
@@ -89,30 +71,12 @@ export default {
     ///////////////////////////////////////////////////////////////////////////////////
     // Competitor Rounds
 
-
-    getHoldTypes() {
-        return apiClient.get('/competitor-round/getHoldTypes');
-    },
-
     addCompetitorRound(competitorId, roundNumber) {
 
         return apiClient.post('/competitor-round/addCompetitorToRound', null, {
             headers: {'Content-Type': 'application/json'},
             params: {competitorId: competitorId, roundNumber: roundNumber}
         });
-
-    },
-
-    getCompetitorRounds(roundId) {
-
-        return apiClient.get('/competitor-round/getCompetitorRounds', {
-            params: {roundId: roundId}
-        });
-    },
-
-    getAllCompetitorRounds() {
-
-        return apiClient.get('/competitor-round/getAllCompetitorRounds');
 
     },
 
@@ -124,6 +88,21 @@ export default {
             });
     },
 
+    getHoldTypes() {
+        return apiClient.get('/competitor-round/getHoldTypes');
+    },
+
+    getCompetitorRounds(roundId) {
+
+        return apiClient.get('/competitor-round/getCompetitorRounds', {
+            params: {roundId: roundId}
+        });
+    },
+
+    getAllCompetitorRounds() {
+        return apiClient.get('/competitor-round/getAllCompetitorRounds');
+    },
+
     deleteCompetitorRound(competitorRoundId) {
         return apiClient.delete('/competitor-round/delete', {
             params: {id: competitorRoundId}
@@ -132,11 +111,24 @@ export default {
     },
 
     ///////////////////////////////////////////////////////////////////////////////////
-    // Rounds
+    // Print
 
-    previewRound(round) {
-        return apiClient.post('/round/preview', round);
+    printStartList(id) {
+        return apiClient.get('/print/' + 'startList', {
+            responseType: 'blob',
+            params: {id: id}
+        });
     },
+
+    printResultList(gender) {
+        return apiClient.get('/print/' + 'resultList', {
+            responseType: 'blob',
+            params: {gender: gender}
+        });
+    },
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    // Round
 
     updateOrCreateRound(round) {
 
@@ -147,6 +139,14 @@ export default {
         return apiClient.post(path, round, {
             params: queryParams
         });
+    },
+
+    previewRound(round) {
+        return apiClient.post('/round/preview', round);
+    },
+
+    getRounds() {
+        return apiClient.get('/round/getRounds');
     },
 
 };

@@ -17,9 +17,6 @@ public class CompetitorScoreUtil {
      * The following logic should be implemented:
      * 1. Each competitor has one CompetitorScore
      * 2. The competitorScore should be calculated in the following way:
-     *
-     * @param competitorRounds
-     * @return
      */
     public static List<CompetitorScore> fromCompetitorRounds2(List<CompetitorRound> competitorRounds,
                                                               List<Round> rounds) {

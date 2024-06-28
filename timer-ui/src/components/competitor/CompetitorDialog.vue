@@ -147,7 +147,7 @@
 
 import TimerApiService from "@/plugins/timer-api";
 
-import BirthdayPickerMenu from "@/components/competitor/BirthdayPickerMenu.vue";
+import BirthdayPickerMenu from "@/components/BirthdayPickerMenu.vue";
 
 export default {
   components: {BirthdayPickerMenu},

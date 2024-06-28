@@ -37,7 +37,7 @@
             Timer
           </v-list-item-title>
           <v-list-item-subtitle>
-            by Stefan
+
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -76,9 +76,9 @@
 
     </v-main>
 
-    <v-footer app>
-      <!-- -->
-    </v-footer>
+<!--    <v-footer app>-->
+<!--      &lt;!&ndash; &ndash;&gt;-->
+<!--    </v-footer>-->
 
   </v-app>
 

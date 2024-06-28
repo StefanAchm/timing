@@ -75,8 +75,7 @@ public class RowsGenerator {
                     points
             ));
 
-            Row apply = row;
-            list.add(apply);
+            list.add(row);
         }
 
         return list;

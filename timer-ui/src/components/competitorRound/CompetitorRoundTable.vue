@@ -254,10 +254,6 @@ export default {
 
     },
 
-    setFilter(filter) {
-      this.additionalSearch = filter;
-    },
-
   }
 
 }

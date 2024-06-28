@@ -4,7 +4,6 @@ import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.backend.utils.StartNumberUtil;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
-import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.APICompetitor;
 import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.CompetitorRepository;
@@ -26,8 +25,7 @@ public class CompetitorService {
 
     public CompetitorService(CompetitorRepository competitorRepository,
                              CompetitorRoundRepository competitorRoundRepository,
-                             RoundRepository roundRepository
-    ) {
+                             RoundRepository roundRepository) {
 
         this.competitorRepository = competitorRepository;
         this.competitorRoundRepository = competitorRoundRepository;
@@ -66,8 +64,6 @@ public class CompetitorService {
 
         boolean genderChanged = !competitor.getGender().equals(competitorRequest.getGender());
         competitor.setGender(competitorRequest.getGender());
-
-        // TODO: attention, if the competitor is already in a round, this will not work!
 
         this.competitorRepository.save(competitor);
 

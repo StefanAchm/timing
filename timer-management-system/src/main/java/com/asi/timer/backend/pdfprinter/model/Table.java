@@ -21,11 +21,7 @@ public class Table {
         this.rows = rows;
 
         switch (type) {
-            case START_LIST -> {
-                this.rowsOnFirstPage = 11;
-                this.rowsOnNextPages = 14;
-            }
-            case RESULT_LIST -> {
+            case START_LIST, RESULT_LIST -> {
                 this.rowsOnFirstPage = 11;
                 this.rowsOnNextPages = 14;
             }
