@@ -128,6 +128,23 @@ export default {
         });
     },
 
+    previewResultList(gender) {
+
+        return apiClient.get('/print/' + 'previewResultList', {
+            params: {gender: gender}
+        });
+
+    },
+
+    resultListFromData(gender, data) {
+
+        return apiClient.post('/print/' + 'resultListFromData', data, {
+            responseType: 'blob',
+            params: {gender: gender}
+        });
+
+    },
+
     ///////////////////////////////////////////////////////////////////////////////////
     // Round
 

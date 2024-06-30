@@ -136,4 +136,49 @@ public class PrintService {
 
     }
 
+    public List<CompetitorScore> previewResultList(EnumGender gender) {
+
+        List<CompetitorRound> competitorRounds = this.competitorRoundRepository.findByCompetitor_Gender(gender)
+                .stream()
+                .map(DBCompetitorRound::toBackendCompetitorRound)
+                .toList();
+
+        List<Round> rounds = this.roundRepository.findByGender(gender)
+                .stream()
+                .map(DBRound::toBackendRound)
+                .toList();
+
+        return ScoreUtil.getCompetitorScores(competitorRounds, rounds);
+
+    }
+
+
+    public ByteArrayResource getResultListFromData(EnumGender gender, List<CompetitorScore> competitorScores) {
+
+        LocalDate date = LocalDate.now();
+
+        String eventTitle = "KIOT Bouldercup 2024"; // todo
+
+        Pdf pdf = Pdf.newBuilder()
+                .eventTitle(eventTitle)
+                .type(EnumPrintType.RESULT_LIST)
+                .gender(gender.toBackendEnum())
+                .round(0)
+                .date(date)
+                .competitors(null)
+                .competitorScores(competitorScores)
+                .build();
+
+        File file = PdfGenerator.generatePdf(fileStorageProperties.getUploadDir(), pdf);
+
+        Path path = Paths.get(file.getAbsolutePath());
+
+        try {
+            return new ByteArrayResource(Files.readAllBytes(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }

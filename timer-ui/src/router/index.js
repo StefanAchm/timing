@@ -24,6 +24,11 @@ const routes = [
         path: '/competition',
         name: 'competition',
         component: () => import('../views/CompetitionView.vue')
+    },
+    {
+        path: '/result',
+        name: 'result',
+        component: () => import('../views/ResultView.vue')
     }
 ]
 

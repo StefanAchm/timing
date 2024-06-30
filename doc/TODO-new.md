@@ -6,7 +6,7 @@
 - [x] TeilnehmerInn bearbeiten
   - [ ] Was darf bearbeitet werden?
 - [ ] Startnummer:
-  - [ ] doppelte Startnummern verhindern!
+  - [x] doppelte Startnummern verhindern!
   - [x] Startnummer automatisch vergeben
   - [ ] Nachträgliches bereinigen der Startnummern (hintereinander ohne Lücken)
 - [x] Geschlecht:
