@@ -48,10 +48,11 @@ export default {
     deleteItemConfirm() {
 
       TimerApiService.delete(this.type, this.editItem.id)
-          .finally(() => {
+          .then(() => {
             this.$root.snackbar.showWarning({message: 'Gelöscht'})
             this.close(this.editItem)
-          });
+          })
+          .catch(() => {});
 
     },
 

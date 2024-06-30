@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 import {EventBus} from "@/plugins/event-bus";
@@ -15,9 +16,9 @@ apiClient.interceptors.response.use(
     response => response,
     error => {
 
-        EventBus.$emit('show-snackbar', error.response.data.message);
+        EventBus.$emit('show-eror-snackbar', error.response.data.message);
 
-        return {error};
+        throw error;
 
     }
 );
@@ -43,6 +44,7 @@ export default {
     updateOrCreateCompetitor(competitor) {
 
         let path = competitor.id ? '/competitor/update' : '/competitor/create';
+
         return apiClient.post(path, competitor);
 
     },
@@ -96,7 +98,7 @@ export default {
 
         return apiClient.get('/competitor-round/getCompetitorRounds', {
             params: {roundId: roundId}
-        });
+        })
     },
 
     getAllCompetitorRounds() {
@@ -107,7 +109,6 @@ export default {
         return apiClient.delete('/competitor-round/delete', {
             params: {id: competitorRoundId}
         });
-
     },
 
     ///////////////////////////////////////////////////////////////////////////////////

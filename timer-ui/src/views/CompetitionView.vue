@@ -3,14 +3,15 @@
   <div>
 
     <CompetitionHeader
-        :selectedRoundId.sync="selectedRoundId"
+        :rounds="rounds"
+        @update:selectedRoundId="selectedRoundId = $event"
     />
 
     <v-row>
 
       <v-col>
         <CompetitorSimpleTable
-            :roundId="selectedRoundId"
+            :selectedRound="selectedRound"
             :selectedCompetitorRound.sync="selectedCompetitorRound"
             :competitor-rounds="competitorRounds"
         />
@@ -45,10 +46,12 @@ export default {
 
   data: () => ({
 
+    rounds: [],
     selectedRoundId: null,
-    selectedCompetitorRound: null,
+    selectedRound: null,
 
-    competitorRounds: []
+    competitorRounds: [],
+    selectedCompetitorRound: null,
 
   }),
 
@@ -56,10 +59,14 @@ export default {
     this.initialize();
   },
 
+  computed: {
+
+  },
+
   watch: {
+
     selectedRoundId: function (newVal) {
       this.loadCompetitorRounds(newVal);
-      // this.selectedCompetitorRoundLocal = null;
     },
 
   },
@@ -67,10 +74,16 @@ export default {
   methods: {
 
     initialize() {
-      this.selectedRoundId = null;
-      this.selectedCompetitorRound = null;
+
+      this.rounds = []
+      this.selectedRound = null;
+
       this.competitorRounds = [];
-      this.loadCompetitorRounds(this.selectedRoundId);
+      this.selectedCompetitorRound = null;
+
+      this.loadRounds();
+      this.loadCompetitorRounds();
+
     },
 
     competitorRoundUpdated() {
@@ -97,6 +110,25 @@ export default {
 
     },
 
+    loadRounds() {
+      TimerApiService.getRounds()
+          .then(response => {
+
+            this.rounds = response.data
+
+            for (const element of this.rounds) {
+              element.roundName = element.gender + " " + element.roundNumber;
+            }
+
+            if (this.rounds.length > 0) {
+              this.selectedRound = this.rounds[0];
+            }
+
+          })
+          .catch(() => {});
+
+    },
+
     loadCompetitorRounds(id) {
 
       if (!id) {
@@ -112,7 +144,9 @@ export default {
               return a.competitor.startNumber - b.competitor.startNumber;
             });
 
-          });
+          })
+          .catch(() => {});
+
     },
 
   }

@@ -150,9 +150,11 @@ export default {
 
   created() {
 
-    TimerApiService.getHoldTypes().then(response => {
-      this.holdTypes = response.data;
-    });
+    TimerApiService.getHoldTypes()
+        .then(response => {
+          this.holdTypes = response.data;
+        })
+        .catch(() => {});
 
   },
 
@@ -170,6 +172,7 @@ export default {
             this.$root.snackbar.showSuccess({message: 'Gespeichert'})
             this.$emit('updated', this.competitorRoundLocal)
           })
+          .catch(() => {});
     },
 
     edit() {

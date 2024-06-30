@@ -41,7 +41,7 @@
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
       <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
-      <v-icon small class="mr-2" @click="goToCompetitorRounds(item)">mdi-open-in-new</v-icon>
+<!--      <v-icon small class="mr-2" @click="goToCompetitorRounds(item)">mdi-open-in-new</v-icon>-->
     </template>
 
     <template v-slot:no-data>
@@ -104,12 +104,10 @@ export default {
   methods: {
 
     goToCompetitorRounds(item) {
-      console.log(item)
       this.$router.push({name: 'round', params: {roundId: item.id}})
     },
 
     editItem(item) {
-      console.log(item)
       this.editedItem = Object.assign({}, item)
       this.roundDialog = true
     },
@@ -143,7 +141,8 @@ export default {
       TimerApiService.getRounds()
           .then(response => {
             this.rounds = response.data;
-          });
+          })
+          .catch(() => {});
 
     },
 

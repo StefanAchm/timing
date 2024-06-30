@@ -2,13 +2,6 @@
 
   <v-app>
 
-    <ErrorSnackbar
-        :message="snackbar.message"
-        :color="snackbar.color"
-        :show.sync="snackbar.show"
-        v-if="snackbar.show"
-    />
-
     <v-navigation-drawer
         app
         :mini-variant.sync="mini"
@@ -88,14 +81,12 @@
 
 <script>
 
-
-import ErrorSnackbar from "@/components/ErrorSnackbar.vue";
 import {EventBus} from "@/plugins/event-bus";
 import snackbar from "@/components/SnackBar.vue";
 
 export default {
   name: 'App',
-  components: {snackbar, ErrorSnackbar},
+  components: {snackbar},
 
   data() {
     return {
@@ -107,11 +98,6 @@ export default {
       ],
       right: null,
       mini: true,
-      snackbar: {
-        show: false,
-        message: '',
-        color: 'error'
-      }
     }
 
   },
@@ -121,13 +107,8 @@ export default {
   },
 
   created() {
-    EventBus.$on('show-snackbar', (message) => {
-
-      this.snackbar = {
-        show: true,
-        message: message,
-        color: 'error'
-      }
+    EventBus.$on('show-eror-snackbar', (message) => {
+      this.$root.snackbar.showError({message: message})
     })
   }
 

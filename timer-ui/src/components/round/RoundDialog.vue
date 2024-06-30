@@ -185,7 +185,8 @@ export default {
         TimerApiService.previewRound(newVal)
             .then(response => {
               this.maxNumberOfCompetitors = response.data?.numberOfCompetitors;
-            });
+            })
+            .catch(() => {});
       },
       deep: true
     }
@@ -227,10 +228,12 @@ export default {
 
       TimerApiService.updateOrCreateRound(this.roundLocal)
           .then(response => {
+            console.log(response)
             this.roundLocal = response.data;
             this.$root.snackbar.showSuccess({message: 'Gespeichert'})
             this.close()
-          });
+          })
+          .catch(() => {});
     }
 
   }

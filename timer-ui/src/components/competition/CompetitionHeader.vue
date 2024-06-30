@@ -7,7 +7,7 @@
 
 
     <v-select
-        v-model="selectedRoundIdLocal"
+        v-model="selectedRoundId"
         :items="rounds"
         item-text="roundName"
         item-value="id"
@@ -15,7 +15,7 @@
 
     <RoundDialog
         :dialog.sync="addDialog"
-        :round="round"
+        :round="editRound"
         @dialog-closed="initialize()"
     />
 
@@ -24,13 +24,6 @@
     >
       mdi-plus
     </v-icon>
-
-    <!--    <v-icon-->
-    <!--        @click="addDialog = true"-->
-    <!--    >-->
-    <!--      mdi-pencil-->
-    <!--    </v-icon>-->
-
 
     <v-spacer></v-spacer>
 
@@ -58,17 +51,18 @@ export default {
   components: {RoundDialog},
 
   props: {
-    selectedRoundId: {
-      type: String
-    }
+    rounds: {
+      type: Array
+    },
   },
 
   data: () => ({
 
-    rounds: [],
     addDialog: false,
 
-    round: {
+    selectedRoundId: null,
+
+    editRound: {
       score: {
         holdType: null,
         holdNumber: null,
@@ -82,11 +76,25 @@ export default {
     this.initialize();
   },
 
+  watch: {
+    rounds: {
+      handler() {
+        this.selectedRoundId = this.rounds[0]?.id
+      }
+    },
+    selectedRoundId: {
+      handler() {
+        this.$emit('update:selectedRoundId', this.selectedRoundId)
+      }
+    }
+
+  },
+
   methods: {
 
     initialize() {
 
-      this.round = {
+      this.editRound = {
         score: {
           holdType: null,
           holdNumber: null,
@@ -95,48 +103,16 @@ export default {
       }
 
       this.addDialog = false;
-      this.loadRounds()
 
     },
-
-
-    loadRounds() {
-      TimerApiService.getRounds()
-          .then(response => {
-
-            this.rounds = response.data
-
-            for (const element of this.rounds) {
-              element.roundName = element.gender + " " + element.roundNumber;
-            }
-
-            if (this.rounds.length > 0) {
-              this.selectedRoundIdLocal = this.rounds[0].id;
-            }
-
-          })
-
-    },
-
-    roundText(id) {
-
-      let round = this.rounds.find(round => round.id === id)
-
-      return round.roundNumber + "." +
-          "Runde der " + round.gender +
-          " mit " + round.numberOfCompetitors + " TeilnehmerInnen " +
-          "(maximal " + round.maxHolds + " Griffe)";
-
-    },
-
 
     downloadStartList() {
 
-      let round = this.rounds.find(round => round.id === this.selectedRoundIdLocal)
+      let round = this.rounds.find(round => round.id === this.selectedRoundId)
 
       let filename = 'startList-' + round.gender + '-' + round.roundNumber + '.pdf';
 
-      TimerApiService.printStartList(this.selectedRoundIdLocal)
+      TimerApiService.printStartList(this.selectedRoundId)
           .then(response => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
@@ -145,12 +121,14 @@ export default {
             document.body.appendChild(link);
             link.click();
             link.remove();
-          });
+          })
+          .catch(() => {});
+
     },
 
     downloadResultList() {
 
-      let round = this.rounds.find(round => round.id === this.selectedRoundIdLocal)
+      let round = this.rounds.find(round => round.id === this.selectedRoundId)
 
       let filename = 'resultList-' + round.gender + '.pdf';
 
@@ -163,23 +141,15 @@ export default {
             document.body.appendChild(link);
             link.click();
             link.remove();
-          });
+          })
+          .catch(() => {});
 
     },
 
-  }
-  ,
+  },
 
   computed: {
-    selectedRoundIdLocal: {
-      get() {
-        return this.selectedRoundId
-      }
-      ,
-      set(value) {
-        this.$emit('update:selectedRoundId', value)
-      }
-    }
+
   }
 
 }

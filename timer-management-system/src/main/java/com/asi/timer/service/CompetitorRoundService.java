@@ -3,6 +3,7 @@ package com.asi.timer.service;
 import com.asi.timer.backend.model.CompetitorRound;
 import com.asi.timer.backend.model.Round;
 import com.asi.timer.backend.utils.ScoreUtil;
+import com.asi.timer.enums.EnumCompetitorRoundStatus;
 import com.asi.timer.enums.EnumHoldType;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
@@ -39,6 +40,18 @@ public class CompetitorRoundService {
         DBCompetitorRound competitorRound = new DBCompetitorRound();
         competitorRound.setCompetitor(competitor);
         competitorRound.setRound(round);
+
+        // make sure that all previous rounds are completed
+
+        this.competitorRoundRepository
+                .findAllByCompetitorId(competitor.getId())
+                .stream()
+                .filter(competitorRound1 -> competitorRound1.getRound().getRoundNumber() < round.getRoundNumber())
+                .filter(competitorRound1 -> competitorRound1.getCompetitorRoundStatus() == EnumCompetitorRoundStatus.CREATED)
+                .findFirst()
+                .ifPresent(c -> {
+                    throw new RuntimeException("Previous rounds are not completed");
+                });
 
         return this.competitorRoundRepository.save(competitorRound).getId().toString();
 
@@ -166,6 +179,18 @@ public class CompetitorRoundService {
         DBCompetitorRound competitorRound = this.competitorRoundRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("CompetitorRound with id " + id + " not found"));
+
+        // If there is a competitorRound, after this round, we can not delete it
+
+        this.competitorRoundRepository
+                .findAllByCompetitorId(competitorRound.getCompetitor().getId())
+                .stream()
+                .filter(competitorRound1 -> competitorRound1.getRound().getRoundNumber() > competitorRound.getRound().getRoundNumber())
+                .findFirst()
+                .ifPresent(c -> {
+                    throw new RuntimeException("CompetitorRound with id " + id + " can not be deleted, because there is a round after this round");
+                });
+
 
         this.competitorRoundRepository.delete(competitorRound);
 

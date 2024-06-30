@@ -37,17 +37,19 @@ export default {
 
 
   created() {
-    this.getHoldTypes();
+    this.loadHoldTypes();
   },
 
   watch: {},
 
   methods: {
 
-    getHoldTypes() {
-      TimerApiService.getHoldTypes().then(response => {
+    loadHoldTypes() {
+      TimerApiService.getHoldTypes()
+          .then(response => {
             this.holdTypes = response.data;
-          });
+          })
+          .catch(() => {});
     }
 
   },

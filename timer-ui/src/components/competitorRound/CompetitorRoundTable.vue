@@ -8,6 +8,20 @@
         @dialog-closed="init"
     />
 
+    <CompetitorDialog
+        :competitor.sync="editedItem"
+        :dialog.sync="dialogVisible"
+        @dialog-closed="init()"
+        :full-edit="true"/>
+
+    <DeleteDialog
+        :dialog.sync="dialogDelete"
+        @dialog-closed="init()"
+        :itemprop="editedItem"
+        :type="'competitor'"
+        :warning="deleteWarning"
+    />
+
     <v-container>
 
       <v-row>
@@ -36,9 +50,9 @@
 
         <v-col>
           <v-select
-            label="Runde"
-            v-model="roundFilter"
-            :items="nrOfRounds"
+              label="Runde"
+              v-model="roundFilter"
+              :items="nrOfRounds"
           ></v-select>
         </v-col>
 
@@ -58,28 +72,45 @@
     <v-data-table
         :headers="headers"
         :items="competitorsFiltered"
+        :items-per-page="-1"
+        :sort-by="['competitor.startNumber']"
     >
 
       <template v-slot:item="{ item }">
+
         <tr>
 
+          <td>{{ item.competitor.startNumber }}</td>
           <td>{{ item.competitor.firstName }} {{ item.competitor.lastName }}</td>
           <td>{{ item.competitor.gender }}</td>
 
           <td v-for="i in maxNumberOfRounds()" :key="i">
 
-          <span v-if="item['round' + i]">
-
-            {{ item['round' + i].score }}
-
-            <v-icon small class="ml-2 mr-2" @click="changeCompetitorRound(item['round' + i].id)">mdi-pencil</v-icon>
-            <v-icon small @click="deleteCompetitorRound(item['round' + i].id)">mdi-delete</v-icon>
+            <span v-if="item.rounds[i]">
 
 
-          </span>
+              {{ formatNumber(item.rounds[i].score) }}
+
+              <v-icon
+                  small
+                  class="ml-2 mr-2"
+                  @click="changeCompetitorRound(item.rounds[i].id)">
+                mdi-pencil
+              </v-icon>
+
+              <v-icon
+                  small
+                  :disabled="hasNextRound(item, i)"
+                  @click="deleteCompetitorRound(item.rounds[i].id)">
+                mdi-delete
+              </v-icon>
+
+
+            </span>
 
             <v-btn
                 v-else
+                :disabled="previousRoundNotFinished(item, i)"
                 outlined
                 rounded
                 small
@@ -89,7 +120,13 @@
 
           </td>
 
-          <td> {{item.competitor.totalScore}}</td>
+          <td>{{ item.competitor.totalScore }}</td>
+
+          <td>
+            <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+            <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+
+          </td>
 
         </tr>
 
@@ -106,11 +143,18 @@
 
 import TimerApi from "@/plugins/timer-api";
 import CompetitorRoundDialog from "@/components/competitorRound/CompetitorRoundDialog.vue";
+import DeleteDialog from "@/components/DeleteDialog.vue";
+import CompetitorDialog from "@/components/competitor/CompetitorDialog.vue";
 
 export default {
-  components: {CompetitorRoundDialog},
+  components: {CompetitorDialog, DeleteDialog, CompetitorRoundDialog},
 
   data: () => ({
+
+    dialogDelete: false,
+    deleteWarning: '',
+    dialogVisible: false,
+    editedItem: {},
 
     competitorRounds: [],
     competitors: [],
@@ -141,30 +185,30 @@ export default {
         filteredCompetitors = filteredCompetitors
             .filter(competitor => competitor.competitor.gender === this.genderFilter);
       }
-      if(this.roundFilter !== 'ALLE') {
+      if (this.roundFilter !== 'ALLE') {
 
-        if(this.statusFilter === 'Dabei') {
+        if (this.statusFilter === 'Dabei') {
 
-            filteredCompetitors = filteredCompetitors
-                .filter(competitor => competitor['round' + this.roundFilter]);
+          filteredCompetitors = filteredCompetitors
+              .filter(competitor => competitor.rounds[this.roundFilter]);
 
-        } else if(this.statusFilter === 'Nicht dabei') {
+        } else if (this.statusFilter === 'Nicht dabei') {
 
           // Filter all, which do not have a round of the selected round number
 
           filteredCompetitors = filteredCompetitors
-              .filter(competitor => !competitor['round' + this.roundFilter]);
+              .filter(competitor => !competitor.rounds[this.roundFilter]);
 
-        } else if(this.statusFilter === 'Abgeschlossen') {
+        } else if (this.statusFilter === 'Abgeschlossen') {
 
-
-          filteredCompetitors = filteredCompetitors
-              .filter(competitor => competitor['round' + this.roundFilter]?.competitorRoundStatus === 'COMPLETED');
-
-        } else if(this.statusFilter === 'Noch nicht gestartet') {
 
           filteredCompetitors = filteredCompetitors
-              .filter(competitor => competitor['round' + this.roundFilter]?.competitorRoundStatus === 'CREATED');
+              .filter(competitor => competitor.rounds[this.roundFilter]?.competitorRoundStatus === 'COMPLETED');
+
+        } else if (this.statusFilter === 'Noch nicht gestartet') {
+
+          filteredCompetitors = filteredCompetitors
+              .filter(competitor => competitor.rounds[this.roundFilter]?.competitorRoundStatus === 'CREATED');
 
         }
 
@@ -204,6 +248,39 @@ export default {
             this.setCompetitorsArray();
 
           })
+          .catch(() => {
+          });
+    },
+
+    formatNumber(value) {
+      return value;
+
+      // TODO
+      // return value.toLocaleString('en-US', {
+      //   minimumIntegerDigits: 3,
+      //   minimumFractionDigits: 3,
+      //   maximumFractionDigits: 3
+      // });
+    },
+
+    hasNextRound(item, i) {
+      return !!item.rounds[i + 1];
+    },
+
+    previousRoundNotFinished(item, i) {
+
+      if(i === 1) {
+        return false;
+      }
+
+      let previousRound = item.rounds[i - 1];
+
+      if(previousRound === undefined) {
+        return true;
+      }
+
+      return previousRound.competitorRoundStatus === 'CREATED';
+
     },
 
     maxNumberOfRounds() {
@@ -218,10 +295,7 @@ export default {
 
     setCompetitorsArray() {
 
-      // Create an array with objects, like: {competitor, round1, round2, round3, ...}
-
       this.competitors = [];
-
       this.competitorRounds.forEach(competitorRound => {
 
         let competitor = this.competitors.find(competitor => competitor.competitor.id === competitorRound.competitor.id);
@@ -231,16 +305,18 @@ export default {
           this.competitors.push(competitor);
         }
 
-        competitor['round' + competitorRound.roundNumber] = {};
+        competitor.rounds = competitor.rounds || [];
 
-        competitor['round' + competitorRound.roundNumber].id = competitorRound.id;
-        competitor['round' + competitorRound.roundNumber].competitorRoundStatus = competitorRound.competitorRoundStatus;
+        competitor.rounds[competitorRound.roundNumber] = {};
+
+        competitor.rounds[competitorRound.roundNumber].id = competitorRound.id;
+        competitor.rounds[competitorRound.roundNumber].competitorRoundStatus = competitorRound.competitorRoundStatus;
 
 
         if (competitorRound.competitorRoundStatus === 'COMPLETED') {
-          competitor['round' + competitorRound.roundNumber].score = competitorRound.score;
-        } else {
-          competitor['round' + competitorRound.roundNumber].score = 'DNS';
+          competitor.rounds[competitorRound.roundNumber].score = competitorRound.score;
+        } else if (competitorRound.competitorRoundStatus === 'CREATED') {
+          competitor.rounds[competitorRound.roundNumber].score = 'DNS';
         }
 
       });
@@ -252,15 +328,22 @@ export default {
       let maxNumberOfRounds = this.maxNumberOfRounds();
 
       this.headers = [
+        {text: 'Startnummer', value: 'competitor.startNumber'},
         {text: 'Name', value: 'competitor.firstName'},
         {text: 'Gender', value: 'competitor.gender'}
       ];
 
       for (let i = 1; i <= maxNumberOfRounds; i++) {
-        this.headers.push({text: 'Runde ' + i, value: 'round' + i});
+        this.headers.push({
+              text: 'Runde ' + i,
+              value: 'rounds[' + i + '].score',
+              sortable: true
+            });
       }
 
       this.headers.push({text: 'Punkte', value: 'competitor.totalScore'})
+
+      this.headers.push({text: 'Aktionen', value: 'actions', sortable: false})
 
     },
 
@@ -268,16 +351,35 @@ export default {
 
       TimerApi.addCompetitorRound(competitorId, roundNumber)
           .then(() => {
-
             this.init();
-
           })
+          .catch(() => {
+          });
     },
 
     changeCompetitorRound(competitorRoundId) {
 
       this.selectedCompetitorRound = this.competitorRounds.find(competitorRound => competitorRound.id === competitorRoundId);
       this.competitorRoundDialog = true;
+
+    },
+
+    editItem(item) {
+      this.editedItem = Object.assign({}, item.competitor)
+      this.dialogVisible = true
+    },
+
+    deleteItem(item) {
+      this.editedItem = Object.assign({}, item.competitor)
+      this.dialogDelete = true
+
+      let completedRounds = item.rounds.filter(round => round.competitorRoundStatus === 'COMPLETED');
+
+      if(completedRounds.length > 0) {
+        this.deleteWarning = 'Achtung: Der Teilnehmer hat bereits Runden zugeordnet.'
+      } else {
+        this.deleteWarning = ''
+      }
 
     },
 
@@ -288,6 +390,8 @@ export default {
             this.$root.snackbar.showWarning({message: 'Gelöscht'})
             this.init();
           })
+          .catch(() => {
+          });
 
     },
 

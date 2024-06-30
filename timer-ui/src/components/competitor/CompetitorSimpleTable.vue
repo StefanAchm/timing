@@ -9,35 +9,70 @@
         class="elevation-1"
         hide-default-footer
         fixed-header
-        height="500px"
+        height="650px"
         :items-per-page="competitorRounds.length"
     >
 
       <template v-slot:top>
 
-        <v-toolbar flat>
+        <v-card
+            :elevation="0"
+        >
 
-          <v-toolbar-title>
+          <v-card-title>
 
-            ({{ competitorRoundsCompleted.length }}/{{ competitorRounds.length }}) Teilnehmer
-            in Runde {{ competitorRounds[0]?.roundNumber }}
+            Runde {{ competitorRounds[0]?.roundNumber }}
             der {{ competitorRounds[0]?.competitor.gender }}
 
-          </v-toolbar-title>
+            <v-spacer></v-spacer>
 
-          <v-spacer></v-spacer>
+<!--            <v-btn-->
+<!--                color="primary"-->
+<!--                dark-->
+<!--                class="mb-2"-->
+<!--                @click="add"-->
+<!--            >TeilnehmerInn hinzufügen-->
+<!--            </v-btn>-->
 
-          <v-icon @click="add">mdi-plus</v-icon>
+            <v-icon @click="add">mdi-plus</v-icon>
 
-          <CompetitorDialog
-              :dialog.sync="dialogVisible"
-              :competitor="{}"
-              :full-edit="true"
-          />
+            <CompetitorDialog
+                :dialog.sync="dialogVisible"
+                :competitor="{}"
+                :full-edit="true"
+            />
 
+          </v-card-title>
 
+          <v-card-subtitle>
 
-        </v-toolbar>
+            <v-row>
+
+              <v-col>
+
+                TeilnehmerInnen: {{ competitorRounds.length }} <br>
+                Noch nicht gestartet: {{ competitorRoundsCompleted.length }} <br>
+                Anzahl Griffe: {{ selectedRound?.maxHolds }} <br>
+
+              </v-col>
+
+              <v-col class="text-right">
+
+                  <v-btn
+                      :disabled="selectedCompetitorRoundLocal === null"
+                      color="primary"
+                      class="mb-2"
+                      @click="selectedCompetitorRoundLocal = null"
+                  >Stopp
+                  </v-btn>
+
+              </v-col>
+
+            </v-row>
+
+          </v-card-subtitle>
+
+        </v-card>
 
       </template>
 
@@ -45,9 +80,9 @@
         <tr :class="getRowStyle(item)">
 
           <td>{{ item.competitor.startNumber }}</td>
-          <td>{{ item.competitorNumber}}</td>
+          <td>{{ item.competitorNumber }}</td>
           <td>{{ item.competitor.firstName }} {{ item.competitor.lastName }}</td>
-          <td> {{ item.score }} </td>
+          <td> {{ item.score }}</td>
           <td>
 
             <v-progress-circular
@@ -60,9 +95,9 @@
 
             <v-icon
                 v-else
-                small class="mr-2"
+                class="mr-2"
                 @click="chooseItem(item)">
-              mdi-open-in-new
+              mdi-play-circle-outline
             </v-icon>
 
 
@@ -92,6 +127,9 @@ export default {
     },
     competitorRounds: {
       type: Array
+    },
+    selectedRound: {
+      type: Object
     }
   },
 
@@ -138,7 +176,7 @@ export default {
     },
 
     getRowStyle(item) {
-      if(item.competitorRoundStatus === 'COMPLETED') {
+      if (item.competitorRoundStatus === 'COMPLETED') {
         return 'grey lighten-2 grey--text';
       } else {
         return '';
@@ -150,9 +188,9 @@ export default {
       // Update +/- on all items
       let index = this.competitorRounds.indexOf(item);
       this.competitorRounds.forEach((cr, i) => {
-        if(i < index) {
+        if (i < index) {
           cr.competitorNumber = '-' + (index - i);
-        } else if(i === index) {
+        } else if (i === index) {
           cr.competitorNumber = '0';
         } else {
           cr.competitorNumber = '+' + (i - index);
@@ -161,7 +199,6 @@ export default {
     },
 
   },
-
 
 
 }

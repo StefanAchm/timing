@@ -227,7 +227,9 @@ export default {
               } else {
                 this.startNumberErrors = ['Startnummer ' + val.startNumber + ' bereits vergeben'];
               }
-            });
+            })
+            .catch(() => {});
+
 
       },
       deep: true
@@ -253,7 +255,8 @@ export default {
       TimerApiService.getStartNumber()
           .then(response => {
             this.competitorLocal.startNumber = response.data;
-          });
+          })
+          .catch(() => {});
     },
 
     close(cf) {
@@ -281,7 +284,8 @@ export default {
               this.init()
             }
 
-          });
+          })
+          .catch(() => {});
 
     }
 

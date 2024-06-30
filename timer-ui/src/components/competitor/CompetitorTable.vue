@@ -137,7 +137,8 @@ export default {
               element.nrOfRounds = element.competitorRounds.length;
             }
 
-          });
+          })
+          .catch(() => {});
 
     },
 
@@ -170,7 +171,8 @@ export default {
                   this.initialize();
                 });
 
-          });
+          })
+          .catch(() => {});
 
     },
 
@@ -194,8 +196,6 @@ export default {
 
     autoAdd() {
 
-      console.log(this.competitorsWithoutRounds)
-
       let promises = [];
 
       for(const competitor of this.competitorsWithoutRounds) {
@@ -208,7 +208,8 @@ export default {
           .then(() => {
             this.$root.snackbar.showSuccess({message: promises.length + ' Runden zugeordnet'})
             this.initialize();
-          });
+          })
+          .catch(() => {});
 
     }
 

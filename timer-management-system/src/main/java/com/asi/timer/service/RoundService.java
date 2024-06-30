@@ -48,6 +48,10 @@ public class RoundService {
 
         DBRound round = DBRound.fromAPIRound(apiRound);
 
+        if(roundAlreadyExists(round)) {
+            throw new RuntimeException("Round already exists");
+        }
+
         DBRound roundCreated = this.roundRepository.save(round);
 
         if (addCompetitors) {
@@ -75,6 +79,10 @@ public class RoundService {
         round.setRoundNumber(apiRound.getRoundNumber());
         round.setMaxHolds(apiRound.getMaxHolds());
         round.setGender(apiRound.getGender());
+
+        if(roundAlreadyExists(round)) {
+            throw new RuntimeException("Round already exists");
+        }
 
         this.roundRepository.save(round);
 
@@ -109,6 +117,14 @@ public class RoundService {
         roundResponse.setNumberOfCompetitors(possibleCandidatesForRound.size());
 
         return roundResponse;
+
+    }
+
+    private boolean roundAlreadyExists(DBRound round) {
+
+        return this.roundRepository
+                .findByRoundNumberAndGender(round.getRoundNumber(), round.getGender())
+                .isPresent();
 
     }
 

@@ -12,7 +12,7 @@
 
       <v-card-text>
 
-        <v-form v-model="isValid">
+        <v-form>
 
           <v-container>
 
@@ -68,7 +68,6 @@
             color="blue darken-1"
             text
             @click="save"
-            :disabled="!isValid"
         >Speichern</v-btn>
 
       </v-card-actions>
@@ -118,6 +117,7 @@ export default {
             this.dialogLocal = false
             this.$emit('dialog-closed')
           })
+          .catch(() => {});
 
 
     },
