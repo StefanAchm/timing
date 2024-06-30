@@ -38,7 +38,7 @@
 
         </v-col>
 
-        <v-col>
+        <v-col :cols="1">
 
           <v-select
               label="Geschlecht"
@@ -48,7 +48,7 @@
 
         </v-col>
 
-        <v-col>
+        <v-col :cols="1">
           <v-select
               label="Runde"
               v-model="roundFilter"
@@ -56,13 +56,19 @@
           ></v-select>
         </v-col>
 
-        <v-col>
+        <v-col :cols="2">
           <v-select
-              :disabled="roundFilter === 'ALLE'"
               label="Status"
               v-model="statusFilter"
-              :items="['Dabei', 'Nicht dabei', 'Abgeschlossen', 'Noch nicht gestartet']"
+              :items="['Dabei', 'Nicht dabei', 'Abgeschlossen', 'Noch nicht gestartet', 'Bezahlt', 'Nicht bezahlt']"
           ></v-select>
+        </v-col>
+
+        <v-col :cols="1">
+          <v-switch
+              v-model="roundView"
+              :label="roundView ? 'Rundenansicht' : 'Teilnehmeransicht'"
+          ></v-switch>
         </v-col>
 
       </v-row>
@@ -84,7 +90,11 @@
           <td>{{ item.competitor.firstName }} {{ item.competitor.lastName }}</td>
           <td>{{ item.competitor.gender }}</td>
 
-          <td v-for="i in maxNumberOfRounds()" :key="i">
+          <template v-if="roundView">
+
+            <td
+                v-for="i in maxNumberOfRounds()"
+                :key="i">
 
             <span v-if="item.rounds[i]">
 
@@ -108,24 +118,56 @@
 
             </span>
 
-            <v-btn
-                v-else
-                :disabled="previousRoundNotFinished(item, i)"
-                outlined
-                rounded
-                small
-                @click="addCompetitorToRound(item.competitor.id, i)">Hinzufügen
-            </v-btn>
+              <v-btn
+                  v-else
+                  :disabled="previousRoundNotFinished(item, i)"
+                  outlined
+                  rounded
+                  small
+                  @click="addCompetitorToRound(item.competitor.id, i)">Hinzufügen
+              </v-btn>
 
 
-          </td>
+            </td>
 
-          <td>{{ item.competitor.totalScore }}</td>
+            <td>{{ item.competitor.totalScore }}</td>
+
+          </template>
+
+          <template v-else>
+
+            <td>{{ item.competitor.city }}</td>
+            <td>{{ item.competitor.club }}</td>
+            <td>{{ item.competitor.dateOfBirth }}</td>
+            <td>{{ item.competitor.nrOfRounds }}</td> <!-- todo -->
+
+            <td>
+
+              <v-btn
+                  v-if="item.competitor.paymentStatus === 'NOT_PAID'"
+                  outlined
+                  rounded
+                  small
+                  color="error"
+                  @click="updateCompetitorPaymentStatus(item.competitor)">
+                Bezahlen
+              </v-btn>
+
+              <v-chip
+                  v-else
+                  color="success"
+              >
+                {{ item.competitor.paymentStatus }}
+              </v-chip>
+
+            </td>
+
+
+          </template>
 
           <td>
             <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-
           </td>
 
         </tr>
@@ -167,7 +209,9 @@ export default {
     statusFilter: 'Dabei',
 
     competitorRoundDialog: false,
-    selectedCompetitorRound: {}
+    selectedCompetitorRound: {},
+
+    roundView: true,
 
   }),
 
@@ -185,6 +229,7 @@ export default {
         filteredCompetitors = filteredCompetitors
             .filter(competitor => competitor.competitor.gender === this.genderFilter);
       }
+
       if (this.roundFilter !== 'ALLE') {
 
         if (this.statusFilter === 'Dabei') {
@@ -214,6 +259,16 @@ export default {
 
       }
 
+
+      if (this.statusFilter === 'Bezahlt') {
+        filteredCompetitors = filteredCompetitors
+            .filter(competitor => competitor.competitor.paymentStatus === 'PAID')
+      } else if (this.statusFilter === 'Nicht bezahlt') {
+        filteredCompetitors = filteredCompetitors
+            .filter(competitor => competitor.competitor.paymentStatus === 'NOT_PAID')
+      }
+
+
       return filteredCompetitors.filter(item =>
               Object.values(item).some(value =>
                   value.toString().toLowerCase().includes(this.search.toLowerCase())
@@ -233,6 +288,12 @@ export default {
       return nrOfRounds;
     }
 
+  },
+
+  watch: {
+    roundView() {
+      this.updateHeaders();
+    },
   },
 
   methods: {
@@ -269,13 +330,13 @@ export default {
 
     previousRoundNotFinished(item, i) {
 
-      if(i === 1) {
+      if (i === 1) {
         return false;
       }
 
       let previousRound = item.rounds[i - 1];
 
-      if(previousRound === undefined) {
+      if (previousRound === undefined) {
         return true;
       }
 
@@ -323,6 +384,16 @@ export default {
 
     },
 
+    updateCompetitorPaymentStatus(item) {
+      item.paymentStatus = 'PAID'
+      TimerApi.updateOrCreateCompetitor(item)
+          .then(() => {
+            this.init();
+          })
+          .catch(() => {
+          });
+    },
+
     updateHeaders() {
 
       let maxNumberOfRounds = this.maxNumberOfRounds();
@@ -330,18 +401,32 @@ export default {
       this.headers = [
         {text: '#', value: 'competitor.startNumber'},
         {text: 'Name', value: 'competitor.firstName'},
-        {text: 'Gender', value: 'competitor.gender'}
+        {text: 'Geschlecht', value: 'competitor.gender'}
       ];
 
-      for (let i = 1; i <= maxNumberOfRounds; i++) {
-        this.headers.push({
-              text: 'Runde ' + i,
-              value: 'rounds[' + i + '].score',
-              sortable: true
-            });
+
+      if (this.roundView) {
+
+        for (let i = 1; i <= maxNumberOfRounds; i++) {
+          this.headers.push({
+            text: 'Runde ' + i,
+            value: 'rounds[' + i + '].score',
+            sortable: true
+          });
+        }
+
+        this.headers.push({text: 'Punkte', value: 'competitor.totalScore'})
+
+      } else {
+
+        this.headers.push({text: 'Stadt', value: 'competitor.city'})
+        this.headers.push({text: 'Verein', value: 'competitor.club'})
+        this.headers.push({text: 'Geburtsdatum', value: 'competitor.dateOfBirth'})
+        this.headers.push({text: 'Runden', value: 'nrOfRounds'})
+        this.headers.push({text: 'Status', value: 'competitor.paymentStatus'})
+
       }
 
-      this.headers.push({text: 'Punkte', value: 'competitor.totalScore'})
 
       this.headers.push({text: 'Aktionen', value: 'actions', sortable: false})
 
@@ -375,7 +460,7 @@ export default {
 
       let completedRounds = item.rounds.filter(round => round.competitorRoundStatus === 'COMPLETED');
 
-      if(completedRounds.length > 0) {
+      if (completedRounds.length > 0) {
         this.deleteWarning = 'Achtung: Der Teilnehmer hat bereits Runden zugeordnet.'
       } else {
         this.deleteWarning = ''

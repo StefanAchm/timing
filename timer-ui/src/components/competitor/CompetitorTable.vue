@@ -103,6 +103,7 @@ export default {
       {text: 'Geburtsdatum', value: 'dateOfBirth'},
       {text: 'Geschlecht', value: 'gender'},
       {text: 'Runden', value: 'nrOfRounds'},
+      {text: 'Bezahlt', value: 'paymentStatus'},
       {text: 'Aktionen', value: 'actions', sortable: false}
     ],
     editedItem: {},

@@ -11,9 +11,6 @@ import java.util.UUID;
 @Repository
 public interface CompetitorRepository extends JpaRepository<DBCompetitor, UUID> {
 
-    List<DBCompetitor> findAllByGenderAndDeletedFalse(EnumGender gender);
-
-    // Find all, where delete = false
-    List<DBCompetitor> findAllByDeletedFalse();
+    List<DBCompetitor> findAllByGender(EnumGender gender);
 
 }

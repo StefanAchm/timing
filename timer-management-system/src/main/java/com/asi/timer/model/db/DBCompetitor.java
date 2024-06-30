@@ -2,6 +2,7 @@ package com.asi.timer.model.db;
 
 import com.asi.timer.backend.model.Competitor;
 import com.asi.timer.enums.EnumGender;
+import com.asi.timer.enums.EnumPaymentStatus;
 import com.asi.timer.model.view.APICompetitor;
 
 import javax.persistence.*;
@@ -32,12 +33,14 @@ public class DBCompetitor {
     @Enumerated(EnumType.STRING)
     private EnumGender gender;
 
-    private boolean deleted;
+    @Enumerated(EnumType.STRING)
+    private EnumPaymentStatus paymentStatus;
 
     @OneToMany(mappedBy = "competitor", cascade = CascadeType.ALL)
     private Set<DBCompetitorRound> competitorRounds;
 
     public DBCompetitor() {
+        this.paymentStatus = EnumPaymentStatus.NOT_PAID;
     }
 
     public static DBCompetitor fromAPICompetitor(APICompetitor competitor) {
@@ -50,6 +53,10 @@ public class DBCompetitor {
         dbCompetitor.setCity(competitor.getCity());
         dbCompetitor.setDateOfBirth(competitor.getDateOfBirth());
         dbCompetitor.setGender(competitor.getGender());
+
+        if(competitor.getPaymentStatus() != null) {
+            dbCompetitor.setPaymentStatus(competitor.getPaymentStatus());
+        }
 
         return dbCompetitor;
 
@@ -127,12 +134,12 @@ public class DBCompetitor {
         this.competitorRounds = competitorRounds;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public EnumPaymentStatus getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setPaymentStatus(EnumPaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public Competitor toBackendCompetitor() {

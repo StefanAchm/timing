@@ -4,6 +4,7 @@ import com.asi.timer.backend.model.CompetitorRound;
 import com.asi.timer.backend.model.Round;
 import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.enums.EnumGender;
+import com.asi.timer.enums.EnumPaymentStatus;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
 import com.asi.timer.model.db.DBRound;
@@ -33,6 +34,8 @@ public class APICompetitor {
 
     private double totalScore;
 
+    private EnumPaymentStatus paymentStatus;
+
     private List<APICompetitorRound> competitorRounds;
 
     public APICompetitor() {
@@ -50,6 +53,7 @@ public class APICompetitor {
         apiCompetitor.setCity(competitor.getCity());
         apiCompetitor.setDateOfBirth(competitor.getDateOfBirth());
         apiCompetitor.setGender(competitor.getGender());
+        apiCompetitor.setPaymentStatus(competitor.getPaymentStatus());
 
         if(deep) {
 
@@ -155,5 +159,13 @@ public class APICompetitor {
 
     public void setTotalScore(double totalScore) {
         this.totalScore = totalScore;
+    }
+
+    public EnumPaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(EnumPaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 }

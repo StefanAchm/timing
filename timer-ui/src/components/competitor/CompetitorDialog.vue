@@ -33,7 +33,16 @@
                 </v-text-field>
               </v-col>
 
-              <v-col></v-col>
+              <v-col>
+
+                <v-checkbox
+                    v-model="competitorLocal.paymentStatus"
+                    :false-value="'NOT_PAID'"
+                    :true-value="'PAID'"
+                    label="Bezahlt"
+                ></v-checkbox>
+
+              </v-col>
 
             </v-row>
 
@@ -139,6 +148,7 @@
       </v-card-actions>
 
     </v-card>
+
   </v-dialog>
 
 </template>
@@ -169,9 +179,9 @@ export default {
 
   data: () => ({
     activePicker: 'YEAR',
-    modal: false,
     defaultCompetitor: {
       startNumber: '',
+      paymentStatus: 'PAID'
     },
     competitorLocal: {},
     startNumberErrors: [],

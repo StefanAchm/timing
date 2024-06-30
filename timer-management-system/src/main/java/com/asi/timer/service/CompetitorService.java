@@ -61,6 +61,7 @@ public class CompetitorService {
         competitor.setCity(competitorRequest.getCity());
         competitor.setClub(competitorRequest.getClub());
         competitor.setDateOfBirth(competitorRequest.getDateOfBirth());
+        competitor.setPaymentStatus(competitorRequest.getPaymentStatus());
 
         boolean genderChanged = !competitor.getGender().equals(competitorRequest.getGender());
         competitor.setGender(competitorRequest.getGender());
@@ -96,18 +97,13 @@ public class CompetitorService {
 
     }
 
-    public DBCompetitor deleteCompetitor(UUID competitorId, boolean soft) {
+    public DBCompetitor deleteCompetitor(UUID competitorId) {
 
         DBCompetitor competitor = this.competitorRepository
                 .findById(competitorId)
                 .orElseThrow(() -> new RuntimeException("Competitor with id " + competitorId + " not found"));
 
-        if (soft) {
-            competitor.setDeleted(true);
-            this.competitorRepository.save(competitor);
-        } else {
-            this.competitorRepository.delete(competitor);
-        }
+        this.competitorRepository.delete(competitor);
 
         return competitor;
 
@@ -115,7 +111,7 @@ public class CompetitorService {
 
     public List<APICompetitor> getCompetitors() {
 
-        return this.competitorRepository.findAllByDeletedFalse()
+        return this.competitorRepository.findAll()
                 .stream()
                 .map(competitor -> APICompetitor.fromDBCompetitor(competitor, true)).toList();
 
@@ -123,7 +119,7 @@ public class CompetitorService {
 
     public Integer generateStartNumber() {
 
-        List<Integer> assignedStartNumbers = this.competitorRepository.findAllByDeletedFalse()
+        List<Integer> assignedStartNumbers = this.competitorRepository.findAll()
                 .stream()
                 .map(DBCompetitor::getStartNumber)
                 .toList();
@@ -134,7 +130,7 @@ public class CompetitorService {
 
     public boolean isStartNumberValid(UUID id, Integer startNumber) {
 
-        List<Integer> assignedStartNumbers = this.competitorRepository.findAllByDeletedFalse()
+        List<Integer> assignedStartNumbers = this.competitorRepository.findAll()
                 .stream()
                 .filter(competitor -> !competitor.getId().equals(id))
                 .map(DBCompetitor::getStartNumber)
@@ -148,7 +144,7 @@ public class CompetitorService {
 
         if (round.getRoundNumber() == 1) {
 
-            return this.competitorRepository.findAllByGenderAndDeletedFalse(round.getGender());
+            return this.competitorRepository.findAllByGender(round.getGender());
 
         } else {
 
@@ -160,7 +156,7 @@ public class CompetitorService {
                     round.getScore().getTryNumber()
             );
 
-            List<DBCompetitor> allByGenderAndDeletedFalse = this.competitorRepository.findAllByGenderAndDeletedFalse(round.getGender());
+            List<DBCompetitor> allByGenderAndDeletedFalse = this.competitorRepository.findAllByGender(round.getGender());
 
             List<DBCompetitor> competitors = new ArrayList<>();
 
