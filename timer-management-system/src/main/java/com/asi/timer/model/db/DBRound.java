@@ -78,9 +78,6 @@ public class DBRound {
     }
 
     public Round toBackendRound() {
-        Round round = new Round();
-        round.setMaxHolds(this.maxHolds);
-        round.setRoundNumber(this.roundNumber);
-        return round;
+        return new Round(this.roundNumber, this.maxHolds);
     }
 }

@@ -175,9 +175,11 @@ public class CompetitorService {
 
                     DBCompetitorRound competitorRound = first.get();
 
-                    double roundScore = ScoreUtil.calculateScore(competitorRound.getHoldNumber(),
+                    double roundScore = ScoreUtil.calculateScore(
+                            competitorRound.getHoldNumber(),
                             competitorRound.getHoldType(),
-                            competitorRound.getTryNumber());
+                            competitorRound.getTryNumber()
+                    );
 
                     if (roundScore >= minimumScore) {
                         competitors.add(competitor);

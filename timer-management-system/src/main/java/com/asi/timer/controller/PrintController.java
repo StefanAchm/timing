@@ -1,7 +1,6 @@
 package com.asi.timer.controller;
 
 import com.asi.timer.enums.EnumGender;
-import com.asi.timer.enums.EnumPrintType;
 import com.asi.timer.service.PrintService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -24,7 +23,7 @@ public class PrintController {
     @GetMapping("/startList")
     public ResponseEntity<Resource> getStartList(@RequestParam UUID id) {
 
-        ByteArrayResource resource = printService.getList(id, EnumPrintType.START_LIST);
+        ByteArrayResource resource = printService.getStartList(id);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
@@ -35,7 +34,7 @@ public class PrintController {
     @GetMapping("/resultList")
     public ResponseEntity<Resource> getResultList(@RequestParam EnumGender gender) {
 
-        ByteArrayResource resource = printService.getList(gender, EnumPrintType.RESULT_LIST);
+        ByteArrayResource resource = printService.getResultList(gender);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)

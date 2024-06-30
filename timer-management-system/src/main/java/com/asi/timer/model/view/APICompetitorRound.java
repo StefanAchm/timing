@@ -114,4 +114,5 @@ public class APICompetitorRound {
     public void setRoundNumber(int roundNumber) {
         this.roundNumber = roundNumber;
     }
+
 }

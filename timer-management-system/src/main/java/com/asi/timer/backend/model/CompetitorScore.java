@@ -1,12 +1,15 @@
 package com.asi.timer.backend.model;
 
+import java.util.Comparator;
+import java.util.List;
+
 public class CompetitorScore {
 
     private int rank;
 
     private Competitor competitor;
 
-    private CompetitorRound lastRound;
+    private List<CompetitorRound> competitorRounds;
 
     private double score;
 
@@ -30,11 +33,19 @@ public class CompetitorScore {
     }
 
     public CompetitorRound getLastRound() {
-        return lastRound;
+        // return the one with the highest round number
+        return this.competitorRounds
+                .stream()
+                .max(Comparator.comparingInt(CompetitorRound::getRoundNumber))
+                .orElse(null);
     }
 
-    public void setLastRound(CompetitorRound lastRound) {
-        this.lastRound = lastRound;
+    public List<CompetitorRound> getCompetitorRounds() {
+        return competitorRounds;
+    }
+
+    public void setCompetitorRounds(List<CompetitorRound> competitorRounds) {
+        this.competitorRounds = competitorRounds;
     }
 
     /**

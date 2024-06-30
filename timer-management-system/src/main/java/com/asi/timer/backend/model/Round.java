@@ -5,6 +5,11 @@ public class Round {
     private int roundNumber;
     private int maxHolds;
 
+    public Round(int roundNumber, int maxHolds) {
+        this.roundNumber = roundNumber;
+        this.maxHolds = maxHolds;
+    }
+
     public int getRoundNumber() {
         return roundNumber;
     }

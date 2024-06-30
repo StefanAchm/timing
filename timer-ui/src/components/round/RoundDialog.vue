@@ -182,6 +182,11 @@ export default {
 
     roundLocal: {
       handler(newVal) {
+
+        if(newVal.score === null && newVal.roundNumber > 1) {
+          return;
+        }
+
         TimerApiService.previewRound(newVal)
             .then(response => {
               this.maxNumberOfCompetitors = response.data?.numberOfCompetitors;

@@ -117,8 +117,14 @@ export default {
             this.rounds = response.data
 
             for (const element of this.rounds) {
-              element.roundName = element.gender + " " + element.roundNumber;
+              element.roundName = element.roundNumber + ' - ' + element.gender + '';
             }
+
+            // sort by roundNumber
+
+            this.rounds.sort((a, b) => {
+              return a.roundNumber - b.roundNumber;
+            });
 
             if (this.rounds.length > 0) {
               this.selectedRound = this.rounds[0];

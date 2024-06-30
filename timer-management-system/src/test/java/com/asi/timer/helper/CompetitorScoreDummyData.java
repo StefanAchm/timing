@@ -132,7 +132,7 @@ public class CompetitorScoreDummyData {
         CompetitorScore competitorScore = new CompetitorScore();
         competitorScore.setRank(rank);
         competitorScore.setCompetitor(competitor);
-        competitorScore.setLastRound(lastRound);
+        competitorScore.setCompetitorRounds(List.of(lastRound));
         competitorScore.setScore(score);
 
         return competitorScore;

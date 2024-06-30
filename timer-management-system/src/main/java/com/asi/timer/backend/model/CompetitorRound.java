@@ -19,8 +19,6 @@ public class CompetitorRound {
 
     private EnumCompetitorRoundStatus competitorRoundStatus;
 
-    private Double score;
-
     private Competitor competitor;
 
     public UUID getId() {
@@ -69,14 +67,6 @@ public class CompetitorRound {
 
     public void setCompetitorRoundStatus(EnumCompetitorRoundStatus competitorRoundStatus) {
         this.competitorRoundStatus = competitorRoundStatus;
-    }
-
-    public Double getScore() {
-        return score;
-    }
-
-    public void setScore(Double score) {
-        this.score = score;
     }
 
     public Competitor getCompetitor() {

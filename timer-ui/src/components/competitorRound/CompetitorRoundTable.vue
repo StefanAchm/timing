@@ -328,7 +328,7 @@ export default {
       let maxNumberOfRounds = this.maxNumberOfRounds();
 
       this.headers = [
-        {text: 'Startnummer', value: 'competitor.startNumber'},
+        {text: '#', value: 'competitor.startNumber'},
         {text: 'Name', value: 'competitor.firstName'},
         {text: 'Gender', value: 'competitor.gender'}
       ];
