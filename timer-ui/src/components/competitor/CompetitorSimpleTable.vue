@@ -11,6 +11,7 @@
         fixed-header
         height="650px"
         :items-per-page="competitorRounds.length"
+        v-if="competitorRounds.length > 0"
     >
 
       <template v-slot:top>
@@ -108,6 +109,14 @@
       </template>
 
     </v-data-table>
+
+    <v-card v-else>
+
+      <v-card-title>
+        Bitte eine Runde auswählen
+      </v-card-title>
+
+    </v-card>
 
   </v-container>
 

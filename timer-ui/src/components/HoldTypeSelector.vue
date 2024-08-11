@@ -47,10 +47,35 @@ export default {
     loadHoldTypes() {
       TimerApiService.getHoldTypes()
           .then(response => {
-            this.holdTypes = response.data;
+            
+            // set the german values for all
+            for(let holdtype of response.data) {
+              let holdTypeItem = {
+                id: holdtype,
+                name: this.getName(holdtype),
+              };
+              this.holdTypes.push(holdTypeItem);
+            }
+
+            console.log(this.holdTypes);
+
           })
           .catch(() => {});
-    }
+    },
+
+    getName(holdtype) {
+      if(holdtype === 'TOUCHED') {
+        return "Berührt";
+      } else if(holdtype === 'SLIPPED') {
+        return "Abgerutscht"
+      } else if(holdtype === 'HELD') {
+        return "Gehalten"
+      } else if(holdtype === 'FOLLOWED') {
+        return "Gefolgt"
+      } else if(holdtype === 'MOVED_ON') {
+        return "Weitergezogen"
+      }
+    },
 
   },
 

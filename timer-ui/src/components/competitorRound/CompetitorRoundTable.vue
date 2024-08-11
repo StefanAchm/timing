@@ -2,10 +2,26 @@
 
   <div>
 
+    <v-alert
+        prominent
+        type="warning"
+        v-if="competitorsWithoutRounds.length > 0"
+    >
+      <v-row align="center">
+        <v-col class="grow">
+          Einige Teilnehmer ({{ competitorsWithoutRounds.length }}) haben noch
+          keine Runden zugeordnet.
+        </v-col>
+        <v-col class="shrink">
+          <v-btn @click="autoAdd()">Automatisch zuordnen</v-btn>
+        </v-col>
+      </v-row>
+    </v-alert>
+
     <CompetitorRoundDialog
         :dialog.sync="competitorRoundDialog"
         :competitor-round="selectedCompetitorRound"
-        @dialog-closed="init"
+        @dialog-closed="init()"
     />
 
     <CompetitorDialog
@@ -26,7 +42,7 @@
 
       <v-row>
 
-        <v-col :cols="4">
+        <v-col :cols="3">
 
           <v-text-field
               v-model="search"
@@ -60,18 +76,29 @@
           <v-select
               label="Status"
               v-model="statusFilter"
-              :items="['Dabei', 'Nicht dabei', 'Abgeschlossen', 'Noch nicht gestartet', 'Bezahlt', 'Nicht bezahlt']"
+              :items="statusItems"
           ></v-select>
         </v-col>
 
-        <v-col :cols="1">
+        <v-col :cols="2">
           <v-switch
               v-model="roundView"
               :label="roundView ? 'Rundenansicht' : 'Teilnehmeransicht'"
           ></v-switch>
         </v-col>
 
+        <v-col :cols="3" v-if="!roundView">
+          <v-btn
+              color="primary"
+              dark
+              class="mb-2"
+              @click="dialogVisible = true"
+          >TeilnehmerInn hinzufügen
+          </v-btn>
+        </v-col>
+
       </v-row>
+
 
     </v-container>
 
@@ -187,6 +214,7 @@ import TimerApi from "@/plugins/timer-api";
 import CompetitorRoundDialog from "@/components/competitorRound/CompetitorRoundDialog.vue";
 import DeleteDialog from "@/components/DeleteDialog.vue";
 import CompetitorDialog from "@/components/competitor/CompetitorDialog.vue";
+import TimerApiService from "@/plugins/timer-api";
 
 export default {
   components: {CompetitorDialog, DeleteDialog, CompetitorRoundDialog},
@@ -206,7 +234,7 @@ export default {
 
     genderFilter: 'ALLE',
     roundFilter: 'ALLE',
-    statusFilter: 'Dabei',
+    statusFilter: 'ALLE',
 
     competitorRoundDialog: false,
     selectedCompetitorRound: {},
@@ -220,6 +248,21 @@ export default {
   },
 
   computed: {
+
+    statusItems() {
+
+      if (this.roundFilter === 'ALLE') {
+        return ['ALLE', 'Bezahlt', 'Nicht bezahlt'];
+      } else {
+        return ['ALLE', 'Dabei', 'Nicht dabei', 'Abgeschlossen', 'Noch nicht gestartet', 'Bezahlt', 'Nicht bezahlt'];
+      }
+
+    },
+
+    competitorsWithoutRounds() {
+      console.log(this.competitors.filter(competitor => competitor.rounds[0]?.id === null))
+      return this.competitors.filter(competitor => competitor.rounds[0]?.id === null);
+    },
 
     competitorsFiltered() {
 
@@ -313,6 +356,25 @@ export default {
           });
     },
 
+    autoAdd() {
+
+      let promises = [];
+
+      for(const competitor of this.competitorsWithoutRounds) {
+
+        promises.push(TimerApiService.addCompetitorRound(competitor.competitor.id, 1));
+
+      }
+
+      Promise.all(promises)
+          .then(() => {
+            this.$root.snackbar.showSuccess({message: promises.length + ' Runden zugeordnet'})
+            this.init();
+          })
+          .catch(() => {});
+
+    },
+
     formatNumber(value) {
       return value;
 
@@ -349,6 +411,10 @@ export default {
       let roundNumbers = this.competitorRounds
           .filter(competitorRound => competitorRound.roundNumber)
           .map(competitorRound => competitorRound.roundNumber);
+
+      if(roundNumbers < 1) {
+        return [];
+      }
 
       return Math.max(...roundNumbers);
 
