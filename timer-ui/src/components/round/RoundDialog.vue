@@ -233,7 +233,6 @@ export default {
 
       TimerApiService.updateOrCreateRound(this.roundLocal)
           .then(response => {
-            console.log(response)
             this.roundLocal = response.data;
             this.$root.snackbar.showSuccess({message: 'Gespeichert'})
             this.close()

@@ -129,6 +129,13 @@
 
       <v-card-actions>
 
+        <v-btn
+            color="warning"
+            text
+            @click="addRandom"
+        >Zufällig
+        </v-btn>
+
         <v-spacer></v-spacer>
 
         <v-btn
@@ -260,6 +267,41 @@ export default {
       this.generateStartNumber()
     },
 
+    addRandom() {
+
+      TimerApiService
+          .getStartNumber()
+          .then(response => {
+
+            let gender = Math.random() > 0.5 ? 'HERREN' : 'DAMEN';
+
+            let firstName = gender === 'HERREN' ? 'Max' : 'Maria';
+
+            let randomItem = {
+              startNumber: response.data,
+              firstName: firstName + Math.floor(Math.random() * 100),
+              lastName: 'Mustermann' + Math.floor(Math.random() * 100),
+              city: 'Musterstadt'  + Math.floor(Math.random() * 100),
+              club: 'Musterclub' + Math.floor(Math.random() * 100),
+              gender: gender,
+              dateOfBirth: '1994-01-01',
+            };
+
+
+            TimerApiService
+                .createCompetitor(randomItem)
+                .then()
+                .catch()
+                .finally(() => {
+                  this.$emit('dialog-closed', this.competitorLocal)
+                  this.init()
+                });
+
+          })
+          .catch(() => {});
+
+    },
+
     generateStartNumber() {
 
       TimerApiService.getStartNumber()
@@ -280,10 +322,10 @@ export default {
       TimerApiService.updateOrCreateCompetitor(this.competitorLocal)
           .then(() => {
 
-              let message =
-                  this.competitorLocal.firstName + ' ' + this.competitorLocal.lastName
-                  + ' mit Startnummer ' + this.competitorLocal.startNumber
-                  + ' gespeichert';
+            let message =
+                this.competitorLocal.firstName + ' ' + this.competitorLocal.lastName
+                + ' mit Startnummer ' + this.competitorLocal.startNumber
+                + ' gespeichert';
 
             this.$root.snackbar.showSuccess({message: message});
 

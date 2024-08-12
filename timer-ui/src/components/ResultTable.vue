@@ -88,7 +88,6 @@ export default {
       TimerApi.previewResultList(this.gender)
         .then(response => {
           this.results = response.data;
-          console.log(this.results)
         })
         .catch(() => {});
     },
@@ -102,10 +101,7 @@ export default {
 
     print() {
 
-
       let filename = 'resultList-' + this.gender + '.pdf';
-
-      console.log(filename)
 
       TimerApiService.resultListFromData(this.gender, this.results)
           .then(response => {

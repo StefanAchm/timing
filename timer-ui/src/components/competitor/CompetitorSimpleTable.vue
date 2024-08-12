@@ -27,21 +27,14 @@
 
             <v-spacer></v-spacer>
 
-<!--            <v-btn-->
-<!--                color="primary"-->
-<!--                dark-->
-<!--                class="mb-2"-->
-<!--                @click="add"-->
-<!--            >TeilnehmerInn hinzufügen-->
-<!--            </v-btn>-->
 
-            <v-icon @click="add">mdi-plus</v-icon>
-
-            <CompetitorDialog
-                :dialog.sync="dialogVisible"
-                :competitor="{}"
-                :full-edit="true"
-            />
+            <v-btn
+                :disabled="selectedCompetitorRoundLocal === null"
+                color="primary"
+                class="mb-2"
+                @click="selectedCompetitorRoundLocal = null"
+            >Stopp
+            </v-btn>
 
           </v-card-title>
 
@@ -54,18 +47,6 @@
                 TeilnehmerInnen: {{ competitorRounds.length }} <br>
                 Noch nicht gestartet: {{ competitorRoundsCompleted.length }} <br>
                 Anzahl Griffe: {{ selectedRound?.maxHolds }} <br>
-
-              </v-col>
-
-              <v-col class="text-right">
-
-                  <v-btn
-                      :disabled="selectedCompetitorRoundLocal === null"
-                      color="primary"
-                      class="mb-2"
-                      @click="selectedCompetitorRoundLocal = null"
-                  >Stopp
-                  </v-btn>
 
               </v-col>
 
@@ -124,11 +105,7 @@
 
 <script>
 
-
-import CompetitorDialog from "@/components/competitor/CompetitorDialog.vue";
-
 export default {
-  components: {CompetitorDialog},
 
   props: {
     selectedCompetitorRound: {
@@ -144,7 +121,6 @@ export default {
 
   data: () => ({
 
-    // competitorRounds: [],
     headers: [
       {text: '#', value: 'competitor.startNumber', sortable: false},
       {text: '+/-', value: 'competitorNumber', sortable: false},
@@ -152,8 +128,6 @@ export default {
       {text: 'Punkte', value: 'competitorPoints', sortable: false},
       {text: '', value: 'action', sortable: false},
     ],
-
-    dialogVisible: false,
 
   }),
 
@@ -179,10 +153,6 @@ export default {
   },
 
   methods: {
-
-    add() {
-      this.dialogVisible = true;
-    },
 
     getRowStyle(item) {
       if (item.competitorRoundStatus === 'COMPLETED') {

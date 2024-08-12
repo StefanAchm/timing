@@ -2,10 +2,23 @@
 
   <div>
 
-    <CompetitionHeader
-        :rounds="rounds"
-        @update:selectedRoundId="selectedRoundId = $event"
-    />
+    <ApplicationHeader/>
+
+    <v-row>
+      <v-col :cols="4" align-self="center"/>
+      <v-col class="pb-0" :cols="4" align-self="center">
+
+        <v-select
+            v-model="selectedRoundId"
+            :items="rounds"
+            item-text="roundName"
+            item-value="id"
+            label="Runde"
+        ></v-select>
+
+      </v-col>
+      <v-col :cols="4" align-self="center"/>
+    </v-row>
 
     <v-row>
 
@@ -37,13 +50,13 @@
 
 import CompetitorSimpleTable from "@/components/competitor/CompetitorSimpleTable.vue";
 import CompetitorRoundCard from "@/components/competitorRound/CompetitorRoundCard.vue";
-import CompetitionHeader from "@/components/competition/CompetitionHeader.vue";
 import TimerApiService from "@/plugins/timer-api";
+import ApplicationHeader from "@/components/ApplicationHeader.vue";
 
 
 export default {
 
-  components: {CompetitorRoundCard, CompetitionHeader, CompetitorSimpleTable},
+  components: {ApplicationHeader, CompetitorRoundCard, CompetitorSimpleTable},
 
   data: () => ({
 

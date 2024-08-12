@@ -1,13 +1,17 @@
 <template>
-  <CompetitorRoundTable/>
+  <div>
+    <ApplicationHeader/>
+    <CompetitorRoundTable/>
+  </div>
 </template>
 
 <script>
 import CompetitorRoundTable from "@/components/competitorRound/CompetitorRoundTable.vue";
+import ApplicationHeader from "@/components/ApplicationHeader.vue";
 
 export default {
 
-  components: {CompetitorRoundTable},
+  components: {ApplicationHeader, CompetitorRoundTable},
 
   data: () => ({
 

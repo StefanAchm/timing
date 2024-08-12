@@ -57,8 +57,6 @@ export default {
               this.holdTypes.push(holdTypeItem);
             }
 
-            console.log(this.holdTypes);
-
           })
           .catch(() => {});
     },

@@ -1,54 +1,29 @@
 <template>
-  <v-data-table
-      :headers="headers"
-      :items="rounds"
-      sort-by="roundNumber"
-      class="elevation-1"
-  >
 
-    <template v-slot:top>
-      <v-toolbar flat>
-        <v-toolbar-title>Runden</v-toolbar-title>
+  <div>
 
-        <v-spacer></v-spacer>
+    <DeleteDialog
+        :dialog.sync="dialogDelete"
+        @dialog-closed="initialize()"
+        :itemprop="editedItem"
+        :type="'round'"
+    />
 
-        <v-btn
-            color="primary"
-            dark
-            class="mb-2"
-            @click="addItem()"
-        >Runde hinzufügen
-        </v-btn>
+    <v-data-table
+        :headers="headers"
+        :items="rounds"
+        sort-by="roundNumber"
+        class="elevation-1"
+    >
 
-        <RoundDialog
-            :dialog.sync="roundDialog"
-            :round="editedItem"
-            :rounds="rounds"
-            @dialog-closed="initialize()"
-        />
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+        <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
+      </template>
 
-        <DeleteDialog
-            :dialog.sync="dialogDelete"
-            @dialog-closed="initialize()"
-            :itemprop="editedItem"
-            :type="'round'"
-        />
+    </v-data-table>
 
-
-      </v-toolbar>
-    </template>
-
-    <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-      <v-icon small class="mr-2" @click="deleteItem(item)">mdi-delete</v-icon>
-<!--      <v-icon small class="mr-2" @click="goToCompetitorRounds(item)">mdi-open-in-new</v-icon>-->
-    </template>
-
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
-    </template>
-
-  </v-data-table>
+  </div>
 
 </template>
 
@@ -57,12 +32,11 @@
 import TimerApiService from "@/plugins/timer-api";
 
 import DeleteDialog from "@/components/DeleteDialog.vue";
-import RoundDialog from "@/components/round/RoundDialog.vue";
 
 
 export default {
 
-  components: {RoundDialog, DeleteDialog},
+  components: {DeleteDialog},
 
   data: () => ({
     dialog: false,
@@ -142,7 +116,8 @@ export default {
           .then(response => {
             this.rounds = response.data;
           })
-          .catch(() => {});
+          .catch(() => {
+          });
 
     },
 

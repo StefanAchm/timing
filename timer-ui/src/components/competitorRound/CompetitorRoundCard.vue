@@ -232,7 +232,6 @@ export default {
         return this.competitorRound
       },
       set(value) {
-        console.log(value)
         this.$emit('update:competitorRound', value)
       }
     },

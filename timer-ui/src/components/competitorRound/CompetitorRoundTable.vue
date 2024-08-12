@@ -98,24 +98,6 @@
         :sort-by="['competitor.startNumber']"
     >
 
-      <template v-slot:top>
-        <v-toolbar flat>
-
-
-          <v-spacer></v-spacer>
-
-          <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              @click="dialogVisible = true"
-          >TeilnehmerInn hinzufügen
-          </v-btn>
-
-
-        </v-toolbar>
-      </template>
-
       <template v-slot:item="{ item }">
 
         <tr>
@@ -267,7 +249,6 @@ export default {
     },
 
     competitorsWithoutRounds() {
-      console.log(this.competitors.filter(competitor => competitor.rounds[0]?.id === null))
       return this.competitors.filter(competitor => competitor.rounds[0]?.id === null);
     },
 
@@ -379,7 +360,6 @@ export default {
             this.init();
           })
           .catch((reason) => {
-            console.log(reason);
             this.$root.snackbar.showError({message: reason})
           });
 
