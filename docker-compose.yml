@@ -1,0 +1,38 @@
+services:
+  db:
+    container_name: timer-db
+    image: ghcr.io/stefanachm/timer-db:latest
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: hf
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+
+  backend:
+    container_name: timer-management-system
+    image: ghcr.io/stefanachm/timer-management-system:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/timer
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+#      CORS_ALLOWED_ORIGINS: https://holisticfaas.uibk-serverless.cloudns.ch
+#      DEPLOYMENT_EXECUTOR_COREPOOLSIZE: 2
+#    volumes:
+#      - uploads_volume:/app/uploads
+
+  frontend:
+    container_name: timer-ui
+    image: ghcr.io/stefanachm/timer-ui:latest
+#    environment:
+#      - VUE_APP_API_BASE_URL=https://holisticfaas.uibk-serverless.cloudns.ch/hf/api
+#      - VUE_APP_WS_BASE_URL=wss://holisticfaas.uibk-serverless.cloudns.ch/hf/websocket
+    ports:
+      - "8081:80"
+
+volumes:
+  uploads_volume:

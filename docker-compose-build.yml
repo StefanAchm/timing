@@ -1,0 +1,15 @@
+services:
+  db:
+    build:
+      context: ./timer-db
+    image: timer-db:latest
+
+  backend:
+    build:
+      context: ./timer-management-system
+    image: timer-management-system:latest
+
+  frontend:
+    build:
+      context: ./timer-ui
+    image: timer-ui:latest
