@@ -91,9 +91,8 @@ export default {
   data() {
     return {
       items: [
-        {title: 'Teilnehmer', icon: 'mdi-account-multiple-outline', route: '/competitors'},
+        {title: 'Teilnehmer', icon: 'mdi-account-multiple-outline', route: '/competitor-rounds'},
         {title: 'Runden', icon: 'mdi-rotate-360', route: '/rounds'},
-        {title: 'Teilnehmer Runden', icon: 'mdi-account-convert-outline', route: '/competitor-rounds'},
         {title: 'Veranstaltung', icon: 'mdi-scoreboard-outline', route: '/competition'},
       ],
       right: null,

@@ -4,6 +4,7 @@ import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.backend.utils.StartNumberUtil;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
+import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.APICompetitor;
 import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.CompetitorRepository;
@@ -66,9 +67,12 @@ public class CompetitorService {
         boolean genderChanged = !competitor.getGender().equals(competitorRequest.getGender());
         competitor.setGender(competitorRequest.getGender());
 
-        this.competitorRepository.save(competitor);
 
-        if (genderChanged) {
+        if(!genderChanged) {
+
+            this.competitorRepository.save(competitor);
+
+        } else {
 
             // Each competitorround is mapped to a round, which is mapped to a gender
             // if the gender of a competitor changes, the competitorrounds relation has to be updated to the correct round
@@ -76,6 +80,20 @@ public class CompetitorService {
 
             List<DBCompetitorRound> competitorRounds = this.competitorRoundRepository.findAllByCompetitorId(competitor.getId());
 
+            // Dry run:
+            for (DBCompetitorRound competitorRound : competitorRounds) {
+
+                this.roundRepository.findByRoundNumberAndGender(
+                        competitorRound.getRound().getRoundNumber(),
+                        competitorRequest.getGender()
+                ).orElseThrow(() -> new RuntimeException("Round not found"));
+
+            }
+
+            // Now, we can update the competitor
+            this.competitorRepository.save(competitor);
+
+            // Actual run:
             for (DBCompetitorRound competitorRound : competitorRounds) {
 
                 this.roundRepository.findByRoundNumberAndGender(

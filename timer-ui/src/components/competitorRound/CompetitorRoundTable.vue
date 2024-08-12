@@ -42,7 +42,7 @@
 
       <v-row>
 
-        <v-col :cols="3">
+        <v-col :cols="4">
 
           <v-text-field
               v-model="search"
@@ -54,7 +54,7 @@
 
         </v-col>
 
-        <v-col :cols="1">
+        <v-col :cols="2">
 
           <v-select
               label="Geschlecht"
@@ -64,7 +64,7 @@
 
         </v-col>
 
-        <v-col :cols="1">
+        <v-col :cols="2">
           <v-select
               label="Runde"
               v-model="roundFilter"
@@ -86,17 +86,6 @@
               :label="roundView ? 'Rundenansicht' : 'Teilnehmeransicht'"
           ></v-switch>
         </v-col>
-
-        <v-col :cols="3" v-if="!roundView">
-          <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              @click="dialogVisible = true"
-          >TeilnehmerInn hinzufügen
-          </v-btn>
-        </v-col>
-
       </v-row>
 
 
@@ -108,6 +97,24 @@
         :items-per-page="-1"
         :sort-by="['competitor.startNumber']"
     >
+
+      <template v-slot:top>
+        <v-toolbar flat>
+
+
+          <v-spacer></v-spacer>
+
+          <v-btn
+              color="primary"
+              dark
+              class="mb-2"
+              @click="dialogVisible = true"
+          >TeilnehmerInn hinzufügen
+          </v-btn>
+
+
+        </v-toolbar>
+      </template>
 
       <template v-slot:item="{ item }">
 
@@ -239,7 +246,7 @@ export default {
     competitorRoundDialog: false,
     selectedCompetitorRound: {},
 
-    roundView: true,
+    roundView: false,
 
   }),
 

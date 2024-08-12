@@ -21,6 +21,7 @@
       <v-col>
         <CompetitorRoundCard
             :competitor-round="selectedCompetitorRound"
+            :max-number-of-holds="selectedRound?.maxHolds"
             @updated="competitorRoundUpdated"
         ></CompetitorRoundCard>
       </v-col>
@@ -141,11 +142,14 @@ export default {
         return;
       }
 
+      this.selectedCompetitorRound = null;
+      this.selectedRound = this.rounds.find(round => round.id === id);
+
       TimerApiService.getCompetitorRounds(id)
           .then(response => {
             this.competitorRounds = response.data;
-            // Sort list
 
+            // Sort list
             this.competitorRounds.sort((a, b) => {
               return a.competitor.startNumber - b.competitor.startNumber;
             });

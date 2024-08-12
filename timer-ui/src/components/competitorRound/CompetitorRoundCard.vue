@@ -61,7 +61,8 @@
               <v-text-field
                   type="number"
                   v-model="competitorRoundLocal.holdNumber"
-                  label="Griffnummer"></v-text-field>
+                  :label="'Griffnummer (max:' + maxNumberOfHolds + ')'"
+                  ></v-text-field>
 
             </v-col>
           </v-row>
@@ -79,15 +80,16 @@
 
         <v-card-actions>
 
+          <v-spacer></v-spacer>
+
           <v-btn
-              v-if="competitorRoundLocal.competitorRoundStatus!== 'COMPLETED'"
               color="blue darken-1"
               text
-              @click="setRandomScore">
-            Random
-          </v-btn>
+              @click="saveTop">
 
-          <v-spacer></v-spacer>
+            TOP
+
+          </v-btn>
 
           <v-btn
               :disabled="saveDisabled"
@@ -138,6 +140,9 @@ export default {
   props: {
     competitorRound: {
       type: Object
+    },
+    maxNumberOfHolds: {
+      type: Number
     }
   },
 
@@ -165,6 +170,24 @@ export default {
     save() {
 
       this.competitorRoundLocal.competitorRoundStatus = 'COMPLETED';
+
+      TimerApiService.updateCompetitorRound(this.competitorRoundLocal)
+          .then(response => {
+            this.competitorRoundLocal.score = response.data;
+            this.$root.snackbar.showSuccess({message: 'Gespeichert'})
+            this.$emit('updated', this.competitorRoundLocal)
+          })
+          .catch(() => {});
+    },
+
+    saveTop() {
+
+      this.competitorRoundLocal.competitorRoundStatus = 'COMPLETED';
+
+      this.competitorRoundLocal.holdType = 'HELD';
+      this.competitorRoundLocal.holdNumber = this.maxNumberOfHolds;
+      this.competitorRoundLocal.tryNumber = 1;
+
 
       TimerApiService.updateCompetitorRound(this.competitorRoundLocal)
           .then(response => {
