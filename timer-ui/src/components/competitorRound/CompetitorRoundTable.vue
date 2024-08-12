@@ -378,7 +378,10 @@ export default {
             this.$root.snackbar.showSuccess({message: promises.length + ' Runden zugeordnet'})
             this.init();
           })
-          .catch(() => {});
+          .catch((reason) => {
+            console.log(reason);
+            this.$root.snackbar.showError({message: reason})
+          });
 
     },
 

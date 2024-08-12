@@ -12,7 +12,7 @@
 
       <v-card-text>
 
-        <v-form v-model="isValid">
+        <v-form v-model="isValid" ref="competitorDialogForm">
 
           <v-container>
 
@@ -286,6 +286,8 @@ export default {
                   + ' gespeichert';
 
             this.$root.snackbar.showSuccess({message: message});
+
+            this.$refs.competitorDialogForm.reset(); // reset the form validation
 
             if (this.competitorLocal.id || this.closeDialogAfterSave) {
               this.close()
