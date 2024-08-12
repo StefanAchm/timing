@@ -8,7 +8,7 @@ WORKDIR /app
 COPY ./build/libs/*.jar app.jar
 
 # Copy the logback.xml file into the container
-COPY /logback.xml logback.xml
+#COPY /logback.xml logback.xml
 
 # Expose the port that Spring Boot runs on
 EXPOSE 8080
