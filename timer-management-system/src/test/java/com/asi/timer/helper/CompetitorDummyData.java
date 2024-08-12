@@ -158,6 +158,8 @@ public class CompetitorDummyData {
 
     public static List<Competitor> geCompetitorsWithLongStrings() {
 
+        int startNumber = 14;
+
         return List.of(
 
                 CompetitorDummyData.competitor1,
@@ -173,12 +175,12 @@ public class CompetitorDummyData {
                 CompetitorDummyData.competitorWithVeryLongStrings,
                 CompetitorDummyData.competitorWithVeryLongStrings01,
                 CompetitorDummyData.competitorWithVeryLongStrings02,
-                CompetitorDummyData.competitorX(11),
-                CompetitorDummyData.competitorX(12),
-                CompetitorDummyData.competitorX(13),
-                CompetitorDummyData.competitorX(14),
-                CompetitorDummyData.competitorX(15),
-                CompetitorDummyData.competitorX(16)
+                CompetitorDummyData.competitorX(startNumber++),
+                CompetitorDummyData.competitorX(startNumber++),
+                CompetitorDummyData.competitorX(startNumber++),
+                CompetitorDummyData.competitorX(startNumber++),
+                CompetitorDummyData.competitorX(startNumber++),
+                CompetitorDummyData.competitorX(startNumber++)
 
         );
 

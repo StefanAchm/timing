@@ -20,10 +20,10 @@ public class ColumnsGenerator {
 
         return List.of(
                 new Column("Startnummer", 2),
-                new Column("Name", 6),
-                new Column("Wohnort", 3),
-                new Column("Verein", 3),
-                new Column("Geburtsdatum", 3)
+                new Column("Name", 5),
+                new Column("Wohnort", 4),
+                new Column("Verein", 4),
+                new Column("Geburtsdatum", 2.5)
         );
 
     }
