@@ -32,9 +32,7 @@ public class ColumnsGenerator {
 
         return List.of(
                 new Column("Rang", 1.5),
-                new Column("Name", 5),
-                new Column("Wohnort", 3),
-                new Column("Verein", 3),
+                new Column("TeilnehmerInn", 11),
                 new Column("Geburtsdatum", 4),
                 new Column("Runde", 2.5),
                 new Column("Griff", 2),

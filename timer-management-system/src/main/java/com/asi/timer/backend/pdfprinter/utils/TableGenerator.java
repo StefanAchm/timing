@@ -1,5 +1,6 @@
 package com.asi.timer.backend.pdfprinter.utils;
 
+import com.asi.timer.backend.pdfprinter.model.Cell;
 import com.asi.timer.backend.pdfprinter.model.Column;
 import com.asi.timer.backend.pdfprinter.model.Table;
 import com.asi.timer.backend.pdfprinter.model.Row;
@@ -7,6 +8,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TableGenerator {
@@ -65,19 +67,41 @@ public class TableGenerator {
 
             Row row = rows.get(currentRowNr);
 
-            List<String> cells = row.getCells();
+            List<Cell> cells = row.getCells();
             for (int currentColumnNr = 0; currentColumnNr < cells.size(); currentColumnNr++) {
-                String cell = cells.get(currentColumnNr);
 
                 PdfPCell content = new PdfPCell();
 
-                Font font = new Font(Font.FontFamily.UNDEFINED, 11f);
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                // If cell content exceeds the width of the cell, wrapp it!
+                Paragraph paragraph = new Paragraph();
 
-                String cellContent = getCorrectCellContent(cell, columns, currentColumnNr, font);
+                List<String> lines = cells.get(currentColumnNr).getLines();
+                for (int i = 0; i < lines.size(); i++) {
 
-                content.setPhrase(new Paragraph(cellContent, font));
+                    String lineOfCell = lines.get(i);
+
+                    Font font = new Font(Font.FontFamily.UNDEFINED, 11f);
+
+                    if(i > 0) {
+                        font.setSize(8f);
+                    }
+
+                    // If cell content exceeds the width of the cell, wrapp it!
+                    String cellContent = getCorrectCellContent(lineOfCell, columns, currentColumnNr, font);
+
+                    paragraph.add(new Chunk(cellContent, font));
+
+                    if(i < lines.size() - 1) {
+                        // Add a little spacing between the lines
+                        paragraph.add(new Chunk("\n\n", new Font(Font.FontFamily.UNDEFINED, 4f)));
+                    }
+
+                }
+
+                content.setPhrase(paragraph);
+
                 content.setVerticalAlignment(Element.ALIGN_MIDDLE);
                 content.setFixedHeight(35f);
                 content.setBorderWidth(0f);

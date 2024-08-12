@@ -22,7 +22,10 @@ public class CompetitorScoreDummyData {
                 CompetitorScoreDummyData.competitorScore6,
                 CompetitorScoreDummyData.competitorScore7,
                 CompetitorScoreDummyData.competitorScore8,
-                CompetitorScoreDummyData.competitorScore9
+                CompetitorScoreDummyData.competitorScore9,
+                CompetitorScoreDummyData.competitorScore10,
+                CompetitorScoreDummyData.competitorScore11,
+                CompetitorScoreDummyData.competitorScore12
         );
 
     }
@@ -112,6 +115,27 @@ public class CompetitorScoreDummyData {
             CompetitorDummyData.competitorWithLongCityName,
             1,
             8.0346
+    );
+
+    public static CompetitorScore competitorScore10 = generateCompetitorScore(
+            10,
+            CompetitorDummyData.competitorWithVeryLongStrings,
+            1,
+            7.03468695
+    );
+
+    public static CompetitorScore competitorScore11 = generateCompetitorScore(
+            11,
+            CompetitorDummyData.competitorWithVeryLongStrings01,
+            1,
+            6.03468695
+    );
+
+    public static CompetitorScore competitorScore12 = generateCompetitorScore(
+            12,
+            CompetitorDummyData.competitorWithVeryLongStrings02,
+            1,
+            5.03468695
     );
 
 

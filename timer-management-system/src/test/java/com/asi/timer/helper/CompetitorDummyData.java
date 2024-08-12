@@ -108,6 +108,40 @@ public class CompetitorDummyData {
             EnumGender.HERREN
     );
 
+    public static Competitor competitorWithVeryLongStrings = generateCompetitor(
+            11,
+            "Maximilian",
+            "Mustermann ZweiterName",
+            "ABCDEFGHIJKLMNOPQRSTasdfasdfasdfasdf",
+            "ÖAV ABCDEFGHIasdfasdfasdfasdf",
+            "1990-01-01",
+            EnumGender.HERREN
+    );
+
+    public static Competitor competitorWithVeryLongStrings01 = generateCompetitor(
+            12,
+            "Maximilian",
+            "Mustermann ZweiterName",
+            "Kötschach",
+            "Bergrettung Kötschach - Mauthen",
+            "1990-01-01",
+            EnumGender.HERREN
+    );
+
+    public static Competitor competitorWithVeryLongStrings02 = generateCompetitor(
+            13,
+            "Maximilian",
+            "Mustermann ZweiterName",
+            "Prägraten am Großvenediger",
+            "Prägraten Alpin",
+            "1990-01-01",
+            EnumGender.HERREN
+    );
+
+    // Prägraten am Großvenediger
+    // Schützenkompanie Huben
+    // Prägraten Alpin
+
     public static Competitor competitorX(int startNumber) {
 
         return generateCompetitor(
@@ -118,39 +152,6 @@ public class CompetitorDummyData {
                 "Musterclub",
                 "1990-01-01",
                 EnumGender.HERREN
-        );
-
-    }
-
-    public static List<Competitor> getCompetitors() {
-
-        return List.of(
-                CompetitorDummyData.competitor1,
-                CompetitorDummyData.competitor1,
-                CompetitorDummyData.competitor1,
-                CompetitorDummyData.competitor1,
-                CompetitorDummyData.competitor1,
-                CompetitorDummyData.competitor1,
-                CompetitorDummyData.competitor1,
-                CompetitorDummyData.competitor2,
-                CompetitorDummyData.competitor2,
-                CompetitorDummyData.competitor2,
-                CompetitorDummyData.competitor2,
-                CompetitorDummyData.competitor3,
-                CompetitorDummyData.competitor3,
-                CompetitorDummyData.competitor3,
-                CompetitorDummyData.competitor3,
-                CompetitorDummyData.competitor3,
-                CompetitorDummyData.competitor3,
-                CompetitorDummyData.competitor3,
-                CompetitorDummyData.competitor4,
-                CompetitorDummyData.competitor4,
-                CompetitorDummyData.competitor4,
-                CompetitorDummyData.competitor4,
-                CompetitorDummyData.competitor4,
-                CompetitorDummyData.competitor4,
-                CompetitorDummyData.competitor4,
-                CompetitorDummyData.competitor4
         );
 
     }
@@ -169,6 +170,9 @@ public class CompetitorDummyData {
                 CompetitorDummyData.competitorWithLongClubname3,
                 CompetitorDummyData.competitorWithLongClubname4,
                 CompetitorDummyData.competitorWithLongCityName,
+                CompetitorDummyData.competitorWithVeryLongStrings,
+                CompetitorDummyData.competitorWithVeryLongStrings01,
+                CompetitorDummyData.competitorWithVeryLongStrings02,
                 CompetitorDummyData.competitorX(11),
                 CompetitorDummyData.competitorX(12),
                 CompetitorDummyData.competitorX(13),

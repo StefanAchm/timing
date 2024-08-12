@@ -1,8 +1,9 @@
 package com.asi.timer.backend.pdfprinter.utils;
 
 import com.asi.timer.backend.model.Competitor;
-import com.asi.timer.backend.pdfprinter.model.Row;
 import com.asi.timer.backend.model.CompetitorScore;
+import com.asi.timer.backend.pdfprinter.model.Cell;
+import com.asi.timer.backend.pdfprinter.model.Row;
 import com.asi.timer.enums.EnumCompetitorRoundStatus;
 import com.asi.timer.enums.EnumPrintType;
 
@@ -32,16 +33,18 @@ public class RowsGenerator {
             Competitor competitor1 = competitors.get(i);
 
             Row row = new Row();
-            row.setCells(List.of(
-
-                    currentStartNumber + " (" + competitor1.getStartNumber() + ")",
-                    competitor1.getFullName(),
-                    competitor1.getCity(),
-                    competitor1.getClub(),
-                    competitor1.getDateOfBirthAsString()
-            ));
+            row.setCells(
+                    List.of(
+                            new Cell(currentStartNumber + " (" + competitor1.getStartNumber() + ")"),
+                            new Cell(competitor1.getFullName()),
+                            new Cell(competitor1.getCity()),
+                            new Cell(competitor1.getClub()),
+                            new Cell(competitor1.getDateOfBirthAsString())
+                    )
+            );
 
             list.add(row);
+
         }
 
         return list;
@@ -71,20 +74,21 @@ public class RowsGenerator {
                     : "DNF";
 
             Row row = new Row();
-            row.setCells(List.of(
-                    String.valueOf(score.getRank()),
-                    score.getCompetitor().getFullName(),
-                    score.getCompetitor().getCity(),
-                    score.getCompetitor().getClub(),
-                    score.getCompetitor().getDateOfBirthAsString(),
-                    "Runde " + score.getLastRound().getRoundNumber(),
-                    holdNumber,
-                    holdType,
-                    tryNumber,
-                    points
-            ));
+            row.setCells(
+                    List.of(
+                            new Cell(String.valueOf(score.getRank())),
+                            new Cell(score.getCompetitor().getFullName(), score.getCompetitor().getCity() + " (" + score.getCompetitor().getClub() + ")"),
+                            new Cell(score.getCompetitor().getDateOfBirthAsString()),
+                            new Cell("Runde " + score.getLastRound().getRoundNumber()),
+                            new Cell(holdNumber),
+                            new Cell(holdType),
+                            new Cell(tryNumber),
+                            new Cell(points)
+                    )
+            );
 
             list.add(row);
+
         }
 
         return list;

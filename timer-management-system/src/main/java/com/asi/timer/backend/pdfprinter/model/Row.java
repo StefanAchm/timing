@@ -1,16 +1,21 @@
 package com.asi.timer.backend.pdfprinter.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Row {
 
-    private List<String> cells;
+    private List<Cell> cells;
 
-    public List<String> getCells() {
+    public Row() {
+        this.cells = new ArrayList<>();
+    }
+
+    public List<Cell> getCells() {
         return cells;
     }
 
-    public void setCells(List<String> cells) {
+    public void setCells(List<Cell> cells) {
         this.cells = cells;
     }
 }
