@@ -1,7 +1,7 @@
 services:
   db:
     container_name: timer-db
-    image: timer-db:latest
+    image: ghcr.io/stefanachm/timer-db:latest
     ports:
       - "5433:5432"
     environment:
@@ -11,7 +11,7 @@ services:
 
   backend:
     container_name: timer-management-system
-    image: timer-management-system:latest
+    image: ghcr.io/stefanachm/timer-management-system:latest
     ports:
       - "8080:8080"
     depends_on:
@@ -27,7 +27,7 @@ services:
 
   frontend:
     container_name: timer-ui
-    image: timer-ui:latest
+    image: ghcr.io/stefanachm/timer-ui:latest
 #    environment:
 #      - VUE_APP_API_BASE_URL=https://holisticfaas.uibk-serverless.cloudns.ch/hf/api
 #      - VUE_APP_WS_BASE_URL=wss://holisticfaas.uibk-serverless.cloudns.ch/hf/websocket
