@@ -3,7 +3,8 @@ name: Build Application and Docker Image
 on:
   push:
     branches:
-      - main # If you want to build on other branches, add them here, or add a manual trigger, like: TODO!!!
+      - main
+  workflow_dispatch:
 
 jobs:
   build-jar:
