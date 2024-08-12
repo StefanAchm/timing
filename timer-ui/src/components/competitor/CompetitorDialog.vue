@@ -131,7 +131,6 @@
 
         <v-btn
             color="warning"
-            text
             @click="addRandom"
         >Zufällig
         </v-btn>
@@ -139,15 +138,13 @@
         <v-spacer></v-spacer>
 
         <v-btn
-            color="blue darken-1"
-            text
+            color="neutral"
             @click="close"
         >Abbrechen
         </v-btn>
 
         <v-btn
-            color="blue darken-1"
-            text
+            color="primary"
             @click="save"
             :disabled="!isValid"
         >Speichern</v-btn>
@@ -295,6 +292,7 @@ export default {
                 .finally(() => {
                   this.$emit('dialog-closed', this.competitorLocal)
                   this.init()
+                  this.$refs.competitorDialogForm.reset(); // reset the form validation
                 });
 
           })
@@ -314,6 +312,7 @@ export default {
     close(cf) {
       this.dialogLocal = false;
       this.competitorLocal = this.defaultCompetitor;
+      this.$refs.competitorDialogForm.reset(); // reset the form validation
       this.$emit('dialog-closed', cf)
     },
 

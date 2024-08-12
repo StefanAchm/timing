@@ -2,16 +2,32 @@
 
   <v-container>
 
+    <v-card v-if="!competitorRounds">
+
+      <v-card-title>
+        Bitte eine Runde auswählen
+      </v-card-title>
+
+    </v-card>
+
+    <v-card v-else-if="competitorRounds.length === 0">
+
+      <v-card-title>
+        Keine TeilnehmerInnen in dieser Runde
+      </v-card-title>
+    </v-card>
+
     <v-data-table
+        ref="competitorSimpleTable"
         :headers="headers"
         :items="competitorRounds"
         item-key="competitor.startNumber"
         class="elevation-1"
         hide-default-footer
         fixed-header
-        height="650px"
+        height="435px"
         :items-per-page="competitorRounds.length"
-        v-if="competitorRounds.length > 0"
+        v-else
     >
 
       <template v-slot:top>
@@ -58,10 +74,10 @@
 
       </template>
 
-      <template v-slot:item="{ item }">
+      <template v-slot:item="{ item, index }">
         <tr :class="getRowStyle(item)">
 
-          <td>{{ item.competitor.startNumber }}</td>
+          <td> {{ index + 1 }} ({{ item.competitor.startNumber }})</td>
           <td>{{ item.competitorNumber }}</td>
           <td>{{ item.competitor.firstName }} {{ item.competitor.lastName }}</td>
           <td> {{ item.score }}</td>
@@ -90,14 +106,6 @@
       </template>
 
     </v-data-table>
-
-    <v-card v-else>
-
-      <v-card-title>
-        Bitte eine Runde auswählen
-      </v-card-title>
-
-    </v-card>
 
   </v-container>
 
@@ -152,11 +160,19 @@ export default {
 
   },
 
+  watch: {
+    selectedCompetitorRoundLocal: function (newVal) {
+      this.chooseItem(newVal)
+    }
+  },
+
   methods: {
 
     getRowStyle(item) {
-      if (item.competitorRoundStatus === 'COMPLETED') {
-        return 'grey lighten-2 grey--text';
+      if (item === this.selectedCompetitorRoundLocal) {
+        return 'accent';
+      } else if (item.competitorRoundStatus === 'COMPLETED') {
+        return 'neutral2 grey--text';
       } else {
         return '';
       }
@@ -173,6 +189,16 @@ export default {
           cr.competitorNumber = '0';
         } else {
           cr.competitorNumber = '+' + (i - index);
+        }
+      });
+      this.scrollToSelectedRow();
+    },
+
+    scrollToSelectedRow() {
+      this.$nextTick(() => {
+        const selectedRow = this.$refs.competitorSimpleTable.$el.querySelector('.accent');
+        if (selectedRow) {
+          selectedRow.scrollIntoView({behavior: 'smooth', block: 'center'});
         }
       });
     },

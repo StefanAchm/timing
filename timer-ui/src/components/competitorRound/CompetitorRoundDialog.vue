@@ -58,15 +58,13 @@
         <v-spacer></v-spacer>
 
         <v-btn
-            color="blue darken-1"
-            text
+            color="neutral"
             @click="close"
         >Abbrechen
         </v-btn>
 
         <v-btn
-            color="blue darken-1"
-            text
+            color="primary"
             @click="save"
         >Speichern</v-btn>
 

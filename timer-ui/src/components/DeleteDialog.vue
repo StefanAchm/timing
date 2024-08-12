@@ -11,8 +11,8 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="close">Abbrechen</v-btn>
-        <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+        <v-btn color="neutral" @click="close">Abbrechen</v-btn>
+        <v-btn color="primary" @click="deleteItemConfirm">OK</v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>

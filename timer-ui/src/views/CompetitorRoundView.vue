@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ApplicationHeader/>
-    <CompetitorRoundTable/>
+    <ApplicationHeader @update="refreshCompetitorRoundTable"/>
+    <CompetitorRoundTable ref="competitorRoundTable"/>
   </div>
 </template>
 
@@ -14,11 +14,18 @@ export default {
   components: {ApplicationHeader, CompetitorRoundTable},
 
   data: () => ({
-
+    tableKey: 0
   }),
 
   created() {
 
+  },
+
+  methods: {
+    refreshCompetitorRoundTable() {
+      // Call a method on CompetitorRoundTable using $refs
+      this.$refs.competitorRoundTable.init(); // assuming refreshData is a method in CompetitorRoundTable
+    }
   }
 
 }

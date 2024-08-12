@@ -30,21 +30,7 @@
         :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10)"
         min="1950-01-01"
     >
-<!--      <v-spacer></v-spacer>-->
-<!--      <v-btn-->
-<!--          text-->
-<!--          color="primary"-->
-<!--          @click="menu = false"-->
-<!--      >-->
-<!--        Cancel-->
-<!--      </v-btn>-->
-<!--      <v-btn-->
-<!--          text-->
-<!--          color="primary"-->
-<!--          @click="$refs.menu.save(date)"-->
-<!--      >-->
-<!--        OK-->
-<!--      </v-btn>-->
+
     </v-date-picker>
   </v-menu>
 

@@ -59,7 +59,7 @@
           <v-select
               label="Geschlecht"
               v-model="genderFilter"
-              :items="['HERREN', 'DAMEN', 'ALLE']"
+              :items="['HERREN', 'DAMEN', 'Alle']"
           ></v-select>
 
         </v-col>
@@ -221,9 +221,9 @@ export default {
 
     search: '',
 
-    genderFilter: 'ALLE',
-    roundFilter: 'ALLE',
-    statusFilter: 'ALLE',
+    genderFilter: 'Alle',
+    roundFilter: 'Alle',
+    statusFilter: 'Alle',
 
     competitorRoundDialog: false,
     selectedCompetitorRound: {},
@@ -240,10 +240,10 @@ export default {
 
     statusItems() {
 
-      if (this.roundFilter === 'ALLE') {
-        return ['ALLE', 'Bezahlt', 'Nicht bezahlt'];
+      if (this.roundFilter === 'Alle') {
+        return ['Alle', 'Bezahlt', 'Nicht bezahlt'];
       } else {
-        return ['ALLE', 'Dabei', 'Nicht dabei', 'Abgeschlossen', 'Noch nicht gestartet', 'Bezahlt', 'Nicht bezahlt'];
+        return ['Dabei', 'Nicht dabei', 'Abgeschlossen', 'Noch nicht gestartet'];
       }
 
     },
@@ -256,12 +256,12 @@ export default {
 
       let filteredCompetitors = this.competitors;
 
-      if (this.genderFilter !== 'ALLE') {
+      if (this.genderFilter !== 'Alle') {
         filteredCompetitors = filteredCompetitors
             .filter(competitor => competitor.competitor.gender === this.genderFilter);
       }
 
-      if (this.roundFilter !== 'ALLE') {
+      if (this.roundFilter !== 'Alle') {
 
         if (this.statusFilter === 'Dabei') {
 
@@ -276,7 +276,6 @@ export default {
               .filter(competitor => !competitor.rounds[this.roundFilter]);
 
         } else if (this.statusFilter === 'Abgeschlossen') {
-
 
           filteredCompetitors = filteredCompetitors
               .filter(competitor => competitor.rounds[this.roundFilter]?.competitorRoundStatus === 'COMPLETED');
@@ -312,7 +311,7 @@ export default {
     },
 
     nrOfRounds() {
-      let nrOfRounds = ['ALLE'];
+      let nrOfRounds = ['Alle'];
       for (let i = 1; i <= this.maxNumberOfRounds(); i++) {
         nrOfRounds.push(i);
       }
@@ -325,6 +324,20 @@ export default {
     roundView() {
       this.updateHeaders();
     },
+    roundFilter(value) {
+
+      let validStati = this.statusItems;
+
+      if(validStati.includes(this.statusFilter)) {
+        return;
+      }
+
+      if (value === 'Alle') {
+        this.statusFilter = 'Alle';
+      } else {
+        this.statusFilter = 'Dabei';
+      }
+    }
   },
 
   methods: {

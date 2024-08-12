@@ -27,11 +27,11 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn color="blue darken-1" text @click="downloadStartList()">
+    <v-btn color="neutral" @click="downloadStartList()">
       Startliste herunterladen
     </v-btn>
 
-    <v-btn color="blue darken-1" text @click="downloadResultList()">
+    <v-btn color="primary" @click="downloadResultList()">
       Ergebnisliste herunterladen
     </v-btn>
 

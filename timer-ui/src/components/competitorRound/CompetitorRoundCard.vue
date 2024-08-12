@@ -83,19 +83,15 @@
           <v-spacer></v-spacer>
 
           <v-btn
-              color="blue darken-1"
-              text
+              color="success"
               @click="saveTop">
-
             TOP
-
           </v-btn>
 
           <v-btn
               :disabled="saveDisabled"
               v-if="competitorRoundLocal.competitorRoundStatus !== 'COMPLETED'"
-              color="blue darken-1"
-              text
+              color="primary"
               @click="save">
 
             Speichern

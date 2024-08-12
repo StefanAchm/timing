@@ -78,6 +78,7 @@ export default {
 
     init() {
       this.loadRounds();
+      this.$emit('update');
     },
 
     loadRounds() {
@@ -99,8 +100,6 @@ export default {
             if (this.rounds.length > 0) {
               this.selectedRoundId = this.rounds[0].id;
             }
-
-            console.log(this.rounds)
 
           })
           .catch(() => {

@@ -4,8 +4,8 @@
       :color="color"
       :timeout="timer"
       v-model="showSnackbar"
-      bottom
-      right
+      top
+      centered
   >
 
     <v-icon left>{{icon}}</v-icon>{{message}}

@@ -2,7 +2,7 @@
 
   <div>
 
-    <ApplicationHeader/>
+    <ApplicationHeader @update="init"/>
 
     <v-row>
       <v-col :cols="4" align-self="center"/>
@@ -70,7 +70,7 @@ export default {
   }),
 
   created() {
-    this.initialize();
+    this.init();
   },
 
   computed: {
@@ -87,9 +87,10 @@ export default {
 
   methods: {
 
-    initialize() {
+    init() {
 
       this.rounds = []
+      this.selectedRoundId = null;
       this.selectedRound = null;
 
       this.competitorRounds = [];
@@ -142,6 +143,7 @@ export default {
 
             if (this.rounds.length > 0) {
               this.selectedRound = this.rounds[0];
+              this.selectedRoundId = this.rounds[0].id;
             }
 
           })

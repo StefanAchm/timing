@@ -34,11 +34,23 @@ const routes = [
         path: '/register',
         name: 'register',
         component: () => import('../views/RegisterView.vue')
+    },
+    {
+        path: '*',
+        redirect: '/competition'
     }
 ]
 
 const router = new VueRouter({
     routes
+})
+
+router.beforeEach((to, from, next) => {
+
+    document.title = to.name
+
+    next()
+
 })
 
 export default router

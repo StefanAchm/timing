@@ -46,8 +46,8 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="dialogVisible = false">Abbrechen</v-btn>
-        <v-btn color="blue darken-1" text @click="printType==='Startliste' ? downloadStartList() : downloadResultList()">Drucken</v-btn>
+        <v-btn color="neutral" @click="dialogVisible = false">Abbrechen</v-btn>
+        <v-btn color="primary" @click="printType==='Startliste' ? downloadStartList() : downloadResultList()">Drucken</v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
@@ -100,8 +100,6 @@ export default {
               this.selectedRoundId = this.rounds[0].id;
             }
 
-            console.log(this.rounds)
-
           })
           .catch(() => {
           });
@@ -111,8 +109,6 @@ export default {
     downloadStartList() {
 
       let filename = 'Startliste-' + this.selectedRound.gender + '-Runde' + this.selectedRound.roundNumber + '.pdf';
-
-      console.log(this.selectedRound.id)
 
       TimerApiService.printStartList(this.selectedRound.id)
           .then(response => {

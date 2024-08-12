@@ -44,9 +44,20 @@
         <v-list-item
             v-for="item in items"
             :key="item.title"
-            link @click="$router.push({ path: item.route})"
+            link
+            @click.stop="$router.push({ path: item.route})"
         >
-          <v-list-item-icon>
+
+          <v-tooltip bottom v-if="mini">
+            <template v-slot:activator="{ on, attrs }">
+              <v-list-item-icon v-bind="attrs" v-on="on">
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
+            </template>
+            <span>{{ item.title }}</span>
+          </v-tooltip>
+
+          <v-list-item-icon v-if="!mini">
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
 

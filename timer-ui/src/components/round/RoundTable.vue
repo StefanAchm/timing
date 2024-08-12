@@ -4,7 +4,7 @@
 
     <DeleteDialog
         :dialog.sync="dialogDelete"
-        @dialog-closed="initialize()"
+        @dialog-closed="init()"
         :itemprop="editedItem"
         :type="'round'"
     />
@@ -68,11 +68,11 @@ export default {
   watch: {},
 
   created() {
-    this.initialize();
+    this.init();
   },
 
   mounted() {
-    this.initialize();
+    this.init();
   },
 
   methods: {
@@ -102,7 +102,7 @@ export default {
       this.roundDialog = true
     },
 
-    initialize() {
+    init() {
 
       this.editedItem = {
         score: {
