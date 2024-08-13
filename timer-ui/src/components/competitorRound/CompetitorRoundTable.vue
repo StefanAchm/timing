@@ -42,7 +42,7 @@
 
       <v-row>
 
-        <v-col :cols="4">
+        <v-col :cols="3">
 
           <v-text-field
               v-model="search"
@@ -78,6 +78,18 @@
               v-model="statusFilter"
               :items="statusItems"
           ></v-select>
+
+        </v-col>
+
+        <v-col :cols="1">
+          <v-text-field
+              label="Anzahl"
+              readonly
+              :value="competitorsFiltered.length"
+              disabled
+              outlined
+          >
+          </v-text-field>
         </v-col>
 
         <v-col :cols="2">
