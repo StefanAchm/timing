@@ -87,7 +87,7 @@
                 v-if="item === selectedCompetitorRoundLocal"
                 indeterminate
                 color="primary"
-                size="20"
+                size="23"
                 class="mr-2"
             ></v-progress-circular>
 
@@ -98,6 +98,20 @@
               mdi-play-circle-outline
             </v-icon>
 
+            <!-- add a tooltip, with all the information about the competitor -->
+            <v-tooltip bottom color="primary">
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon v-bind="attrs" v-on="on">mdi-information</v-icon>
+              </template>
+              <span>
+                Wohnort: {{ item.competitor.city }}
+                <br>
+                Verein: {{ item.competitor.club }}
+                <br>
+                Geburtsdatum: {{ item.competitor.dateOfBirth }}
+              </span>
+
+            </v-tooltip>
 
           </td>
 

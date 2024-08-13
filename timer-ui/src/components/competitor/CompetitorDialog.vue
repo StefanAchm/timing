@@ -130,7 +130,7 @@
       <v-card-actions>
 
         <v-btn
-            v-if="showDevButton"
+            v-if="showDevButton && fullEdit"
             color="warning"
             @click="addRandom"
         >Zufällig
