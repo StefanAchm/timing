@@ -24,8 +24,7 @@ services:
   frontend:
     container_name: timer-ui
     image: ghcr.io/stefanachm/timer-ui:latest
+    environment:
+      - VUE_APP_DEV_ENVIRONMENT=false
     ports:
       - "8081:80"
-
-volumes:
-  uploads_volume:

@@ -130,6 +130,7 @@
       <v-card-actions>
 
         <v-btn
+            v-if="showDevButton"
             color="warning"
             @click="addRandom"
         >Zufällig
@@ -207,6 +208,10 @@ export default {
         this.$emit('update:dialog', value)
       }
     },
+
+    showDevButton() {
+      return window.env.VUE_APP_DEV_ENVIRONMENT
+    }
 
   },
 
