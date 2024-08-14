@@ -283,8 +283,6 @@ export default {
 
       this.generateStartNumber()
 
-      this.$refs.competitorDialogForm.reset(); // reset the form validation
-
       TimerApiService.getPossibleCompetitors()
           .then(response => {
             this.possibleCompetitors = response.data;
