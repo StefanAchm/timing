@@ -458,7 +458,7 @@ export default {
         if (competitorRound.competitorRoundStatus === 'COMPLETED') {
           competitor.rounds[competitorRound.roundNumber].score = competitorRound.score;
         } else if (competitorRound.competitorRoundStatus === 'CREATED') {
-          competitor.rounds[competitorRound.roundNumber].score = 'DNS';
+          competitor.rounds[competitorRound.roundNumber].score = 'DNF';
         }
 
       });

@@ -63,7 +63,7 @@ public class PdfGenerator {
     private static Table getData(Pdf pdf) {
 
         return new Table(
-                ColumnsGenerator.getColumns(pdf.getType()),
+                HeaderGenerator.getHeader(pdf.getType()),
                 pdf.getType(),
                 RowsGenerator.getRows(pdf.getType(), pdf.getCompetitors(), pdf.getCompetitorScores()));
 

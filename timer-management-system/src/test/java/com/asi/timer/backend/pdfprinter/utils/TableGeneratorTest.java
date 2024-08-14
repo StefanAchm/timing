@@ -1,8 +1,6 @@
 package com.asi.timer.backend.pdfprinter.utils;
 
 import com.asi.timer.backend.pdfprinter.model.Column;
-import com.asi.timer.backend.pdfprinter.utils.ColumnsGenerator;
-import com.asi.timer.backend.pdfprinter.utils.TableGenerator;
 import com.itextpdf.text.Font;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +13,7 @@ class TableGeneratorTest {
 
         Font font = new Font(Font.FontFamily.UNDEFINED, 11f);
 
-        List<Column> columns = ColumnsGenerator.getStartListHeader();
+        List<Column> columns = HeaderGenerator.getStartListHeader();
 
         String result = TableGenerator.getCorrectCellContent(
                 "ABCDEFGHIJKLMNOPQRST",

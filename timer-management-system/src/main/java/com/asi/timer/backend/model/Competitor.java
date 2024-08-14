@@ -100,6 +100,10 @@ public class Competitor {
      */
     public String getDateOfBirthAsString() {
 
+        if(dateOfBirth == null) {
+            return "";
+        }
+
         return dateOfBirth.getDayOfMonth() + "-" + dateOfBirth.getMonthValue() + "-" + dateOfBirth.getYear();
 
     }

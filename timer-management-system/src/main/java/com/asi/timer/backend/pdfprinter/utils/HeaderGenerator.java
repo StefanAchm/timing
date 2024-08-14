@@ -5,9 +5,9 @@ import com.asi.timer.enums.EnumPrintType;
 
 import java.util.List;
 
-public class ColumnsGenerator {
+public class HeaderGenerator {
 
-    public static List<Column> getColumns(EnumPrintType printType) {
+    public static List<Column> getHeader(EnumPrintType printType) {
 
         return switch (printType) {
             case START_LIST -> getStartListHeader();
