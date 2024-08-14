@@ -70,6 +70,10 @@ export default {
 
     },
 
+    getPossibleCompetitors() {
+        return apiClient.get('/competitor/getPossibleCompetitors');
+    },
+
     ///////////////////////////////////////////////////////////////////////////////////
     // Competitor Rounds
 

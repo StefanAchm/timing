@@ -1,5 +1,6 @@
 package com.asi.timer.service;
 
+import com.asi.timer.backend.CsvUtil;
 import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.backend.utils.StartNumberUtil;
 import com.asi.timer.model.db.DBCompetitor;
@@ -210,5 +211,11 @@ public class CompetitorService {
 
     }
 
+
+    public List<APICompetitor> getPossibleCompetitors() {
+
+        return CsvUtil.parseFromFile("possibleCompetitors.csv");
+
+    }
 
 }

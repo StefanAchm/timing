@@ -3,6 +3,7 @@ package com.asi.timer.backend.utils;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 public class FileUtils {
@@ -34,4 +35,19 @@ public class FileUtils {
         return file;
 
     }
+
+    public static String readFileFromResources(String fileName) {
+        ClassLoader classLoader = FileUtils.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+        if(inputStream == null) {
+            throw new IllegalArgumentException("File not found: " + fileName);
+        }
+        try {
+            return new String(inputStream.readAllBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

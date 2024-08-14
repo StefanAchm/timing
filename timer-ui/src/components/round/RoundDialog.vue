@@ -97,10 +97,10 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="neutral" @click="close">
-          Cancel
+          Schließen
         </v-btn>
         <v-btn color="primary" @click="save">
-          Save
+          Speichern
         </v-btn>
       </v-card-actions>
 

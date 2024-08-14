@@ -33,6 +33,11 @@ public class CompetitorController {
         return ResponseEntity.ok(this.competitorService.deleteCompetitor(id).getId().toString());
     }
 
+    @GetMapping("/getPossibleCompetitors")
+    public ResponseEntity<List<APICompetitor>> getPossibleCompetitors() {
+        return ResponseEntity.ok(this.competitorService.getPossibleCompetitors());
+    }
+
     @GetMapping("/getCompetitors")
     public ResponseEntity<List<APICompetitor>> getCompetitors() {
         return ResponseEntity.ok(this.competitorService.getCompetitors());

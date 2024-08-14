@@ -12,7 +12,10 @@
 
       <v-card-text>
 
-        <v-form v-model="isValid" ref="competitorDialogForm">
+        <v-form
+            autocomplete="off"
+            v-model="isValid"
+            ref="competitorDialogForm">
 
           <v-container>
 
@@ -50,11 +53,18 @@
 
               <v-col>
 
-                <v-text-field
-                    v-model="competitorLocal.firstName"
+                <v-combobox
+                    autocomplete="off"
+                    v-model="selectedCompetitor"
+                    :items="possibleCompetitors"
+                    item-text="description"
+                    item-value="firstName"
                     label="Vorname"
                     :rules="[v => !!v || 'Vorname darf nicht leer sein']"
                     required
+                    @change="selectCompetitor"
+                    clearable
+                    @click:clear="init()"
                 />
 
               </v-col>
@@ -141,7 +151,7 @@
         <v-btn
             color="neutral"
             @click="close"
-        >Abbrechen
+        >Schließen
         </v-btn>
 
         <v-btn
@@ -192,6 +202,9 @@ export default {
     startNumberErrors: [],
     isValid: false,
     closeDialogAfterSave: false,
+
+    selectedCompetitor: null,
+    possibleCompetitors: []
 
   }),
 
@@ -265,8 +278,40 @@ export default {
   methods: {
 
     init() {
+
       this.competitorLocal = Object.assign({}, this.defaultCompetitor);
+
       this.generateStartNumber()
+
+      this.$refs.competitorDialogForm.reset(); // reset the form validation
+
+      TimerApiService.getPossibleCompetitors()
+          .then(response => {
+            this.possibleCompetitors = response.data;
+            for (let i = 0; i < this.possibleCompetitors.length; i++){
+              const element = this.possibleCompetitors[i];
+              element.description = element.firstName + ' ' + element.lastName + ' (' + element.city + ')';
+              element.selectId = i; 
+            }
+          })
+          .catch(() => {});
+
+    },
+
+    selectCompetitor() {
+
+      if(this.selectedCompetitor.selectId !== undefined) {
+        // Update the combobox, to show only the firstname and not the description, if we got the competitor from the list
+        let startNumber = this.competitorLocal.startNumber;
+        let paymentStatus = this.competitorLocal.paymentStatus;
+        this.competitorLocal = Object.assign({}, this.selectedCompetitor);
+        this.competitorLocal.startNumber = startNumber;
+        this.competitorLocal.paymentStatus = paymentStatus;
+        this.selectedCompetitor = this.selectedCompetitor.firstName;
+      } else {
+        this.competitorLocal.firstName = this.selectedCompetitor;
+      }
+
     },
 
     addRandom() {
@@ -297,7 +342,6 @@ export default {
                 .finally(() => {
                   this.$emit('dialog-closed', this.competitorLocal)
                   this.init()
-                  this.$refs.competitorDialogForm.reset(); // reset the form validation
                 });
 
           })
