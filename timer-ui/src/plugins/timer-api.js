@@ -4,7 +4,7 @@ import axios from 'axios';
 import {EventBus} from "@/plugins/event-bus";
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8080/timer/api',
+    baseURL: window.env.VUE_APP_API_BASE_URL,
     withCredentials: false,
     headers: {
         Accept: 'application/json',
