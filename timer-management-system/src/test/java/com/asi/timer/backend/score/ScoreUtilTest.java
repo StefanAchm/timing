@@ -179,8 +179,8 @@ class ScoreUtilTest {
         Mr mr = arguments.get(0, Mr.class);
 
         List<Round> rounds = new ArrayList<>();
-        rounds.add(new Round(1, 30));
-        rounds.add(new Round(2, 30));
+        rounds.add(new Round(1, 30, null));
+        rounds.add(new Round(2, 30, null));
 
         double scoreCompetitor1 = ScoreUtil.calculateTotalScore(mr.toCompetitorRounds1(), rounds);
         double scoreCompetitor2 = ScoreUtil.calculateTotalScore(mr.toCompetitorRounds2(), rounds);

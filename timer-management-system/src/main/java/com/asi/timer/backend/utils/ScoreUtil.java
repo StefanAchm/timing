@@ -5,18 +5,21 @@ import com.asi.timer.backend.model.CompetitorRound;
 import com.asi.timer.backend.model.CompetitorScore;
 import com.asi.timer.backend.model.Round;
 import com.asi.timer.enums.EnumCompetitorRoundStatus;
+import com.asi.timer.enums.EnumGender;
 import com.asi.timer.enums.EnumHoldType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.IntStream;
 
 public class ScoreUtil {
 
+    private static final Logger logger = LoggerFactory.getLogger(ScoreUtil.class);
+
     private ScoreUtil() {
         throw new IllegalStateException("Utility class");
     }
-
-
 
     /**
      * Returns the score for each competitor. <br>
@@ -107,21 +110,33 @@ public class ScoreUtil {
 
         double score = 0;
 
-        for (int i = 0; i < competitorRounds.size(); i++) {
-            CompetitorRound competitorRound = competitorRounds.get(i);
+        int lastRound = competitorRounds.stream()
+                .map(CompetitorRound::getRoundNumber)
+                .max(Integer::compareTo)
+                .orElseThrow(() -> new RuntimeException("No round found"));
 
-            if(i < competitorRounds.size() - 1) {
+        for (CompetitorRound competitorRound : competitorRounds) {
+
+            int roundNumber = competitorRound.getRoundNumber();
+            EnumGender gender = competitorRound.getCompetitor().getGender();
+
+            boolean isLastRound = competitorRound.getRoundNumber() == lastRound;
+
+            if (isLastRound) {
+
+                score += calculateScore(competitorRound);
+
+            } else {
 
                 int maxHolds = rounds.stream()
-                        .filter(round -> round.getRoundNumber() == competitorRound.getRoundNumber())
+                        .filter(round -> round.getGender().equals(gender))
+                        .filter(round -> round.getRoundNumber() == roundNumber)
                         .findFirst()
                         .map(Round::getMaxHolds)
                         .orElseThrow(() -> new RuntimeException("Round not found"));
 
                 score += maxHolds;
 
-            } else {
-                score += calculateScore(competitorRound);
             }
 
         }
