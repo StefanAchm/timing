@@ -37,7 +37,7 @@ public class APICompetitorRound {
         apiCompetitorRound.setRoundNumber(competitorRound.getRound().getRoundNumber());
 
         if(competitorRound.getCompetitorRoundStatus().equals(EnumCompetitorRoundStatus.COMPLETED)) {
-            apiCompetitorRound.setScore(ScoreUtil.calculateScore(competitorRound.toBackendCompetitorRound()));
+            apiCompetitorRound.setScore(ScoreUtil.calculateScoreOfRound(competitorRound.toBackendCompetitorRound()));
         } else {
             apiCompetitorRound.setScore(null);
         }

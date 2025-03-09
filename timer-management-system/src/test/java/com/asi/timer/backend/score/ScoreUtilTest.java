@@ -82,9 +82,9 @@ class ScoreUtilTest {
 
     @ParameterizedTest
     @MethodSource("provideCompetitorRounds")
-    void testCalculateTotalScore(double expectedScore, Ct ct) {
+    void testCalculateScoreOfAllRounds(double expectedScore, Ct ct) {
 
-        double actualScore = ScoreUtil.calculateScore(ct.toCompetitorRound());
+        double actualScore = ScoreUtil.calculateScoreOfRound(ct.toCompetitorRound());
 
         Assertions.assertEquals(expectedScore, actualScore);
 
@@ -182,8 +182,8 @@ class ScoreUtilTest {
         rounds.add(new Round(1, 30, null));
         rounds.add(new Round(2, 30, null));
 
-        double scoreCompetitor1 = ScoreUtil.calculateTotalScore(mr.toCompetitorRounds1(), rounds);
-        double scoreCompetitor2 = ScoreUtil.calculateTotalScore(mr.toCompetitorRounds2(), rounds);
+        double scoreCompetitor1 = ScoreUtil.calculateScoreOfAllRounds(mr.toCompetitorRounds1(), rounds).getTotalScore();
+        double scoreCompetitor2 = ScoreUtil.calculateScoreOfAllRounds(mr.toCompetitorRounds2(), rounds).getTotalScore();
 
         System.out.println("scoreCompetitor1: " + scoreCompetitor1);
         System.out.println("scoreCompetitor2: " + scoreCompetitor2);

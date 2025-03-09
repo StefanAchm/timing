@@ -73,7 +73,7 @@ public class APICompetitor {
                     .map(DBRound::toBackendRound)
                     .toList();
 
-            apiCompetitor.setTotalScore(ScoreUtil.calculateTotalScore(competitorRounds, rounds));
+            apiCompetitor.setTotalScore(ScoreUtil.calculateScoreOfAllRounds(competitorRounds, rounds).getTotalScore());
 
         }
 
