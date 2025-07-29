@@ -144,12 +144,10 @@ public class ScoreUtil {
      */
     public static Scores calculateScoreOfAllRounds(List<CompetitorRound> competitorRounds, List<Round> rounds) {
 
-
-
         int lastRound = competitorRounds.stream()
                 .map(CompetitorRound::getRoundNumber)
                 .max(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("No round found"));
+                .orElse(0);
 
         Scores scores = new Scores();
         Map<Integer, Double> roundScores = new HashMap<>();
@@ -175,7 +173,7 @@ public class ScoreUtil {
                         .filter(round -> round.getRoundNumber() == roundNumber)
                         .findFirst()
                         .map(Round::getMaxHolds)
-                        .orElseThrow(() -> new RuntimeException("Round not found"));
+                        .orElse(0);
 
                 totalScore += maxHolds;
 
