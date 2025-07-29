@@ -298,17 +298,19 @@ export default {
 
     selectCompetitor() {
 
+      let startNumber = this.competitorLocal.startNumber;
+      let paymentStatus = this.competitorLocal.paymentStatus;
+
       if(this.selectedCompetitor.selectId !== undefined) {
-        // Update the combobox, to show only the firstname and not the description, if we got the competitor from the list
-        let startNumber = this.competitorLocal.startNumber;
-        let paymentStatus = this.competitorLocal.paymentStatus;
         this.competitorLocal = Object.assign({}, this.selectedCompetitor);
-        this.competitorLocal.startNumber = startNumber;
-        this.competitorLocal.paymentStatus = paymentStatus;
         this.selectedCompetitor = this.selectedCompetitor.firstName;
       } else {
+        this.competitorLocal = {};
         this.competitorLocal.firstName = this.selectedCompetitor;
       }
+
+      this.competitorLocal.startNumber = startNumber;
+      this.competitorLocal.paymentStatus = paymentStatus;
 
     },
 
