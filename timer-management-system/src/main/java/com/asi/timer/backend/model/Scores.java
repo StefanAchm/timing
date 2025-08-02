@@ -27,4 +27,12 @@ public class Scores {
     public void addToTotalScore(double score) {
         this.totalScore += score;
     }
+
+    @Override
+    public String toString() {
+        return "Scores{" +
+               "roundScores=" + roundScores +
+               ", totalScore=" + totalScore +
+               '}';
+    }
 }

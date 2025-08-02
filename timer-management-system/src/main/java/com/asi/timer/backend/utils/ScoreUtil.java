@@ -19,10 +19,8 @@ public class ScoreUtil {
 
     /**
      * Returns the score for each competitor. <br>
-     *
-     * The following logic should be implemented:
-     * 1. Each competitor has one CompetitorScore
-     * 2. The competitorScore should be calculated in the following way:
+     * NOTE: It compares the scores of competitors, calculates correct ranks! <br>
+     * It also updates the scores with previous rounds if needed, and sets the rank for each competitor based on their score.
      */
     public static List<CompetitorScore> getCompetitorScores(List<CompetitorRound> competitorRounds,
                                                             List<Round> rounds) {
@@ -138,6 +136,7 @@ public class ScoreUtil {
 
     /**
      * Calculates the total score of a competitor. <br>
+     * NOTE: It does not compare the scores of competitors, it just calculates the total score of a single competitor. <br>
      * @param competitorRounds List of CompetitorRounds of this competitor
      * @param rounds List of all rounds
      * @return the total score of the competitor
@@ -190,6 +189,11 @@ public class ScoreUtil {
 
     }
 
+    /**
+     * Calculates the score of a SINGLE ROUND for a competitor. <br>
+     * @param competitorRound the CompetitorRound for which the score should be calculated
+     * @return the score of the round, or 0 if the round is not completed
+     */
     public static double calculateScoreOfRound(CompetitorRound competitorRound) {
 
         if(competitorRound.getCompetitorRoundStatus().equals(EnumCompetitorRoundStatus.COMPLETED)) {
@@ -207,6 +211,7 @@ public class ScoreUtil {
     }
 
     /**
+     * Calculates the points based on the hold number, hold type and try number. <br>
      * The points are calculated in the following way:
      * 1. The hold number determines the integer part of the points
      * 2. The hold type determines the decimal part of the points (touch = -0.4, slip = -0.2, hold = 0.0, follow = 0.2, move on = 0.4)
@@ -231,7 +236,7 @@ public class ScoreUtil {
     private static double getPointsOfHoldNumber(int holdNumber) {
 
         if(holdNumber > 100) {
-            System.err.println("Hold number is greater than 100, this should not happen!");
+            logger.error("Hold number is greater than 100, this should not happen!");
             return 100;
         }
 
@@ -242,7 +247,7 @@ public class ScoreUtil {
     private static double getPointsOfTryNumber(int tryNumber) {
 
         if(tryNumber > 10) {
-            System.err.println("Try number is greater than 10, this should not happen!");
+            logger.error("Try number is greater than 10, this should not happen!");
             return -0.09;
         }
 

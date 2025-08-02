@@ -2,15 +2,19 @@ package com.asi.timer.backend.score;
 
 import com.asi.timer.backend.model.Competitor;
 import com.asi.timer.backend.model.CompetitorRound;
+import com.asi.timer.backend.model.CompetitorScore;
 import com.asi.timer.backend.model.Round;
+import com.asi.timer.backend.utils.FileUtils;
 import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.enums.EnumCompetitorRoundStatus;
 import com.asi.timer.enums.EnumGender;
 import com.asi.timer.enums.EnumHoldType;
+import com.asi.timer.helper.FileHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
@@ -173,24 +177,7 @@ class ScoreUtilTest {
                                 false
                         )
 
-                ),
-
-                // TODO: That is not working at the moment!
-                Arguments.of(
-                        new MultipleRoundsWithTwoCompetitors(
-                                List.of(
-                                        new CompetitorRoundTestData(15, EnumHoldType.HELD, 1, 1),
-                                        new CompetitorRoundTestData(15, EnumHoldType.HELD, 1, 2)
-                                ),
-                                List.of(
-                                        new CompetitorRoundTestData(15, EnumHoldType.TOUCHED, 1, 1),
-                                        new CompetitorRoundTestData(15, EnumHoldType.HELD, 1, 2)
-                                ),
-                                true
-                        )
-
                 )
-
 
         );
 
@@ -203,8 +190,8 @@ class ScoreUtilTest {
         MultipleRoundsWithTwoCompetitors multipleRoundsWithTwoCompetitors = arguments.get(0, MultipleRoundsWithTwoCompetitors.class);
 
         List<Round> rounds = new ArrayList<>();
-        rounds.add(new Round(1, 30, EnumGender.HERREN));
-        rounds.add(new Round(2, 30, EnumGender.HERREN));
+        rounds.add(new Round(UUID.randomUUID(), 1, 30, EnumGender.HERREN));
+        rounds.add(new Round(UUID.randomUUID(), 2, 30, EnumGender.HERREN));
 
         double scoreCompetitor1 = ScoreUtil.calculateScoreOfAllRounds(multipleRoundsWithTwoCompetitors.toCompetitorRounds1(), rounds).getTotalScore();
         double scoreCompetitor2 = ScoreUtil.calculateScoreOfAllRounds(multipleRoundsWithTwoCompetitors.toCompetitorRounds2(), rounds).getTotalScore();
@@ -225,5 +212,74 @@ class ScoreUtilTest {
         }
 
     }
+
+    // rank,first_name,last_name,points
+    private record ScoreResult(
+            int rank,
+            String firstName,
+            String lastName,
+            double points
+    ) {
+
+        public String getFullName() {
+            return firstName + " " + lastName;
+        }
+
+        private static List<ScoreResult> fromCsv(String folder, EnumGender gender) {
+
+            String fileName = switch (gender) {
+                case HERREN -> "expected_score_result_herren.csv";
+                case DAMEN -> "expected_score_result_damen.csv";
+            };
+
+            String filePath = folder + "/" + fileName;
+            String csv = FileUtils.readFileFromResources(filePath);
+            String[] lines = csv.split("\n");
+            List<ScoreResult> scoreResults = new ArrayList<>();
+            for (int i = 1; i < lines.length; i++) {
+                String line = lines[i];
+                String[] parts = line.split(",");
+                if (parts.length != 4) {
+                    throw new IllegalArgumentException("Invalid CSV line: " + line);
+                }
+                int rank = Integer.parseInt(parts[0].trim());
+                String firstName = parts[1].trim();
+                String lastName = parts[2].trim();
+                double points = Double.parseDouble(parts[3].trim());
+                scoreResults.add(new ScoreResult(rank, firstName, lastName, points));
+
+            }
+
+            return scoreResults;
+        }
+
+    }
+
+    @ParameterizedTest
+    @EnumSource(EnumGender.class)
+    void test2024(EnumGender gender) {
+
+        List<Competitor> competitors = FileHelper.getCompetitors("2024", gender);
+        List<Round> rounds = FileHelper.getRounds("2024", gender);
+        List<CompetitorRound> competitorRounds = FileHelper.getCompetitorRounds("2024", competitors, rounds, gender);
+
+        List<CompetitorScore> competitorScores = ScoreUtil.getCompetitorScores(competitorRounds, rounds);
+
+        List<ScoreResult> expectedScores = ScoreResult.fromCsv("2024", gender);
+
+        for(ScoreResult expectedScore : expectedScores) {
+            CompetitorScore competitorScore = competitorScores.stream()
+                    .filter(cs -> cs.getCompetitor().getFirstName().equals(expectedScore.firstName())
+                                  && cs.getCompetitor().getLastName().equals(expectedScore.lastName()))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Competitor not found: " + expectedScore.getFullName()));
+
+            Assertions.assertEquals(expectedScore.rank(), competitorScore.getRank(), "Rank mismatch for " + expectedScore.getFullName());
+            Assertions.assertEquals(expectedScore.points, competitorScore.getScore(), 0.000001, "Points mismatch for " + expectedScore.getFullName());
+        }
+
+
+    }
+
 
 }

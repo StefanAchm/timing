@@ -78,6 +78,6 @@ public class DBRound {
     }
 
     public Round toBackendRound() {
-        return new Round(this.roundNumber, this.maxHolds, this.gender);
+        return new Round(this.id, this.roundNumber, this.maxHolds, this.gender);
     }
 }

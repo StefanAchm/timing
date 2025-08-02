@@ -1,0 +1,85 @@
+id,city,club,date_of_birth,first_name,gender,last_name,payment_status,start_number
+3eb8b708-9bfa-460d-945a-74c2b12d556c,Oberlienz,KIOT,1991-01-18,Theresa,DAMEN,Tembler,PAID,87
+6687c6db-1a61-4b9e-b27c-b93fa6fc5ec2,Lienz,KIOT,1987-03-05,Stefan,HERREN,Neumayr,PAID,1
+1f6a6be3-db20-4d4e-924f-3a3a8df806a5,Thurn,KIOT,1981-02-04,Peter,HERREN,Wurzer,PAID,26
+b0322810-0074-40cc-a9dd-86091e395bb4,Lienz,KIOT,1995-10-09,Gabriel,HERREN,Pribil,PAID,2
+03396487-91d6-470f-908c-95449fc0f372,Lienz,KIOT,1970-02-28,Günther,HERREN,Gruber,PAID,9
+7d8ba045-a05c-421a-93d5-4febed4af176,Lavanterstraße,KIOT,2006-11-03,Marcus,HERREN,Mayr,PAID,13
+e0fa4b7e-0cde-439f-a67d-4aaa3c06a3a0,Lienz,KIOT,2004-01-23,Maya,DAMEN,Klaunzer,PAID,47
+febb255c-0b2c-436d-9d8f-111e35bbffc1,Lienz,KIOT,1988-11-04,Uli,HERREN,Czopak,PAID,50
+cc9920fe-b32d-4758-9a99-a9fb3e9c6bbe,Wien,KIOT,1995-03-21,Niki,HERREN,Schäffler,PAID,95
+89e7bfbe-cb63-46e1-965e-b26367057489,Tristach,KIOT,1979-09-16,Lisi,DAMEN,Steurer,PAID,82
+584f1bf9-b2fa-4d47-af68-86a49a6bd1d6,Lienz,KIOT,1976-05-29,Berni,HERREN,Klaunzer,PAID,96
+f6d5b842-1ece-498a-a3a2-bbeb32622fae,Tristach,AV Lienz,2004-04-04,David,HERREN,Einhauer,PAID,71
+9d46ede2-395d-496b-94a3-e866bcc5e321,Tristach,KIOT,2003-07-27,Matthias,HERREN,Mayr,PAID,34
+0c2e822f-f8d6-42fb-b43d-0b8d4876e9ae,Graz,ÖAV Graz,1999-09-24,Maximilian,HERREN,Fischer,PAID,98
+3b10ebd4-ad0b-4bd4-b90e-f307efabcfa9,Graz,Kurtus der Champ,2005-05-21,Alexander,HERREN,Steiner,PAID,61
+45fd5ebf-f1b1-4225-8dcd-d84f4c4d3700,Tristach,AV-Lienz,2008-04-01,Annalena,DAMEN,Unterasinger,PAID,66
+2f0ab300-8adf-405b-b265-1ebfb5e69b6d,Lienz,KIOT,2001-11-13,Laura,DAMEN,Longo,PAID,12
+c088d04c-268c-475c-9905-775811d1a753,Lienz,Vereinslos,1988-08-18,Andreas,HERREN,Pucher,NOT_PAID,68
+6019fb6d-dfd1-4524-a685-af2387c13547,Ainet,Vereinslos,1999-10-20,Martin,HERREN,Salek,PAID,23
+14960316-7db0-47ff-b7ae-3c683a968962,Leisach,AV ,1992-04-19,Nickolas,HERREN,Erickson,PAID,40
+0a8b5c35-ed0c-4fcf-a9b1-ca7d440d4258,Virgen,Prägraten Alpin,1992-09-04,Stefan,HERREN,Mattersberger,PAID,81
+151dd201-9af4-4ea5-b2f9-f822de4d1d55,Lienz,Vereinslos,1997-03-13,Philipp,HERREN,Lukasser,PAID,8
+c081d57c-d592-448e-9e08-ccf1ba88c2c2,Tristach,KIOT,1996-08-10,Emanuel,HERREN,Winkler,PAID,45
+78f722b2-4a41-47ef-ab8d-79b72af2d7b4,Lienz,KIOT,1982-02-17,Daniel,HERREN,Ortner,PAID,39
+9f7a1aca-9e9a-4ccb-9267-0729e7fa6724,Lienz,AV Lienz,2014-06-16,Maria,DAMEN,Zwittnig,NOT_PAID,93
+ca88636c-03a2-4b81-bdb8-0a4e7eebdce0,Lavant,Sport Union - Lavant,1996-08-31,Stefan,HERREN,Pacher,PAID,94
+59889f41-7148-4d53-a995-727924592cee,Tristach,Vereinslos,1991-01-17,Mario,HERREN,Unterluggauer,PAID,37
+a4a344ce-7d4f-4fb3-b012-42b7bfe82f81,Lienz,APV HSV,1967-12-14,Fredy,HERREN,Fuetsch,PAID,32
+03721902-79dc-42b2-8f8b-28aaa9d0ccb4,Tristach,Vereinslos,1996-05-17,Moritz,HERREN,Unterluggauer,PAID,5
+24dcb094-938b-4086-bea3-62a271eed5a7,Innsbruck,Vereinslos,1993-07-07,Magdalena,DAMEN,Lindl,PAID,6
+c36ce88e-4db1-4ce6-8922-c9059ea99f28,St.Johann im Walde,Vereinslos,1988-03-20,Philipp,HERREN,Vergeiner,PAID,79
+82b955c5-2aad-4d7a-8f5e-bc7d1a5cce15,Dölsach,ÖTK Dölsach,2009-07-24,Laura,DAMEN,Weingartner,PAID,29
+52db29a3-8b00-4f64-a820-9f62721f3980,Stribach,Vereinslos,1983-09-10,Peter,HERREN,Ortner,PAID,77
+49a18b3a-ca79-4462-8e4e-47a5f138d56d,Treffen,Vereinslos,2011-11-24,Phillipp,HERREN,Tengg,PAID,80
+76d461e1-4f2b-430c-b8e9-e24bf8ec369b,Treffen,Vereinslos,2010-02-24,Maureen,DAMEN,Tengg,PAID,76
+a604eedf-4c10-42c9-aab9-fa1e0d2db289,Treffen,Vereinslos,2016-01-27,Estelle,DAMEN,Tengg,PAID,70
+88106f84-2571-4f26-af26-b6ba97757532,Innsbruck,Surf Inn,1985-03-12,Fabian,HERREN,Hochheimer,PAID,84
+433e32a9-3810-4985-b377-48038f17e1e3,Lienz,KIOT,1982-07-01,Max,HERREN,Reisinger,PAID,48
+82012452-a5ea-42e5-b6f3-d891cd1722c5,Lienz,AV Lienz,2015-09-15,Simon,HERREN,Jungmann,PAID,86
+335718d6-2ea1-4b4c-8c74-c1da0b1604d1,Lienz,AV Lienz,2013-01-17,Max,HERREN,Jungmann,PAID,46
+2ebdb3c4-b5e5-4392-bc2c-837d8019ee36,Villach,Kletterteam Villach,2010-10-15,Jana,DAMEN,Pötzi,PAID,62
+f28f1d08-85bf-4555-ba7f-dbdf34dcd686,Sexten,Gamatzen,1987-11-25,Daniel,HERREN,Rogger,PAID,10
+1e464868-14a9-4f47-8bdb-21870fac4c37,Sand in Taufers,Vereinslos,1994-11-10,Georg Fridolin,HERREN,Aichner,PAID,92
+d47ce8de-600f-4997-a3e8-2a489a8ba77e,Ainet,Vereinslos,2000-04-20,David,HERREN,Egartner,PAID,16
+dd4ce660-39df-487e-b428-54ac9d042bf0,Lienz,Vereinslos,1994-06-08,Sarah,DAMEN,Elstner,PAID,27
+24ebe5f3-ee3c-4834-a66b-b155cc86b9b9,Söll,Koasaboulder,1984-07-26,Bernhard,HERREN,Exenberger,PAID,55
+b85a7bee-da6f-4571-8e33-d3c6b0153de1,Lienz,AV Lienz,2007-05-29,Valentina,DAMEN,Gradnig,PAID,78
+39436eb3-95b2-47af-b180-50e74b6ebbfc,Tristach,AV Lienz,2009-08-06,Emma,DAMEN,Joast,PAID,54
+ff5ff23b-d388-4507-82b7-c9fe1ac52ffd,Leisach,AV Lienz,2008-09-24,Louisa,DAMEN,Meixner,PAID,52
+fd1fd42d-1bab-45d6-8ac6-9bca7ff8aaf0,Lienz,KIOT,1982-12-31,Paul,HERREN,Jungmann,PAID,19
+32830b64-79d7-4813-b929-8f448a719a22,Lienz,AV Lienz,2013-08-07,Tamina,DAMEN,Frinder,PAID,60
+3e18b7c3-d3c8-4224-aaba-dafc7485e038,St. Jakob,AV Lienz,2012-01-19,Helena,DAMEN,Troger,PAID,49
+09d24bc8-de51-41e4-97b4-15cd7d409397,Prägraten,Folkn Chicks on fire,1999-07-07,Jonas,HERREN,Weiskopf,PAID,99
+3c90bda1-a90f-476d-9bcc-c68fc8e68e8e,Matrei i.O.,Folkn chicks on fire,1998-08-13,Kevin,HERREN,Resinger,PAID,63
+db741b59-3eef-4edb-934b-d39bc8067547,Tristach,KIOT,1994-02-17,Stefan,HERREN,Achmüller,PAID,4
+758f5b62-04bc-45c0-97a7-4c8fafe809e1,Lienz,AV + Pelza,2006-10-30,Paulina,DAMEN,Fleißner,PAID,44
+b3e20cd9-aa51-4cd2-8660-65102d217766,Lienz,AV + Pelza,2004-08-26,Maximilian,HERREN,Haselmager,PAID,75
+6cf6a6c7-c869-4a6d-b0f1-ca810345587b,St. Jakob,AV Lienz,2009-09-18,Lucia,DAMEN,Troger,PAID,21
+1e3a3d26-a386-4599-9eaf-d8018140917b,Leisach,AV Lienz,2005-06-29,David,HERREN,Petutschnig,PAID,90
+375cddfe-860d-45a5-9e0b-44fa5a190dcf,Untergaimberg,Pelzer + AV,2002-12-20,Stefan,HERREN,Neumair,PAID,59
+8319ec6b-50bb-4fc4-8608-4a28b4a5054a,Innsbruck,Vereinslos,1986-03-25,Christoph,HERREN,Pirchmoser,PAID,83
+7f72fabb-886d-44b8-86d2-5756bc8c6624,Lienz,KIOT,1994-10-06,Helmut,HERREN,Mair,PAID,11
+3c7178bf-c20b-455b-b525-b1edbd3da1c8,Oberlienz,KIOT,2012-05-10,Leo,HERREN,Steiner,PAID,91
+ab4db298-6426-4101-99b9-c988b020e59e,Lienz,AV-Lienz,2011-11-26,Sophia,DAMEN,Lenzhofer,PAID,74
+96ace57c-3559-4f44-89f3-56ff2421bc14,Lavant,Feuerwehr Lavant,2004-11-02,Mario,HERREN,Dabernig,PAID,41
+dc2802af-fc45-4f9f-a32b-441bb25e366f,Oberried,KIOT,1989-03-30,Miriam,DAMEN,Reith,PAID,17
+a2abb838-7cbd-4c56-afc0-b4a901b596a8,Lienz,KIOT,1981-11-18,Marco,HERREN,Holzer,PAID,31
+3300df2a-ad90-404a-b3e9-e56e759bd77f,Innsbruck,Vereinslos,1987-06-26,Manuel,HERREN,Tembler,PAID,24
+8bc43b96-1aef-438e-bead-e228c0d5d6a5,Graz,KIOT,1990-07-28,Max,HERREN,Oblasser,PAID,38
+c12d5ebf-69f2-4062-87fa-26514a405ff5,Innsbruck,Vereinslos,2001-01-09,Vava,DAMEN,Orlean,PAID,18
+32bf31dd-f23a-4faa-8a5e-5cf8e6444c78,Toblach,Gamatzen,1962-02-01,Kurt,HERREN,Stauder,PAID,15
+a7b6cc42-6288-47e6-8914-be5d1b7dad0f,Rom,ÖTK Dölsach,1992-10-18,Markus,HERREN,Stocker,PAID,88
+7d983137-6dbd-409a-994f-905aa39bd8dc,Innsbruck,Vereinslos,1992-06-11,Claudi,DAMEN,Bartolomei,PAID,25
+111a0e6b-b32a-46e8-a346-8009c299ed8e,Innsbruck,Vereinslos,1996-05-08,Lea,DAMEN,Götz,PAID,53
+867256c7-1eb3-49b1-8987-aeaaaaafed5c,Staatenlos,Vereinslos,1996-08-14,Lotte,DAMEN,Diester,PAID,30
+4b869078-7ef2-45ca-9a3d-420d323ed456,Innsbruck,KIOT,1993-10-18,Maca,DAMEN,Leon,PAID,69
+575cc8b3-447b-4d71-a43a-52f859e250d9,Staatenlos ,Vereinslos,1996-05-02,Aylli,HERREN,Waresma Espinoza,PAID,28
+2642a6e2-1398-4e8e-ab8f-a710ce2df299,Lienz,KIOT,1995-04-12,Steffi,DAMEN,Dolzer,PAID,58
+101699ed-07e0-40c9-beb3-ab1909f616e9,Lienz,KIOT,1990-05-17,Jakob,HERREN,Troger,PAID,35
+cf52c469-3f97-4521-a30c-1592ae670f9a,Krumbach,Vereinslos,1981-12-20,Alex,HERREN,Neumann,PAID,73
+7c812627-d043-4281-9b56-4a1cf642792d,Niederdorf,Vereinslos,1998-06-20,Nadja,DAMEN,Fauster,PAID,22
+62ad00b4-2154-41eb-9c1e-53f08d21b91e,St. Remy les Chevrense,ES Massy,2005-08-31,Timma,DAMEN,Bathellier,PAID,97
+a49acb9f-ba5a-48fc-8d86-90fea4ab5e5f,Lienz,KIOT,1989-06-15,Simon,HERREN,Girstmair,PAID,3
+00837a79-afa0-4c18-b208-2f560f425f17,Lavant,Feuerwehr Lavant,2002-04-07,David,HERREN,Hanser,PAID,56

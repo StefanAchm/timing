@@ -127,4 +127,12 @@ public class Competitor {
     public int hashCode() {
         return Objects.hash(id, startNumber, firstName, lastName, city, club, dateOfBirth, gender);
     }
+
+    @Override
+    public String toString() {
+        return "Competitor{" +
+               "firstName='" + firstName + '\'' +
+               ", lastName='" + lastName + '\'' +
+               '}';
+    }
 }

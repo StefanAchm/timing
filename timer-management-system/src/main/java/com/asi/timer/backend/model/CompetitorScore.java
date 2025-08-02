@@ -109,5 +109,13 @@ public class CompetitorScore implements Comparable<CompetitorScore> {
         return Objects.hash(rank, competitor, competitorRounds, scores);
     }
 
-
+    @Override
+    public String toString() {
+        return "CompetitorScore{" +
+               "rank=" + rank +
+               ", competitor=" + competitor +
+               ", competitorRounds=" + competitorRounds +
+               ", scores=" + scores +
+               '}';
+    }
 }
