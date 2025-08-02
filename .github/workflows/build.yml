@@ -36,7 +36,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Build with Gradle Wrapper
-        run: cd timer-management-system && ./gradlew build -x test
+        run: cd timer-management-system && ./gradlew build
 
       - name: Upload JAR
         uses: actions/upload-artifact@v2
