@@ -239,7 +239,7 @@ public class ScoreUtil {
 
     }
 
-    protected static double getPointsOfTryNumber(int tryNumber) {
+    private static double getPointsOfTryNumber(int tryNumber) {
 
         if(tryNumber > 10) {
             System.err.println("Try number is greater than 10, this should not happen!");
@@ -250,7 +250,7 @@ public class ScoreUtil {
 
     }
 
-    protected static double getPointsOfHoldType(EnumHoldType holdType) {
+    private static double getPointsOfHoldType(EnumHoldType holdType) {
 
         if(holdType == null) {
             return 0;

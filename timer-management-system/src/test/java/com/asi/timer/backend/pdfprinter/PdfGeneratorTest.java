@@ -13,8 +13,7 @@ import java.time.LocalDate;
 
 class PdfGeneratorTest {
 
-    private static final String folderPath = "C:\\Users\\Stefan\\Desktop\\";
-
+    private static final String folderPath = "C:\\Users\\user\\Desktop\\";
 
     @Test
     void generateStartList() {
