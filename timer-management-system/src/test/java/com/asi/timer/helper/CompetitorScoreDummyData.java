@@ -3,11 +3,13 @@ package com.asi.timer.helper;
 import com.asi.timer.backend.model.Competitor;
 import com.asi.timer.backend.model.CompetitorRound;
 import com.asi.timer.backend.model.CompetitorScore;
+import com.asi.timer.backend.model.Scores;
 import com.asi.timer.enums.EnumCompetitorRoundStatus;
 import com.asi.timer.enums.EnumHoldType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CompetitorScoreDummyData {
 
@@ -157,7 +159,11 @@ public class CompetitorScoreDummyData {
         competitorScore.setRank(rank);
         competitorScore.setCompetitor(competitor);
         competitorScore.setCompetitorRounds(List.of(lastRound));
-        competitorScore.setScore(score);
+
+        Scores scores = new Scores();
+        scores.setRoundScores(Map.of(roundNumber, score));
+        scores.setTotalScore(score);
+        competitorScore.setScores(scores);
 
         return competitorScore;
 

@@ -1,61 +1,110 @@
 package com.asi.timer.backend.utils;
 
-import com.asi.timer.backend.model.Competitor;
-import com.asi.timer.backend.model.CompetitorRound;
-import com.asi.timer.backend.model.CompetitorScore;
-import com.asi.timer.backend.model.Round;
+import com.asi.timer.backend.model.*;
 import com.asi.timer.enums.EnumCompetitorRoundStatus;
+import com.asi.timer.enums.EnumGender;
 import com.asi.timer.enums.EnumHoldType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 public class ScoreUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(ScoreUtil.class);
 
     private ScoreUtil() {
         throw new IllegalStateException("Utility class");
     }
 
-
-
     /**
      * Returns the score for each competitor. <br>
-     *
-     * The following logic should be implemented:
-     * 1. Each competitor has one CompetitorScore
-     * 2. The competitorScore should be calculated in the following way:
+     * NOTE: It compares the scores of competitors, calculates correct ranks! <br>
+     * It also updates the scores with previous rounds if needed, and sets the rank for each competitor based on their score.
      */
     public static List<CompetitorScore> getCompetitorScores(List<CompetitorRound> competitorRounds,
                                                             List<Round> rounds) {
 
         Map<Competitor, List<CompetitorRound>> competitorRoundMap = getCompetitorRoundMap(competitorRounds);
 
-        List<CompetitorScore> competitorScores = getInitialCompetitorScores(rounds, competitorRoundMap);
+        List<CompetitorScore> competitorScores = getCompetitorScores(rounds, competitorRoundMap);
 
-        alignCompetitorScores(rounds, competitorScores);
+        if(competitorScores.isEmpty()) {
+            return competitorScores;
+        }
 
-        // sort competitorScores by score
-        competitorScores.sort((o1, o2) -> Double.compare(o2.getScore(), o1.getScore()));
+        updateScoresWithPreviousRoundsIfNeeded(competitorScores);
 
-        // Set rank for each competitorScore
-        IntStream.range(0, competitorScores.size()).forEach(i -> competitorScores.get(i).setRank(i + 1));
+        updateRank(competitorScores);
 
         return competitorScores;
 
     }
 
-    private static List<CompetitorScore> getInitialCompetitorScores(List<Round> rounds,
-                                                                    Map<Competitor, List<CompetitorRound>> competitorRoundMap) {
+    private static void updateRank(List<CompetitorScore> competitorScores) {
+
+        // sort competitorScores by score
+        competitorScores.sort((o1, o2) -> Double.compare(o2.getScore(), o1.getScore()));
+
+        // Set rank for each competitorScore (if two competitors have the same score, they should have the same rank)
+        double lastScore = competitorScores.get(0).getScore();
+        int rank = 1;
+        for (CompetitorScore competitorScore : competitorScores) {
+
+            double currentScore = competitorScore.getScore();
+
+            if(currentScore < lastScore) {
+                rank++; // Increase rank if score is lower than the last score
+            } // If the score is the same, the rank stays the same
+
+            competitorScore.setRank(rank);
+
+            lastScore = currentScore;
+
+        }
+
+    }
+
+    /**
+     * Update the scores of competitors with the same score to distinguish them. <br>
+     * E.g. if two competitors have the same score (same score in the last round), check if the scores of previous rounds are different.
+     * @param competitorScores List of CompetitorScores
+     */
+    private static void updateScoresWithPreviousRoundsIfNeeded(List<CompetitorScore> competitorScores) {
+
+        // First, sort the competitorScores by score
+        Collections.sort(competitorScores);
+
+        CompetitorScore lastCompetitorScore = competitorScores.get(competitorScores.size() - 1);
+        double scoreShifter = 0.0001;
+        for(int i = competitorScores.size() - 1; i >= 0; i--) {
+
+            CompetitorScore currentCompetitorScore = competitorScores.get(i);
+
+            if(!lastCompetitorScore.hasSameRank(currentCompetitorScore) && lastCompetitorScore.getScore() == currentCompetitorScore.getScore()) {
+                competitorScores.get(i).getScores().addToTotalScore(scoreShifter);
+                scoreShifter += 0.0001;
+            } else {
+                scoreShifter = 0.0001;
+            }
+
+            lastCompetitorScore = currentCompetitorScore;
+
+        }
+    }
+
+    private static List<CompetitorScore> getCompetitorScores(List<Round> rounds,
+                                                             Map<Competitor, List<CompetitorRound>> competitorRoundMap) {
 
         List<CompetitorScore> competitorScores = new ArrayList<>();
 
         for (Map.Entry<Competitor, List<CompetitorRound>> entry : competitorRoundMap.entrySet()) {
 
-            double score = calculateTotalScore(entry.getValue(), rounds);
+            Scores scores = calculateScoreOfAllRounds(entry.getValue(), rounds);
 
             CompetitorScore competitorScore = new CompetitorScore();
             competitorScore.setCompetitor(entry.getKey());
-            competitorScore.setScore(score);
+            competitorScore.setScores(scores);
             competitorScore.setCompetitorRounds(entry.getValue());
             competitorScore.setRank(0);
 
@@ -64,18 +113,6 @@ public class ScoreUtil {
         }
 
         return competitorScores;
-
-    }
-
-    private static void alignCompetitorScores(List<Round> rounds, List<CompetitorScore> competitorScores) {
-
-        // Go threw each round, starting by the last (highest round number)
-        // Try to find competitors, which have completed this round and have the same score in this round
-        // If there are multiple competitors with the same score, use the score of the previous round for comparison
-
-        // TODO: Implement this method
-
-
 
     }
 
@@ -99,42 +136,69 @@ public class ScoreUtil {
 
     /**
      * Calculates the total score of a competitor. <br>
+     * NOTE: It does not compare the scores of competitors, it just calculates the total score of a single competitor. <br>
      * @param competitorRounds List of CompetitorRounds of this competitor
      * @param rounds List of all rounds
      * @return the total score of the competitor
      */
-    public static double calculateTotalScore(List<CompetitorRound> competitorRounds, List<Round> rounds) {
+    public static Scores calculateScoreOfAllRounds(List<CompetitorRound> competitorRounds, List<Round> rounds) {
 
-        double score = 0;
+        int lastRound = competitorRounds.stream()
+                .map(CompetitorRound::getRoundNumber)
+                .max(Integer::compareTo)
+                .orElse(0);
 
-        for (int i = 0; i < competitorRounds.size(); i++) {
-            CompetitorRound competitorRound = competitorRounds.get(i);
+        Scores scores = new Scores();
+        Map<Integer, Double> roundScores = new HashMap<>();
+        double totalScore = 0;
 
-            if(i < competitorRounds.size() - 1) {
+        for (CompetitorRound competitorRound : competitorRounds) {
 
-                int maxHolds = rounds.stream()
-                        .filter(round -> round.getRoundNumber() == competitorRound.getRoundNumber())
-                        .findFirst()
-                        .map(Round::getMaxHolds)
-                        .orElseThrow(() -> new RuntimeException("Round not found"));
+            int roundNumber = competitorRound.getRoundNumber();
+            EnumGender gender = competitorRound.getCompetitor().getGender();
 
-                score += maxHolds;
+            boolean isLastRound = competitorRound.getRoundNumber() == lastRound;
+
+            double score = calculateScoreOfRound(competitorRound);
+
+            if (isLastRound) {
+
+                totalScore += score;
 
             } else {
-                score += calculateScore(competitorRound);
+
+                int maxHolds = rounds.stream()
+                        .filter(round -> round.getGender().equals(gender))
+                        .filter(round -> round.getRoundNumber() == roundNumber)
+                        .findFirst()
+                        .map(Round::getMaxHolds)
+                        .orElse(0);
+
+                totalScore += maxHolds;
+
             }
+
+            roundScores.put(roundNumber, score);
 
         }
 
-        return score;
+        scores.setTotalScore(totalScore);
+        scores.setRoundScores(roundScores);
+
+        return scores;
 
     }
 
-    public static double calculateScore(CompetitorRound competitorRound) {
+    /**
+     * Calculates the score of a SINGLE ROUND for a competitor. <br>
+     * @param competitorRound the CompetitorRound for which the score should be calculated
+     * @return the score of the round, or 0 if the round is not completed
+     */
+    public static double calculateScoreOfRound(CompetitorRound competitorRound) {
 
         if(competitorRound.getCompetitorRoundStatus().equals(EnumCompetitorRoundStatus.COMPLETED)) {
 
-            return calculateScore(
+            return getPoints(
                     competitorRound.getHoldNumber(),
                     competitorRound.getHoldType(),
                     competitorRound.getTryNumber()
@@ -146,7 +210,14 @@ public class ScoreUtil {
 
     }
 
-    public static double calculateScore(int holdNumber, EnumHoldType holdType, int tryNumber) {
+    /**
+     * Calculates the points based on the hold number, hold type and try number. <br>
+     * The points are calculated in the following way:
+     * 1. The hold number determines the integer part of the points
+     * 2. The hold type determines the decimal part of the points (touch = -0.4, slip = -0.2, hold = 0.0, follow = 0.2, move on = 0.4)
+     * 3. The try number determines the deduction of the points (-0.01 for each try)
+     */
+    public static double getPoints(int holdNumber, EnumHoldType holdType, int tryNumber) {
 
         double points = 0;
 
@@ -165,7 +236,7 @@ public class ScoreUtil {
     private static double getPointsOfHoldNumber(int holdNumber) {
 
         if(holdNumber > 100) {
-            System.err.println("Hold number is greater than 100, this should not happen!");
+            logger.error("Hold number is greater than 100, this should not happen!");
             return 100;
         }
 
@@ -173,10 +244,10 @@ public class ScoreUtil {
 
     }
 
-    protected static double getPointsOfTryNumber(int tryNumber) {
+    private static double getPointsOfTryNumber(int tryNumber) {
 
         if(tryNumber > 10) {
-            System.err.println("Try number is greater than 10, this should not happen!");
+            logger.error("Try number is greater than 10, this should not happen!");
             return -0.09;
         }
 
@@ -184,7 +255,7 @@ public class ScoreUtil {
 
     }
 
-    protected static double getPointsOfHoldType(EnumHoldType holdType) {
+    private static double getPointsOfHoldType(EnumHoldType holdType) {
 
         if(holdType == null) {
             return 0;

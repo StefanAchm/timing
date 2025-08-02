@@ -112,7 +112,7 @@ public class CompetitorRoundService {
 
         this.competitorRoundRepository.save(competitorRound);
 
-        return ScoreUtil.calculateScore(competitorRound.toBackendCompetitorRound());
+        return ScoreUtil.calculateScoreOfRound(competitorRound.toBackendCompetitorRound());
 
     }
 
@@ -158,7 +158,7 @@ public class CompetitorRoundService {
                     .toList();
 
 
-            scores.put(competitor.getId(), ScoreUtil.calculateTotalScore(competitorRounds, rounds));
+            scores.put(competitor.getId(), ScoreUtil.calculateScoreOfAllRounds(competitorRounds, rounds).getTotalScore());
 
         }
 

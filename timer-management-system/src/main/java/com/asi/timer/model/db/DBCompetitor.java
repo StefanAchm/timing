@@ -152,6 +152,7 @@ public class DBCompetitor {
         competitor.setCity(this.city);
         competitor.setClub(this.club);
         competitor.setDateOfBirth(this.dateOfBirth);
+        competitor.setGender(this.gender);
 
         return competitor;
 

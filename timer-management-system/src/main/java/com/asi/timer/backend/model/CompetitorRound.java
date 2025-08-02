@@ -76,4 +76,14 @@ public class CompetitorRound {
     public void setCompetitor(Competitor competitor) {
         this.competitor = competitor;
     }
+
+    @Override
+    public String toString() {
+        return "CompetitorRound{" +
+               "roundNumber=" + roundNumber +
+               ", holdType=" + holdType +
+               ", holdNumber=" + holdNumber +
+               ", tryNumber=" + tryNumber +
+               '}';
+    }
 }

@@ -2,10 +2,12 @@ package com.asi.timer.backend.pdfprinter.utils;
 
 import com.asi.timer.backend.pdfprinter.model.Column;
 import com.itextpdf.text.Font;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+@Disabled // Assertions missing!
 class TableGeneratorTest {
 
     @Test

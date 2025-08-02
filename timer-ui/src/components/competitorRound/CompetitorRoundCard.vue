@@ -46,24 +46,21 @@
           </v-row>
 
           <v-row>
-
-            <v-col>
-              <HoldTypeSelector
-                  :hold-type.sync="competitorRoundLocal.holdType"
-                  :selectDisabled="false"
-              />
-
-            </v-col>
-
-          </v-row>
-          <v-row>
             <v-col>
               <v-text-field
                   type="number"
                   v-model="competitorRoundLocal.holdNumber"
                   :label="'Griffnummer (max:' + maxNumberOfHolds + ')'"
-                  ></v-text-field>
-
+                  ref="holdNumberInput"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <HoldTypeSelector
+                  :hold-type.sync="competitorRoundLocal.holdType"
+                  :selectDisabled="false"
+              />
             </v-col>
           </v-row>
           <v-row>
@@ -100,7 +97,8 @@
 
           <v-btn
               v-else
-              color="red darken-1" text @click="save">
+              color="red darken-1"
+              @click="save">
             Überschreiben
           </v-btn>
 
@@ -159,7 +157,26 @@ export default {
 
   },
 
-  watch: {},
+  watch: {
+
+    competitorRound: {
+      handler: function (val) {
+
+        if(!this.competitorRoundLocal) {
+          return;
+        }
+
+        if(val?.competitorRoundStatus !== 'COMPLETED') {
+          this.competitorRoundLocal.holdType = this.holdTypes[2]
+          this.competitorRoundLocal.tryNumber = 1;
+        }
+        this.$nextTick(() => {
+          this.$refs.holdNumberInput.focus();
+        });
+      },
+    }
+
+  },
 
   methods: {
 
