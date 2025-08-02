@@ -7,6 +7,7 @@ import com.asi.timer.backend.pdfprinter.model.Pdf;
 import com.asi.timer.backend.model.CompetitorScore;
 import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.components.FileStorageProperties;
+import com.asi.timer.components.MetaProperties;
 import com.asi.timer.enums.EnumGender;
 import com.asi.timer.enums.EnumPrintType;
 import com.asi.timer.model.db.DBCompetitor;
@@ -33,15 +34,18 @@ public class PrintService {
     private final CompetitorRoundRepository competitorRoundRepository;
     private final RoundRepository roundRepository;
     private final FileStorageProperties fileStorageProperties;
+    private final MetaProperties metaProperties;
 
     public PrintService(CompetitorRoundRepository competitorRoundRepository,
                         RoundRepository roundRepository,
-                        FileStorageProperties fileStorageProperties
+                        FileStorageProperties fileStorageProperties,
+                        MetaProperties metaProperties
     ) {
 
         this.competitorRoundRepository = competitorRoundRepository;
         this.roundRepository = roundRepository;
         this.fileStorageProperties = fileStorageProperties;
+        this.metaProperties = metaProperties;
 
     }
 
@@ -75,7 +79,7 @@ public class PrintService {
 
         LocalDate date = LocalDate.now();
 
-        String eventTitle = "KIOT Bouldercup 2024"; // todo
+        String eventTitle = metaProperties.getEventTitleWithCurrentYear();
 
         Pdf pdf = Pdf.newBuilder()
                 .eventTitle(eventTitle)
@@ -120,7 +124,7 @@ public class PrintService {
 
         LocalDate date = LocalDate.now();
 
-        String eventTitle = "KIOT Bouldercup 2024"; // todo
+        String eventTitle = metaProperties.getEventTitleWithCurrentYear();
 
         Pdf pdf = Pdf.newBuilder()
                 .eventTitle(eventTitle)
@@ -157,7 +161,7 @@ public class PrintService {
 
         LocalDate date = LocalDate.now();
 
-        String eventTitle = "KIOT Bouldercup 2024"; // todo
+        String eventTitle = metaProperties.getEventTitleWithCurrentYear();
 
         Pdf pdf = Pdf.newBuilder()
                 .eventTitle(eventTitle)

@@ -25,6 +25,10 @@ apiClient.interceptors.response.use(
 
 export default {
 
+    getEventTitle() {
+        return apiClient.get('/meta/getEventTitle');
+    },
+
     ///////////////////////////////////////////////////////////////////////////////////
     // Common
 

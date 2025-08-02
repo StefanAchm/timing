@@ -96,7 +96,6 @@ public class RoundService {
                 .findById(roundId)
                 .orElseThrow(() -> new RuntimeException("Round with id " + roundId + " not found"));
 
-        // TODO: attention
         this.competitorRoundRepository.deleteAll(round.getCompetitorRounds());
         this.roundRepository.delete(round);
 

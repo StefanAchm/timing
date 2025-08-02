@@ -20,7 +20,7 @@
     <PrintDialog :dialog.sync="printDialog"></PrintDialog>
 
 
-    <v-toolbar-title></v-toolbar-title>
+
 
     <v-menu offset-y>
       <template v-slot:activator="{ on }">
@@ -33,6 +33,9 @@
       </v-list>
     </v-menu>
 
+    <v-spacer></v-spacer>
+
+    <v-toolbar-title v-text="title"></v-toolbar-title>
 
     <v-spacer></v-spacer>
     <v-btn text @click="printDialog = true">Drucken</v-btn>
@@ -53,6 +56,8 @@ export default {
   components: {RoundDialog, CompetitorDialog, PrintDialog},
 
   data: () => ({
+
+    title: '',
 
     printDialog: false,
     competitorDialog: false,
@@ -79,6 +84,13 @@ export default {
     init() {
       this.loadRounds();
       this.$emit('update');
+      TimerApiService.getEventTitle()
+          .then(response => {
+            this.title = response.data;
+          })
+          .catch(() => {
+            this.title = '';
+          });
     },
 
     loadRounds() {

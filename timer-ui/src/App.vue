@@ -24,19 +24,6 @@
 
       </template>
 
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title class="text-h6">
-            Bouldercup
-          </v-list-item-title>
-          <v-list-item-subtitle>
-
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
       <v-list
           dense
           nav
