@@ -36,6 +36,11 @@ const routes = [
         component: () => import('../views/RegisterView.vue')
     },
     {
+        path: '/admin',
+        name: 'admin',
+        component: () => import('../views/AdminView.vue')
+    },
+    {
         path: '*',
         redirect: '/competition'
     }

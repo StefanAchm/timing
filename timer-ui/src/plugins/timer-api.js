@@ -25,18 +25,27 @@ apiClient.interceptors.response.use(
 
 export default {
 
-    getEventTitle() {
-        return apiClient.get('/meta/getEventTitle');
-    },
-
     ///////////////////////////////////////////////////////////////////////////////////
-    // Common
+    // Common, Meta and Admin
 
     delete(type, id) {
         return apiClient.delete('/' + type + '/delete', {
             params: {id: id}
         });
     },
+
+    deleteAllData() {
+        return apiClient.delete('/admin/deleteAllData');
+    },
+
+    getStatistics() {
+        return apiClient.get('/admin/getStatistics');
+    },
+
+    getEventTitle() {
+        return apiClient.get('/meta/getEventTitle');
+    },
+
 
     ///////////////////////////////////////////////////////////////////////////////////
     // Competitor
