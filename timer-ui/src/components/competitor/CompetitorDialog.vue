@@ -309,8 +309,6 @@ export default {
               return 0;
             });
 
-            console.log('possibleCompetitors', this.possibleCompetitors);
-
             for (let i = 0; i < this.possibleCompetitors.length; i++){
               const element = this.possibleCompetitors[i];
               element.description = element.firstName + ' ' + element.lastName + ' (' + element.city + ') ' + (element.gender === 'HERREN' ? '♂️' : '♀️');
