@@ -58,14 +58,27 @@
                     v-model="selectedCompetitor"
                     :items="possibleCompetitors"
                     item-text="description"
-                    item-value="firstName"
+                    item-value="description"
                     label="Vorname"
                     :rules="[v => !!v || 'Vorname darf nicht leer sein']"
                     required
                     @change="selectCompetitor"
                     clearable
                     @click:clear="init()"
-                />
+                >
+                  <template v-slot:item="data">
+                    <div
+                        :style="{
+                          backgroundColor: data.item.gender === 'HERREN' ? '#e3f2fd' : (data.item.gender === 'DAMEN' ? '#fce4ec' : 'transparent'),
+                          display: 'block',
+                          width: '100%',
+                      padding: '8px'
+                    }"
+                    >
+                      {{ data.item.description }}
+                    </div>
+                  </template>
+                </v-combobox>
 
               </v-col>
 
@@ -236,6 +249,7 @@ export default {
         if(this.competitor?.id) {
 
           this.competitorLocal = Object.assign({}, this.competitor);
+          this.selectedCompetitor = this.competitorLocal.firstName;
 
         } else {
 
@@ -285,12 +299,24 @@ export default {
 
       TimerApiService.getPossibleCompetitors()
           .then(response => {
+
             this.possibleCompetitors = response.data;
+
+            // Sort by firstName
+            this.possibleCompetitors.sort((a, b) => {
+              if (a.firstName < b.firstName) return -1;
+              if (a.firstName > b.firstName) return 1;
+              return 0;
+            });
+
+            console.log('possibleCompetitors', this.possibleCompetitors);
+
             for (let i = 0; i < this.possibleCompetitors.length; i++){
               const element = this.possibleCompetitors[i];
-              element.description = element.firstName + ' ' + element.lastName + ' (' + element.city + ')';
+              element.description = element.firstName + ' ' + element.lastName + ' (' + element.city + ') ' + (element.gender === 'HERREN' ? '♂️' : '♀️');
               element.selectId = i; 
             }
+
           })
           .catch(() => {});
 
