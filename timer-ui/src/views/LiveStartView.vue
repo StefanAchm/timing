@@ -1,28 +1,8 @@
 <template>
   <v-container fluid class="pa-2">
-    <!-- Selection Chips -->
-<!--    <v-card class="mb-3" elevation="1" v-if="$route.meta.type !== 'live'">-->
-<!--      <v-card-text class="py-2">-->
-<!--        <v-chip-group-->
-<!--            v-model="selectedView"-->
-<!--            active-class="primary white&#45;&#45;text"-->
-<!--            mandatory-->
-<!--            @change="onViewChange"-->
-<!--        >-->
-<!--          <v-chip value="HERREN">-->
-<!--            <v-icon left small>mdi-account</v-icon>-->
-<!--            HERREN-->
-<!--          </v-chip>-->
-<!--          <v-chip value="DAMEN">-->
-<!--            <v-icon left small>mdi-account</v-icon>-->
-<!--            DAMEN-->
-<!--          </v-chip>-->
-<!--        </v-chip-group>-->
-<!--      </v-card-text>-->
-<!--    </v-card>-->
 
     <!-- Header Card -->
-    <v-card class="mb-3" elevation="2" v-if="displayRound && $route.meta.type !== 'live'">
+    <v-card class="mb-3" elevation="2" v-if="$route.meta.type !== 'live'">
       <v-card-title class="text-h7 primary white--text py-3">
         <v-icon left color="white">mdi-trophy</v-icon>
         <span>
@@ -69,11 +49,7 @@
             <div class="text-caption grey--text">Teilnehmer</div>
             <div class="text-h6">{{ displayRound?.numberOfCompetitors || displayCompetitorRounds?.length || 0 }}</div>
           </v-col>
-          <v-col cols="4" class="text-center" v-if="selectedView === 'live'">
-            <div class="text-caption grey--text">Noch ausstehend</div>
-            <div class="text-h6">{{ displayRound?.numberOfCompetitors - displayRound?.completedCompetitors }}</div>
-          </v-col>
-          <v-col cols="4" class="text-center" v-else>
+          <v-col cols="4" class="text-center">
             <div class="text-caption grey--text">Abgeschlossen</div>
             <div class="text-h6">{{ completedCount }}</div>
           </v-col>
@@ -87,10 +63,10 @@
     </v-card>
 
     <!-- Header Card -->
-    <v-card class="mb-3" elevation="2" v-if="displayRound && $route.meta.type === 'live'">
+    <v-card class="mb-3" elevation="2" v-if="$route.meta.type === 'live'">
       <v-card-title class="text-h7 primary white--text py-3">
         <v-icon left color="white">mdi-trophy</v-icon>
-        <span>
+        <span v-if="displayRound">
           Runde {{ displayRound?.roundNumber }} der {{ displayRound?.gender }}
         </span>
         <!-- Live Indicator -->
@@ -113,11 +89,7 @@
             <div class="text-caption grey--text">Teilnehmer</div>
             <div class="text-h6">{{ displayRound?.numberOfCompetitors || displayCompetitorRounds?.length || 0 }}</div>
           </v-col>
-          <v-col cols="4" class="text-center" v-if="selectedView === 'live'">
-            <div class="text-caption grey--text">Noch ausstehend</div>
-            <div class="text-h6">{{ displayRound?.numberOfCompetitors - displayRound?.completedCompetitors }}</div>
-          </v-col>
-          <v-col cols="4" class="text-center" v-else>
+          <v-col cols="4" class="text-center">
             <div class="text-caption grey--text">Abgeschlossen</div>
             <div class="text-h6">{{ completedCount }}</div>
           </v-col>

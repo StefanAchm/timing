@@ -51,7 +51,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authz -> authz
                         .antMatchers("/api/auth/**").permitAll()
                         .antMatchers("/api/competition/**").permitAll()  // Your public competition routes
-                        .antMatchers("/api/**").hasRole("JUDGE")  // Judge-only routes
+                        .antMatchers("/api/admin/deleteAllData").hasRole("ADMIN")  // Admin-only routes
+                        .antMatchers("/api/**").hasAnyRole("JUDGE", "ADMIN") // Judge and Admin routes
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))

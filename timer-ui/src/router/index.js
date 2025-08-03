@@ -7,12 +7,6 @@ Vue.use(VueRouter)
 const routes = [
 
     {
-        path: '/competitors',
-        name: 'competitors',
-        component: () => import('../views/CompetitorsView.vue'),
-        meta: { requiresAuth: true, role: 'JUDGE' }
-    },
-    {
         path: '/rounds',
         name: 'rounds',
         component: () => import('../views/RoundsView.vue'),
@@ -31,12 +25,6 @@ const routes = [
         meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
-        path: '/result',
-        name: 'result',
-        component: () => import('../views/ResultView.vue'),
-        meta: { requiresAuth: true, role: 'JUDGE' }
-    },
-    {
         path: '/register',
         name: 'register',
         component: () => import('../views/RegisterView.vue'),
@@ -48,12 +36,6 @@ const routes = [
         component: () => import('../views/AdminView.vue'),
         meta: { requiresAuth: true, role: 'JUDGE' }
     },
-    // {
-    //     path: '/live',
-    //     name: 'live',
-    //     component: () => import('../views/LiveView.vue'),
-    //     meta: {mobile: true, requiresAuth: false}
-    // },
     {
         path: '/liveResults',
         name: 'liveResults',
@@ -74,8 +56,8 @@ const routes = [
     },
     {
         path: '*',
-        redirect: '/competition',
-        meta: { requiresAuth: true, role: 'JUDGE' }
+        redirect: '/live',
+        meta: { requiresAuth: false}
     },
     {
         path: '/login',

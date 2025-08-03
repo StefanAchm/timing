@@ -32,7 +32,13 @@ public class APICompetitorScore {
         if (competitorScores.getLastRound() != null) {
             apiCompetitorScore.setLastRound(competitorScores.getLastRound().getRoundNumber());
             apiCompetitorScore.setHoldNumber(competitorScores.getLastRound().getHoldNumber());
-            apiCompetitorScore.setHoldType(competitorScores.getLastRound().getHoldType().toString());
+
+            if(competitorScores.getLastRound().getHoldType() != null) {
+                apiCompetitorScore.setHoldType(competitorScores.getLastRound().getHoldType().toString());
+            } else {
+                apiCompetitorScore.setHoldType("");
+            }
+
             apiCompetitorScore.setTryNumber(competitorScores.getLastRound().getTryNumber());
             apiCompetitorScore.setPoints(competitorScores.getScore());
         }

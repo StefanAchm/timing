@@ -1,5 +1,15 @@
 <template>
   <v-container class="admin-view py-8" fluid>
+
+    <v-row justify="center" class="mb-4">
+      <v-col cols="12" md="8" lg="10" class="text-center">
+        <v-sheet color="grey lighten-4" rounded class="pa-4">
+          <div class="subtitle-1 font-weight-bold">Angemeldeter Benutzer:</div>
+          <div class="display-1 font-weight-bold">{{ currentUser().username }}</div>
+        </v-sheet>
+      </v-col>
+    </v-row>
+
     <v-row justify="center" class="mb-8">
       <v-col cols="12" md="8" lg="10">
         <v-card elevation="8" class="pa-4">
@@ -95,6 +105,7 @@
 
 <script>
 import TimerApiService from "@/plugins/timer-api";
+import TimerApi from "@/plugins/timer-api";
 
 export default {
   data() {
@@ -132,6 +143,9 @@ export default {
             this.$root.snackbar.showError({message: 'Fehler beim Laden der Statistiken.'});
           });
     },
+    currentUser() {
+      return TimerApi.getCurrentUser();
+    },
     async deleteAll() {
 
       TimerApiService.deleteAllData()
@@ -140,9 +154,13 @@ export default {
             this.closeDialog();
             this.init(); // Refresh statistics after deletion
           })
-          .catch(() => {
-            this.$root.snackbar.showError({message: 'Beim Löschen der Daten ist ein Fehler aufgetreten.'});
-            this.errorMessage = 'Beim Löschen der Daten ist ein Fehler aufgetreten.';
+          .catch((error) => {
+            if (error.response && error.response.status === 403) {
+              this.errorMessage = 'Sie haben keine Berechtigung, diese Aktion auszuführen.';
+            } else {
+              this.errorMessage = 'Beim Löschen der Daten ist ein Fehler aufgetreten.';
+            }
+
           });
 
     }

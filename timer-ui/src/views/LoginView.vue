@@ -5,7 +5,6 @@
         <v-card elevation="8" class="mx-auto login-card">
           <!-- Header -->
           <v-card-title class="justify-center py-6 card-header">
-            <v-icon left large color="primary">mdi-gavel</v-icon>
             <span class="text-h4 font-weight-light">Bouldercup Portal</span>
           </v-card-title>
 
@@ -31,12 +30,14 @@
                   v-model="credentials.password"
                   label="Passwort"
                   prepend-icon="mdi-lock"
-                  type="password"
+                  :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  :type="showPassword ? 'text' : 'password'"
                   outlined
                   :rules="validationRules.password"
                   :disabled="isLoading"
                   required
                   class="mb-4"
+                  @click:append="togglePasswordVisibility"
               />
 
               <v-alert
@@ -97,6 +98,7 @@ export default {
       showErrorAlert: false,
       isAuthenticated: false,
       currentUsername: '',
+      showPassword: false,
 
       validationRules: {
         username: [
@@ -129,7 +131,7 @@ export default {
         await this.$nextTick()
         this.redirectToJudgePanel()
       } catch (error) {
-        this.handleLoginError(  )
+        this.handleLoginError()
       } finally {
         this.setLoadingState(false)
       }
@@ -154,11 +156,15 @@ export default {
     },
 
     redirectToJudgePanel() {
-      this.$router.push({ name: 'competitor-rounds' }).catch(err => {
+      this.$router.push({name: 'competitor-rounds'}).catch(err => {
         // Fallback to home route if JudgePanel route doesn't exist
         if (err.name === 'NavigationDuplicated') return
         this.$router.push('/')
       })
+    },
+
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword
     },
 
     checkAuthenticationStatus() {

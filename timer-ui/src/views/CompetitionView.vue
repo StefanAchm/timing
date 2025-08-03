@@ -81,12 +81,7 @@ export default {
 
     selectedRoundId: function (newVal) {
       this.loadCompetitorRounds(newVal);
-      // TimerApiService.updateCurrentCompetitionRound(newVal)
     },
-
-    selectedCompetitorRound: function (newVal) {
-      TimerApiService.updateCompetition(this.selectedRoundId, newVal.id)
-    }
 
   },
 

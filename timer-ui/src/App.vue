@@ -184,7 +184,7 @@ export default {
   },
 
   created() {
-    EventBus.$on('show-eror-snackbar', (message) => {
+    EventBus.$on('show-error-snackbar', (message) => {
       this.$root.snackbar.showError({message: message})
     })
 
