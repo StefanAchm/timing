@@ -136,6 +136,12 @@ export default {
         return apiClient.get('/meta/getEventTitle');
     },
 
+    updateCompetition(roundId, competitorRoundId) {
+        return apiClient.post('/competition/update', null, {
+            params: {roundId: roundId, competitorRoundId: competitorRoundId}
+        });
+    },
+
     updateCurrentCompetitionRound(roundId) {
         return apiClient.post('/competition/updateCurrentRound', null, {
             params: {roundId: roundId}

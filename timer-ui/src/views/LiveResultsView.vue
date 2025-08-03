@@ -19,28 +19,17 @@
       </v-card-title>
 
       <!-- Gender Selection -->
-      <v-card-text class="pb-2 pt-2">
-        <div class="text-caption grey--text mb-2">Kategorie wählen:</div>
+      <v-card-text class="pb-2 pt-2 d-flex align-center">
+        <div class="text-caption grey--text mr-3">Kategorie wählen:</div>
         <v-chip-group
             v-model="selectedGender"
-            active-class="primary--text"
             mandatory
         >
-          <v-chip
-              value="HERREN"
-              small
-              outlined
-              color="primary"
-          >
+          <v-chip value="HERREN">
             <v-icon left small>mdi-account</v-icon>
             Herren
           </v-chip>
-          <v-chip
-              value="DAMEN"
-              small
-              outlined
-              color="primary"
-          >
+          <v-chip value="DAMEN">
             <v-icon left small>mdi-account</v-icon>
             Damen
           </v-chip>
@@ -51,11 +40,10 @@
     <!-- Results List -->
     <v-card elevation="2" v-if="results?.length > 0">
       <v-card-title class="text-h6 py-2">
-        <v-icon left>mdi-trophy</v-icon>
         Ergebnisse {{ selectedGender === 'HERREN' ? 'Herren' : 'Damen' }}
         <v-spacer></v-spacer>
         <v-chip small color="grey lighten-2" text-color="grey darken-2">
-          {{ results.length }} Teilnehmer
+          {{ results.length }} {{ selectedGender === 'HERREN' ? 'Teilnehmer' : 'Teilnehmerinnen' }}
         </v-chip>
       </v-card-title>
 
@@ -94,33 +82,29 @@
 
             <!-- Player Info -->
             <v-list-item-content>
-              <v-list-item-title class="font-weight-bold mb-1">
+              <v-list-item-title class="font-weight-bold mb-2 text-h7">
                 {{ result.firstName }} {{ result.lastName }}
               </v-list-item-title>
-
               <div class="result-details">
+                <!--                <div class="text-caption grey&#45;&#45;text mb-1">-->
+                <!--                  <v-icon small color="grey">mdi-map-marker</v-icon>-->
+                <!--                  {{ result.city }}-->
+                <!--                </div>-->
+                <!--                <div v-if="result.club" class="text-caption grey&#45;&#45;text mb-1">-->
+                <!--                  <v-icon small color="grey">mdi-account-group</v-icon>-->
+                <!--                  {{ result.club }}-->
+                <!--                </div>-->
                 <div class="text-caption grey--text mb-1">
-                  <v-icon small color="grey">mdi-map-marker</v-icon>
-                  {{ result.city }}
-                  <span v-if="result.club" class="ml-2">
-                    <v-icon small color="grey">mdi-account-group</v-icon>
-                    {{ result.club }}
-                  </span>
+                  <v-icon small color="grey">mdi-numeric</v-icon>
+                  Runde {{ result.lastRound }}
                 </div>
-
+                <div class="text-caption grey--text mb-1">
+                  <v-icon small color="grey">mdi-hand-back-right</v-icon>
+                  Griff {{ result.holdNumber }} {{ result.holdType }}
+                </div>
                 <div class="text-caption grey--text">
-                  <span class="mr-3">
-                    <v-icon small color="grey">mdi-numeric</v-icon>
-                    Runde {{ result.lastRound }}
-                  </span>
-                  <span class="mr-3">
-                    <v-icon small color="grey">mdi-hand-back-right</v-icon>
-                    Griff {{ result.holdNumber }}{{ result.holdType }}
-                  </span>
-                  <span>
-                    <v-icon small color="grey">mdi-counter</v-icon>
-                    {{ result.tryNumber }} Versuch{{ result.tryNumber !== 1 ? 'e' : '' }}
-                  </span>
+                  <v-icon small color="grey">mdi-counter</v-icon>
+                  {{ result.tryNumber }} Versuch{{ result.tryNumber !== 1 ? 'e' : '' }}
                 </div>
               </div>
             </v-list-item-content>
@@ -133,7 +117,7 @@
                     :text-color="getPointsTextColor()"
                     class="font-weight-bold"
                 >
-                  {{ result.points }} Punkte
+                  {{ result.points.toFixed(4) }}
                 </v-chip>
               </div>
             </v-list-item-action>
@@ -200,11 +184,12 @@ export default {
   },
 
   methods: {
+
     getRankColor(rank) {
-      if (rank === 1) return 'amber darken-1' // Gold
-      if (rank === 2) return 'grey' // Silver
-      if (rank === 3) return 'deep-orange darken-1' // Bronze
-      return 'primary'
+      if (rank === 1) return 'amber darken-2'   // Gold
+      if (rank === 2) return 'blue-grey lighten-1' // Silver
+      if (rank === 3) return 'brown lighten-1'  // Bronze
+      return 'grey' // Default for others
     },
 
     getRankIcon(rank) {
@@ -215,10 +200,10 @@ export default {
     },
 
     getPointsColor(rank) {
-      if (rank === 1) return 'amber darken-1'
-      if (rank === 2) return 'grey'
-      if (rank === 3) return 'deep-orange darken-1'
-      return 'primary'
+      if (rank === 1) return 'amber darken-2'   // Gold
+      if (rank === 2) return 'blue-grey lighten-1' // Silver
+      if (rank === 3) return 'brown lighten-1'  // Bronze
+      return 'grey' // Default for others
     },
 
     getPointsTextColor() {
@@ -229,14 +214,8 @@ export default {
       this.isLoading = true
 
       try {
-        // Replace this with your actual API call
-        // Example: const response = await TimerApiService.getResults(this.selectedGender)
-        // this.results = response.data
 
-        // Mock data for demonstration
-        // this.results = this.getMockResults()
-
-        TimerApiService.getResultList(this.selectedGender).then( response => {
+        TimerApiService.getResultList(this.selectedGender).then(response => {
           this.results = response.data
         })
 
@@ -251,118 +230,10 @@ export default {
       }
     },
 
-    // Mock data - replace with actual API call
-    getMockResults() {
-      const mockData = {
-        herren: [
-          {
-            rank: 1,
-            firstName: 'Stefan',
-            lastName: 'Neumayr',
-            city: 'Innsbruck',
-            club: 'DAV Innsbruck',
-            lastRound: 4,
-            holdNumber: 26,
-            holdType: 'T',
-            tryNumber: 1,
-            points: 28
-          },
-          {
-            rank: 2,
-            firstName: 'Gabriel',
-            lastName: 'Pribil',
-            city: 'Wien',
-            club: 'ÖAV Wien',
-            lastRound: 4,
-            holdNumber: 25,
-            holdType: 'Z',
-            tryNumber: 3,
-            points: 26
-          },
-          {
-            rank: 3,
-            firstName: 'Manuel',
-            lastName: 'Tembler',
-            city: 'Salzburg',
-            club: 'DAV Salzburg',
-            lastRound: 4,
-            holdNumber: 24,
-            holdType: 'T',
-            tryNumber: 2,
-            points: 24
-          },
-          {
-            rank: 4,
-            firstName: 'Jakob',
-            lastName: 'Troger',
-            city: 'Graz',
-            club: 'ÖAV Graz',
-            lastRound: 3,
-            holdNumber: 22,
-            holdType: 'Z',
-            tryNumber: 4,
-            points: 22
-          },
-          {
-            rank: 5,
-            firstName: 'Bernhard',
-            lastName: 'Exenberger',
-            city: 'Linz',
-            club: 'DAV Linz',
-            lastRound: 3,
-            holdNumber: 20,
-            holdType: 'T',
-            tryNumber: 2,
-            points: 20
-          }
-        ],
-        damen: [
-          {
-            rank: 1,
-            firstName: 'Anna',
-            lastName: 'Müller',
-            city: 'Wien',
-            club: 'ÖAV Wien',
-            lastRound: 4,
-            holdNumber: 24,
-            holdType: 'Z',
-            tryNumber: 1,
-            points: 25
-          },
-          {
-            rank: 2,
-            firstName: 'Lisa',
-            lastName: 'Schmidt',
-            city: 'Salzburg',
-            club: 'DAV Salzburg',
-            lastRound: 4,
-            holdNumber: 22,
-            holdType: 'T',
-            tryNumber: 2,
-            points: 23
-          },
-          {
-            rank: 3,
-            firstName: 'Sarah',
-            lastName: 'Weber',
-            city: 'Innsbruck',
-            club: 'DAV Innsbruck',
-            lastRound: 3,
-            holdNumber: 20,
-            holdType: 'Z',
-            tryNumber: 3,
-            points: 21
-          }
-        ]
-      }
-
-      return mockData[this.selectedGender] || []
-    },
-
     startAutoRefresh() {
       this.autoRefreshInterval = setInterval(() => {
         this.refreshData()
-      }, 30000) // 30 seconds
+      }, 10000)
     },
 
     stopAutoRefresh() {

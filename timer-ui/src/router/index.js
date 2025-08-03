@@ -48,12 +48,12 @@ const routes = [
         component: () => import('../views/AdminView.vue'),
         meta: { requiresAuth: true, role: 'JUDGE' }
     },
-    {
-        path: '/live',
-        name: 'live',
-        component: () => import('../views/LiveView.vue'),
-        meta: {mobile: true, requiresAuth: false}
-    },
+    // {
+    //     path: '/live',
+    //     name: 'live',
+    //     component: () => import('../views/LiveView.vue'),
+    //     meta: {mobile: true, requiresAuth: false}
+    // },
     {
         path: '/liveResults',
         name: 'liveResults',
@@ -61,10 +61,16 @@ const routes = [
         meta: {mobile: true, requiresAuth: false}
     },
     {
-        path: '/liveStart',
+        path: '/live',
+        name: 'live',
+        component: () => import('../views/LiveStartView.vue'),
+        meta: {mobile: true, requiresAuth: false, type: 'live'}
+    },
+    {
+        path: '/liveStart/:type?',
         name: 'liveStart',
         component: () => import('../views/LiveStartView.vue'),
-        meta: {mobile: true, requiresAuth: false}
+        meta: {mobile: true, requiresAuth: false, type: 'startlist'}
     },
     {
         path: '*',

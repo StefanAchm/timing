@@ -13,6 +13,16 @@
         height="70"
         class="bottom-nav-enhanced"
     >
+<!--      <v-btn-->
+<!--          :value="'live'"-->
+<!--          @click="$router.push('/live')"-->
+<!--          class="nav-btn"-->
+<!--          :class="{ 'active-btn': $route.path === '/live' }"-->
+<!--      >-->
+<!--        <span class="nav-text">Live</span>-->
+<!--        <v-icon size="24" class="nav-icon">mdi-play-circle-outline</v-icon>-->
+<!--      </v-btn>-->
+
       <v-btn
           :value="'live'"
           @click="$router.push('/live')"
@@ -24,24 +34,28 @@
       </v-btn>
 
       <v-btn
+          :value="'liveStart'"
+          @click="$router.push('/liveStart')"
+          class="nav-btn"
+          :class="{ 'active-btn': $route.path === '/liveStart' }"
+      >
+        <span class="nav-text">Startlisten</span>
+        <v-icon size="24" class="nav-icon">mdi-format-list-bulleted</v-icon>
+      </v-btn>
+
+      <v-btn
           :value="'liveResults'"
           @click="$router.push('/liveResults')"
           class="nav-btn"
           :class="{ 'active-btn': $route.path === '/liveResults' }"
       >
         <span class="nav-text">Ergebnisse</span>
-        <v-icon size="24" class="nav-icon">mdi-format-list-bulleted</v-icon>
+        <v-icon size="24" class="nav-icon">mdi-podium</v-icon>
       </v-btn>
 
-      <v-btn
-          :value="'liveStart'"
-          @click="$router.push('/liveStart')"
-          class="nav-btn"
-          :class="{ 'active-btn': $route.path === '/liveStart' }"
-      >
-        <span class="nav-text">Startliste</span>
-        <v-icon size="24" class="nav-icon">mdi-account-box-multiple</v-icon>
-      </v-btn>
+
+
+
     </v-bottom-navigation>
 
     <v-navigation-drawer
@@ -156,6 +170,7 @@ export default {
         {title: 'Teilnehmer', icon: 'mdi-account-multiple-outline', route: '/competitor-rounds'},
         {title: 'Runden', icon: 'mdi-rotate-360', route: '/rounds'},
         {title: 'Veranstaltung', icon: 'mdi-scoreboard-outline', route: '/competition'},
+        {title: 'Admin', icon: 'mdi-cog-outline', route: '/admin'},
 
       ],
       right: null,

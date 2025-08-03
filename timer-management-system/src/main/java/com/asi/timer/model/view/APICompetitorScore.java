@@ -32,7 +32,7 @@ public class APICompetitorScore {
         if (competitorScores.getLastRound() != null) {
             apiCompetitorScore.setLastRound(competitorScores.getLastRound().getRoundNumber());
             apiCompetitorScore.setHoldNumber(competitorScores.getLastRound().getHoldNumber());
-            apiCompetitorScore.setHoldType(competitorScores.getLastRound().getHoldType().name());
+            apiCompetitorScore.setHoldType(competitorScores.getLastRound().getHoldType().toString());
             apiCompetitorScore.setTryNumber(competitorScores.getLastRound().getTryNumber());
             apiCompetitorScore.setPoints(competitorScores.getScore());
         }

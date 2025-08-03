@@ -1,32 +1,93 @@
 <template>
   <v-container fluid class="pa-2">
     <!-- Selection Chips -->
-    <v-card class="mb-3" elevation="1">
-      <v-card-text class="py-2">
+<!--    <v-card class="mb-3" elevation="1" v-if="$route.meta.type !== 'live'">-->
+<!--      <v-card-text class="py-2">-->
+<!--        <v-chip-group-->
+<!--            v-model="selectedView"-->
+<!--            active-class="primary white&#45;&#45;text"-->
+<!--            mandatory-->
+<!--            @change="onViewChange"-->
+<!--        >-->
+<!--          <v-chip value="HERREN">-->
+<!--            <v-icon left small>mdi-account</v-icon>-->
+<!--            HERREN-->
+<!--          </v-chip>-->
+<!--          <v-chip value="DAMEN">-->
+<!--            <v-icon left small>mdi-account</v-icon>-->
+<!--            DAMEN-->
+<!--          </v-chip>-->
+<!--        </v-chip-group>-->
+<!--      </v-card-text>-->
+<!--    </v-card>-->
+
+    <!-- Header Card -->
+    <v-card class="mb-3" elevation="2" v-if="displayRound && $route.meta.type !== 'live'">
+      <v-card-title class="text-h7 primary white--text py-3">
+        <v-icon left color="white">mdi-trophy</v-icon>
+        <span>
+          Startliste
+        </span>
+        <!-- Live Indicator -->
+        <v-spacer></v-spacer>
+        <v-chip
+            v-if="selectedView === 'live'"
+            small
+            color="success"
+            text-color="white"
+            class="ml-2 pulse-animation"
+        >
+          <v-icon left small>mdi-wifi</v-icon>
+          Live
+        </v-chip>
+      </v-card-title>
+
+      <!-- Gender Selection -->
+      <v-card-text class="pb-2 pt-2 d-flex align-center">
+        <div class="text-caption grey--text mr-3">Kategorie wählen:</div>
         <v-chip-group
             v-model="selectedView"
-            active-class="primary white--text"
             mandatory
             @change="onViewChange"
         >
-          <v-chip value="live" :disabled="!hasLiveRound">
-            <v-icon left small>mdi-wifi</v-icon>
-            LIVE
-          </v-chip>
           <v-chip value="HERREN">
             <v-icon left small>mdi-account</v-icon>
-            Startliste HERREN
+            Herren
           </v-chip>
           <v-chip value="DAMEN">
-            <v-icon left small>mdi-account-outline</v-icon>
-            Startliste DAMEN
+            <v-icon left small>mdi-account</v-icon>
+            Damen
           </v-chip>
         </v-chip-group>
       </v-card-text>
+
+      <v-divider></v-divider>
+
+      <v-card-text class="pb-2 pt-2">
+        <v-row no-gutters>
+          <v-col cols="4" class="text-center">
+            <div class="text-caption grey--text">Teilnehmer</div>
+            <div class="text-h6">{{ displayRound?.numberOfCompetitors || displayCompetitorRounds?.length || 0 }}</div>
+          </v-col>
+          <v-col cols="4" class="text-center" v-if="selectedView === 'live'">
+            <div class="text-caption grey--text">Noch ausstehend</div>
+            <div class="text-h6">{{ displayRound?.numberOfCompetitors - displayRound?.completedCompetitors }}</div>
+          </v-col>
+          <v-col cols="4" class="text-center" v-else>
+            <div class="text-caption grey--text">Abgeschlossen</div>
+            <div class="text-h6">{{ completedCount }}</div>
+          </v-col>
+          <v-col cols="4" class="text-center">
+            <div class="text-caption grey--text">Griffe</div>
+            <div class="text-h6">{{ displayRound?.maxHolds || '---' }}</div>
+          </v-col>
+        </v-row>
+      </v-card-text>
+
     </v-card>
 
     <!-- Header Card -->
-    <v-card class="mb-3" elevation="2" v-if="displayRound">
+    <v-card class="mb-3" elevation="2" v-if="displayRound && $route.meta.type === 'live'">
       <v-card-title class="text-h7 primary white--text py-3">
         <v-icon left color="white">mdi-trophy</v-icon>
         <span>
@@ -95,8 +156,7 @@
     <!-- Competitors List -->
     <v-card elevation="2" v-if="displayCompetitorRounds?.length > 0">
       <v-card-title class="text-h6 py-2">
-        <v-icon left>mdi-format-list-numbered</v-icon>
-        <span>TeilnehmerInnen</span>
+        <span>Startliste {{displayRound?.gender === 'HERREN' ? 'Herren' : 'Damen'}}</span>
       </v-card-title>
 
       <v-list dense>
@@ -246,6 +306,18 @@ export default {
         return this.displayRound?.completedCompetitors || 0;
       }
       return this.displayCompetitorRounds?.filter(cr => cr.score !== null).length || 0;
+    }
+  },
+
+  watch: {
+    $route(to) {
+      if (to.meta.type === 'live') {
+        this.selectedView = 'live';
+      } else if (to.meta.type === 'HERREN') {
+        this.selectedView = 'HERREN';
+      } else if (to.meta.type === 'DAMEN') {
+        this.selectedView = 'DAMEN';
+      }
     }
   },
 

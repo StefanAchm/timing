@@ -25,6 +25,8 @@ public class APICompetitorRound {
 
     private int roundNumber;
 
+    private int maxHolds;
+
     public static APICompetitorRound fromDBCompetitorRound(DBCompetitorRound competitorRound, boolean deep) {
 
         APICompetitorRound apiCompetitorRound = new APICompetitorRound();
@@ -46,6 +48,7 @@ public class APICompetitorRound {
             apiCompetitorRound.setCompetitor(APICompetitor.fromDBCompetitor(competitorRound.getCompetitor(), false));
         }
 
+        apiCompetitorRound.setMaxHolds(competitorRound.getRound().getMaxHolds());
 
         return apiCompetitorRound;
 
@@ -113,6 +116,14 @@ public class APICompetitorRound {
 
     public void setRoundNumber(int roundNumber) {
         this.roundNumber = roundNumber;
+    }
+
+    public int getMaxHolds() {
+        return maxHolds;
+    }
+
+    public void setMaxHolds(int maxHolds) {
+        this.maxHolds = maxHolds;
     }
 
 }

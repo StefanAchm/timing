@@ -21,13 +21,18 @@ public class CompetitionController {
         this.competitionService = competitionService;
     }
 
+    @PostMapping("/update")
+    public void updateCurrentRound(@RequestParam(required = false) UUID roundId, @RequestParam(required = false) UUID competitorRoundId) {
+        this.competitionService.update(roundId, competitorRoundId);
+    }
+
     @PostMapping("/updateCurrentRound")
     public void updateCurrentRound(@RequestParam UUID roundId) {
         this.competitionService.updateCurrentRound(roundId);
     }
 
     @PostMapping("/updateCurrentCompetitorRound")
-    public void updateCurrentCompetitorRound(@RequestParam UUID competitorRoundId) {
+    public void updateCurrentCompetitorRound(@RequestParam(required = false) UUID competitorRoundId) {
         this.competitionService.updateCurrentCompetitorRound(competitorRoundId);
     }
 

@@ -42,6 +42,26 @@ public class CompetitionService {
         this.competitorRoundService = competitorRoundService;
     }
 
+    public void update(UUID roundId, UUID competitorRoundId) {
+
+        DBCompetition dbCompetition = getDbCompetition();
+
+        if(roundId == null) {
+            dbCompetition.setRound(null);
+        } else {
+            dbCompetition.setRound(roundRepository.findById(roundId).orElse(null));
+        }
+
+        if(competitorRoundId == null) {
+            dbCompetition.setCompetitorRound(null);
+        } else {
+            dbCompetition.setCompetitorRound(competitorRoundRepository.findById(competitorRoundId).orElse(null));
+        }
+
+        competitionRepository.save(dbCompetition);
+
+    }
+
     public void updateCurrentRound(UUID roundId) {
         DBCompetition dbCompetition = getDbCompetition();
         dbCompetition.setRound(roundRepository.findById(roundId).orElse(null));
@@ -50,7 +70,13 @@ public class CompetitionService {
 
     public void updateCurrentCompetitorRound(UUID competitorRoundId) {
         DBCompetition dbCompetition = getDbCompetition();
-        dbCompetition.setCompetitorRound(competitorRoundRepository.findById(competitorRoundId).orElse(null));
+
+        if(competitorRoundId == null) {
+            dbCompetition.setCompetitorRound(null);
+        } else {
+            dbCompetition.setCompetitorRound(competitorRoundRepository.findById(competitorRoundId).orElse(null));
+        }
+
         competitionRepository.save(dbCompetition);
     }
 

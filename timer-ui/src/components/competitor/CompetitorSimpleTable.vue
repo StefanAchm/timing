@@ -48,7 +48,7 @@
                 :disabled="selectedCompetitorRoundLocal === null"
                 color="primary"
                 class="mb-2"
-                @click="selectedCompetitorRoundLocal = null"
+                @click="stopSelectedRound()"
             >Stopp
             </v-btn>
 
@@ -127,6 +127,8 @@
 
 <script>
 
+import TimerApi from "@/plugins/timer-api";
+
 export default {
 
   props: {
@@ -181,6 +183,11 @@ export default {
   },
 
   methods: {
+
+    stopSelectedRound() {
+      this.selectedCompetitorRoundLocal = null
+      TimerApi.updateCompetition(null, null);
+    },
 
     getRowStyle(item) {
       if (item === this.selectedCompetitorRoundLocal) {
