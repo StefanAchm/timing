@@ -6,6 +6,8 @@ public class Scores {
 
     private Map<Integer, Double> roundScores;
 
+    private Map<Integer, Double> roundScoresAligned;
+
     private double totalScore;
 
     public Map<Integer, Double> getRoundScores() {
@@ -14,6 +16,14 @@ public class Scores {
 
     public void setRoundScores(Map<Integer, Double> roundScores) {
         this.roundScores = roundScores;
+    }
+
+    public Map<Integer, Double> getRoundScoresAligned() {
+        return roundScoresAligned;
+    }
+
+    public void setRoundScoresAligned(Map<Integer, Double> roundScoresAligned) {
+        this.roundScoresAligned = roundScoresAligned;
     }
 
     public double getTotalScore() {

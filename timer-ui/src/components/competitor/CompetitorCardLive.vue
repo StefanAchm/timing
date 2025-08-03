@@ -54,13 +54,15 @@
                   <v-icon small class="mr-2">mdi-account-details</v-icon>
                   Teilnehmer-Informationen
                 </v-card-subtitle>
+
                 <v-card-text class="pt-0">
-                  <div class="mb-2" v-if="competitor.city">
-                    <v-icon small color="grey" class="mr-2">mdi-map-marker</v-icon>
+                  <v-divider></v-divider>
+                  <div class="mb-2 mt-2" v-if="competitor.city">
+                    <v-icon small color="grey" class="mr-2 ml-2">mdi-map-marker</v-icon>
                     <span class="text-body-2">{{ competitor.city }}</span>
                   </div>
-                  <div class="mb-2" v-if="competitor.club">
-                    <v-icon small color="grey" class="mr-2">mdi-account-group</v-icon>
+                  <div class="mb-0" v-if="competitor.club">
+                    <v-icon small color="grey" class="mr-2 ml-2">mdi-account-group</v-icon>
                     <span class="text-body-2">{{ competitor.club }}</span>
                   </div>
                 </v-card-text>
@@ -75,20 +77,21 @@
                 </v-card-subtitle>
 
                 <v-card-text class="pt-0">
-                  <div class="mb-2">
-                    <v-icon small color="grey" class="mr-2">mdi-numeric</v-icon>
+                  <v-divider></v-divider>
+                  <div class="mb-2 mt-2">
+                    <v-icon small color="grey" class="mr-2 ml-2">mdi-numeric</v-icon>
                     <span class="text-body-2">Letzte Runde: {{ competitor.lastRound }}</span>
                   </div>
                   <div class="mb-2">
-                    <v-icon small color="grey" class="mr-2">mdi-hand-back-right</v-icon>
+                    <v-icon small color="grey" class="mr-2 ml-2">mdi-hand-back-right</v-icon>
                     <span class="text-body-2">Griff {{ competitor.holdNumber }} {{ competitor.holdType }}</span>
                   </div>
                   <div class="mb-2">
-                    <v-icon small color="grey" class="mr-2">mdi-counter</v-icon>
+                    <v-icon small color="grey" class="mr-2 ml-2">mdi-counter</v-icon>
                     <span class="text-body-2">{{ competitor.tryNumber }} Versuch{{ competitor.tryNumber !== 1 ? 'e' : '' }}</span>
                   </div>
-                  <div class="mb-2">
-                    <v-icon small color="grey" class="mr-2">mdi-chart-line</v-icon>
+                  <div class="mb-0">
+                    <v-icon small color="grey" class="mr-2 ml-2">mdi-chart-line</v-icon>
                     <span class="text-body-2 font-weight-bold">Gesamtpunkte: {{ competitor.points.toFixed(4) }}</span>
                   </div>
                 </v-card-text>
@@ -109,7 +112,7 @@
             <v-col
                 cols="12"
                 md="6"
-                v-for="(round, index) in competitor.competitorRoundScores"
+                v-for="(round, index) in competitorRoundScoresSorted()"
                 :key="index"
             >
               <v-card
@@ -166,7 +169,7 @@
                         Punkte
                       </div>
                       <div class="text-h6 font-weight-bold primary--text">
-                        {{ round.points.toFixed(2) }}
+                        {{ round.points.toFixed(4) }}
                       </div>
                     </div>
                   </div>
@@ -245,6 +248,10 @@ export default {
     close() {
       this.dialogLocal = false
       this.$emit('close')
+    },
+
+    competitorRoundScoresSorted() {
+      return [...this.competitor.competitorRoundScores].sort((a, b) => a.lastRound - b.lastRound)
     },
 
     getHoldTypeColor(holdType) {

@@ -70,7 +70,7 @@ public class CompetitorScore implements Comparable<CompetitorScore> {
     }
 
     public double getScore(int roundNumber) {
-        Map<Integer, Double> roundScores = scores.getRoundScores();
+        Map<Integer, Double> roundScores = scores.getRoundScoresAligned();
         if (roundScores == null || roundScores.isEmpty()) {
             return 0.0;
         }

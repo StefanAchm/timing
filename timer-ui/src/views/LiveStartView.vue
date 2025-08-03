@@ -128,7 +128,7 @@
     <!-- Competitors List -->
     <v-card elevation="2" v-if="displayCompetitorRounds?.length > 0">
       <v-card-title class="text-h6 py-2">
-        <span>Startliste {{displayRound?.gender === 'HERREN' ? 'Herren' : 'Damen'}}</span>
+        <span>Startliste {{displayRound?.gender === 'HERREN' ? 'Herren' : 'Damen'}} Runde {{ displayRound.roundNumber }}</span>
       </v-card-title>
 
       <v-list dense>

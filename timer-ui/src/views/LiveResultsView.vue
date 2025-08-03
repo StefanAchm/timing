@@ -43,7 +43,7 @@
         Ergebnisse {{ selectedGender === 'HERREN' ? 'Herren' : 'Damen' }}
         <v-spacer></v-spacer>
         <v-chip small color="grey lighten-2" text-color="grey darken-2">
-          {{ results.length }} {{ selectedGender === 'HERREN' ? 'Teilnehmer' : 'Teilnehmerinnen' }}
+          {{ results.length }} Teilnehmer
         </v-chip>
       </v-card-title>
 

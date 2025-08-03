@@ -150,6 +150,7 @@ public class ScoreUtil {
 
         Scores scores = new Scores();
         Map<Integer, Double> roundScores = new HashMap<>();
+        Map<Integer, Double> roundScoresAligned = new HashMap<>();
         double totalScore = 0;
 
         for (CompetitorRound competitorRound : competitorRounds) {
@@ -179,12 +180,14 @@ public class ScoreUtil {
             }
 
             totalScore += roundScore;
-            roundScores.put(roundNumber, roundScore);
+            roundScores.put(roundNumber, score);
+            roundScoresAligned.put(roundNumber, roundScore);
 
         }
 
         scores.setTotalScore(totalScore);
         scores.setRoundScores(roundScores);
+        scores.setRoundScoresAligned(roundScoresAligned);
 
         return scores;
 
