@@ -17,4 +17,6 @@ public interface CompetitorRoundRepository extends JpaRepository<DBCompetitorRou
 
     List<DBCompetitorRound> findByCompetitor_Gender(EnumGender gender);
 
+    List<DBCompetitorRound> findByRound_IdAndCompetitor_Gender(UUID roundId, EnumGender competitorGender);
+
 }

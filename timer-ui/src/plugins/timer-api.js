@@ -46,6 +46,41 @@ export default {
         return apiClient.get('/meta/getEventTitle');
     },
 
+    updateCurrentCompetitionRound(roundId) {
+        return apiClient.post('/competition/updateCurrentRound', null, {
+            params: {roundId: roundId}
+        });
+    },
+
+    updateCurrentCompetitorRound(competitorRoundId) {
+        return apiClient.post('/competition/updateCurrentCompetitorRound', null, {
+            params: {competitorRoundId: competitorRoundId}
+        });
+    },
+
+    getCurrentCompetitorRound() {
+        return apiClient.get('/competition/getCurrentCompetitorRound');
+    },
+
+    getCurrentRound() {
+        return apiClient.get('/competition/getCurrentRound');
+    },
+
+    getCurrentCompetitorRounds() {
+        return apiClient.get('/competition/getCurrentCompetitorRounds');
+    },
+
+    getResultList(gender) {
+        return apiClient.get('/competition/getResultList', {
+            params: {gender: gender}
+        });
+    },
+
+    getLatestCompetitorRounds(gender) {
+        return apiClient.get('/competition/getLatestCompetitorRounds', {
+            params: {gender: gender}
+        });
+    },
 
     ///////////////////////////////////////////////////////////////////////////////////
     // Competitor

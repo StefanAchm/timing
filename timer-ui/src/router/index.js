@@ -41,6 +41,24 @@ const routes = [
         component: () => import('../views/AdminView.vue')
     },
     {
+        path: '/live',
+        name: 'live',
+        component: () => import('../views/LiveView.vue'),
+        meta: {mobile: true}
+    },
+    {
+        path: '/liveResults',
+        name: 'liveResults',
+        component: () => import('../views/LiveResultsView.vue'),
+        meta: {mobile: true}
+    },
+    {
+        path: '/liveStart',
+        name: 'liveStart',
+        component: () => import('../views/LiveStartView.vue'),
+        meta: {mobile: true}
+    },
+    {
         path: '*',
         redirect: '/competition'
     }
