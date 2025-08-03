@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import TimerApi from "@/plugins/timer-api";
 
 Vue.use(VueRouter)
 
@@ -8,63 +9,78 @@ const routes = [
     {
         path: '/competitors',
         name: 'competitors',
-        component: () => import('../views/CompetitorsView.vue')
+        component: () => import('../views/CompetitorsView.vue'),
+        meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/rounds',
         name: 'rounds',
-        component: () => import('../views/RoundsView.vue')
+        component: () => import('../views/RoundsView.vue'),
+        meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/competitor-rounds',
         name: 'competitor-rounds',
-        component: () => import('../views/CompetitorRoundView.vue')
+        component: () => import('../views/CompetitorRoundView.vue'),
+        meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/competition',
         name: 'competition',
-        component: () => import('../views/CompetitionView.vue')
+        component: () => import('../views/CompetitionView.vue'),
+        meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/result',
         name: 'result',
-        component: () => import('../views/ResultView.vue')
+        component: () => import('../views/ResultView.vue'),
+        meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/register',
         name: 'register',
-        component: () => import('../views/RegisterView.vue')
+        component: () => import('../views/RegisterView.vue'),
+        meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/admin',
         name: 'admin',
-        component: () => import('../views/AdminView.vue')
+        component: () => import('../views/AdminView.vue'),
+        meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/live',
         name: 'live',
         component: () => import('../views/LiveView.vue'),
-        meta: {mobile: true}
+        meta: {mobile: true, requiresAuth: false}
     },
     {
         path: '/liveResults',
         name: 'liveResults',
         component: () => import('../views/LiveResultsView.vue'),
-        meta: {mobile: true}
+        meta: {mobile: true, requiresAuth: false}
     },
     {
         path: '/liveStart',
         name: 'liveStart',
         component: () => import('../views/LiveStartView.vue'),
-        meta: {mobile: true}
+        meta: {mobile: true, requiresAuth: false}
     },
     {
         path: '*',
-        redirect: '/competition'
+        redirect: '/competition',
+        meta: { requiresAuth: true, role: 'JUDGE' }
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: () => import('@/views/LoginView.vue'),
+        meta: { requiresAuth: false }
     }
 ]
 
 const router = new VueRouter({
+    mode: 'history',
     routes
 })
 
@@ -72,7 +88,13 @@ router.beforeEach((to, from, next) => {
 
     document.title = to.name
 
-    next()
+    const user = TimerApi.getCurrentUser()
+
+    if (to.meta.requiresAuth && !user) {
+        next({name: 'Login'})
+    } else {
+        next()
+    }
 
 })
 

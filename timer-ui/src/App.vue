@@ -48,7 +48,8 @@
         app
         :mini-variant.sync="mini"
         permanent
-        v-else
+        v-else-if="$route.name !== 'Login'"
+
     >
 
       <template v-slot:append>
@@ -95,6 +96,24 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
+        <v-divider></v-divider>
+
+
+        <v-list-item
+            link
+            @click.stop="handleLogout"
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content>
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
       </v-list>
 
     </v-navigation-drawer>
@@ -125,6 +144,7 @@
 
 import {EventBus} from "@/plugins/event-bus";
 import snackbar from "@/components/SnackBar.vue";
+import TimerApi from "@/plugins/timer-api";
 
 export default {
   name: 'App',
@@ -152,8 +172,16 @@ export default {
     EventBus.$on('show-eror-snackbar', (message) => {
       this.$root.snackbar.showError({message: message})
     })
-  }
 
+  },
+
+  methods: {
+    handleLogout() {
+      TimerApi.logout();
+      this.$router.push('/login');
+
+    },
+  },
 
 };
 </script>

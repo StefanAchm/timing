@@ -1,9 +1,6 @@
 package com.asi.timer.controller;
 
 import com.asi.timer.model.view.APIStatistics;
-import com.asi.timer.repositories.CompetitorRepository;
-import com.asi.timer.repositories.CompetitorRoundRepository;
-import com.asi.timer.repositories.RoundRepository;
 import com.asi.timer.service.AdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
