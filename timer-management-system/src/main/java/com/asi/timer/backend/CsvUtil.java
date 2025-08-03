@@ -79,22 +79,27 @@ public class CsvUtil {
         String[] lines = csv.split("\n");
         List<Competitor> competitors = new ArrayList<>();
         for (int i = 1; i < lines.length; i++) {
-            String line = lines[i];
-            // Skip the header line if firstLineIsHeader is true
-            String[] parts = line.split(",");
-            if (parts.length != 9) {
-                throw new IllegalArgumentException("Invalid CSV line: " + line);
+            try {
+                String line = lines[i];
+                line = line.trim().replace("\r", "");
+                // Skip the header line if firstLineIsHeader is true
+                String[] parts = line.split(",");
+                if (parts.length != 9) {
+                    throw new IllegalArgumentException("Invalid CSV line: " + line);
+                }
+                Competitor competitor = new Competitor();
+                competitor.setId(UUID.fromString(parts[0]));
+                competitor.setCity(parts[1]);
+                competitor.setClub(parts[2]);
+                competitor.setDateOfBirth(LocalDate.parse(parts[3]));
+                competitor.setFirstName(parts[4]);
+                competitor.setGender(EnumGender.valueOf(parts[5]));
+                competitor.setLastName(parts[6]);
+                competitor.setStartNumber(Integer.parseInt(parts[8]));
+                competitors.add(competitor);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Invalid CSV line: " + lines[i], e);
             }
-            Competitor competitor = new Competitor();
-            competitor.setId(UUID.fromString(parts[0]));
-            competitor.setCity(parts[1]);
-            competitor.setClub(parts[2]);
-            competitor.setDateOfBirth(LocalDate.parse(parts[3]));
-            competitor.setFirstName(parts[4]);
-            competitor.setGender(EnumGender.valueOf(parts[5]));
-            competitor.setLastName(parts[6]);
-            competitor.setStartNumber(Integer.parseInt(parts[8]));
-            competitors.add(competitor);
         }
         return competitors;
 
@@ -109,6 +114,7 @@ public class CsvUtil {
         List<CompetitorRound> competitorRounds = new ArrayList<>();
         for (int i = 1; i < lines.length; i++) {
             String line = lines[i];
+            line = line.trim().replace("\r", "");
             String[] parts = line.split(",");
             if (parts.length != 7) {
                 throw new IllegalArgumentException("Invalid CSV line: " + line);
@@ -153,6 +159,7 @@ public class CsvUtil {
         List<Round> rounds = new ArrayList<>();
         for (int i = 1; i < lines.length; i++) {
             String line = lines[i];
+            line = line.trim().replace("\r", "");
             String[] parts = line.split(",");
             if (parts.length != 4) {
                 throw new IllegalArgumentException("Invalid CSV line: " + line);

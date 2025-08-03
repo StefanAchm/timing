@@ -3,6 +3,7 @@ package com.asi.timer.service;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBRound;
 import com.asi.timer.model.view.APIRound;
+import com.asi.timer.repositories.CompetitionRepository;
 import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class RoundService {
 
     private final RoundRepository roundRepository;
     private final CompetitorRoundRepository competitorRoundRepository;
+    private final CompetitionRepository competitionRepository;
 
     private final CompetitorRoundService competitorRoundService;
 
@@ -24,7 +26,8 @@ public class RoundService {
     public RoundService(RoundRepository roundRepository,
                         CompetitorRoundRepository competitorRoundRepository,
                         CompetitorRoundService competitorRoundService,
-                        CompetitorService competitorService
+                        CompetitorService competitorService,
+                        CompetitionRepository competitionRepository
     ) {
 
         this.roundRepository = roundRepository;
@@ -32,6 +35,7 @@ public class RoundService {
 
         this.competitorRoundService = competitorRoundService;
         this.competitorService = competitorService;
+        this.competitionRepository = competitionRepository;
 
     }
 

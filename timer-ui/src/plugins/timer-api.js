@@ -12,18 +12,108 @@ const apiClient = axios.create({
     }
 });
 
+// JWT Token management
+const getAuthToken = () => {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    return user ? user.token : null;
+};
+
+const setAuthToken = (token) => {
+    if (token) {
+        apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+        delete apiClient.defaults.headers.common['Authorization'];
+    }
+};
+
+// Set token on app initialization
+const token = getAuthToken();
+if (token) {
+    setAuthToken(token);
+}
+
+// Request interceptor to add token to requests
+apiClient.interceptors.request.use(
+    config => {
+        const token = getAuthToken();
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    error => {
+        return Promise.reject(error);
+    }
+);
+
+// Response interceptor for error handling and token expiration
 apiClient.interceptors.response.use(
     response => response,
     error => {
+        // Handle token expiration
+        if (error.response && error.response.status === 401) {
+            // Clear stored user data
+            localStorage.removeItem('user');
+            delete apiClient.defaults.headers.common['Authorization'];
 
-        EventBus.$emit('show-eror-snackbar', error.response.data.message);
+            EventBus.$emit('show-error-snackbar', 'Session expired. Please login again.');
+        } else if (error.response && error.response.data && error.response.data.message) {
+            EventBus.$emit('show-error-snackbar', error.response.data.message);
+        }
 
         throw error;
-
     }
 );
 
 export default {
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    // Authentication (NEW)
+
+    login(username, password) {
+        return apiClient.post('/auth/login', {
+            username,
+            password
+        }).then(response => {
+            if (response.data.token) {
+                const userData = {
+                    token: response.data.token,
+                    username: response.data.username,
+                    role: response.data.role
+                };
+                localStorage.setItem('user', JSON.stringify(userData));
+                setAuthToken(userData.token);
+                return userData;
+            }
+            return response.data;
+        });
+    },
+
+    logout() {
+        localStorage.removeItem('user');
+        setAuthToken(null);
+    },
+
+    getCurrentUser() {
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            try {
+                return JSON.parse(userStr);
+            } catch (e) {
+                localStorage.removeItem('user');
+                return null;
+            }
+        }
+        return null;
+    },
+
+
+    isAuthenticated() {
+
+        const user = this.getCurrentUser()
+        return !!(user && user.token)
+
+    },
 
     ///////////////////////////////////////////////////////////////////////////////////
     // Common, Meta and Admin
@@ -46,6 +136,47 @@ export default {
         return apiClient.get('/meta/getEventTitle');
     },
 
+    updateCompetition(roundId, competitorRoundId) {
+        return apiClient.post('/competition/update', null, {
+            params: {roundId: roundId, competitorRoundId: competitorRoundId}
+        });
+    },
+
+    updateCurrentCompetitionRound(roundId) {
+        return apiClient.post('/competition/updateCurrentRound', null, {
+            params: {roundId: roundId}
+        });
+    },
+
+    updateCurrentCompetitorRound(competitorRoundId) {
+        return apiClient.post('/competition/updateCurrentCompetitorRound', null, {
+            params: {competitorRoundId: competitorRoundId}
+        });
+    },
+
+    getCurrentCompetitorRound() {
+        return apiClient.get('/competition/getCurrentCompetitorRound');
+    },
+
+    getCurrentRound() {
+        return apiClient.get('/competition/getCurrentRound');
+    },
+
+    getCurrentCompetitorRounds() {
+        return apiClient.get('/competition/getCurrentCompetitorRounds');
+    },
+
+    getResultList(gender) {
+        return apiClient.get('/competition/getResultList', {
+            params: {gender: gender}
+        });
+    },
+
+    getLatestCompetitorRounds(gender) {
+        return apiClient.get('/competition/getLatestCompetitorRounds', {
+            params: {gender: gender}
+        });
+    },
 
     ///////////////////////////////////////////////////////////////////////////////////
     // Competitor
