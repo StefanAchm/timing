@@ -161,24 +161,25 @@ public class ScoreUtil {
 
             double score = calculateScoreOfRound(competitorRound);
 
+            double roundScore;
+
             if (isLastRound) {
 
-                totalScore += score;
+                roundScore = score;
 
             } else {
 
-                int maxHolds = rounds.stream()
+                roundScore = rounds.stream()
                         .filter(round -> round.getGender().equals(gender))
                         .filter(round -> round.getRoundNumber() == roundNumber)
                         .findFirst()
                         .map(Round::getMaxHolds)
                         .orElse(0);
 
-                totalScore += maxHolds;
-
             }
 
-            roundScores.put(roundNumber, score);
+            totalScore += roundScore;
+            roundScores.put(roundNumber, roundScore);
 
         }
 

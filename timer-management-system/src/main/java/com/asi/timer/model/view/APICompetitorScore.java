@@ -1,10 +1,18 @@
 package com.asi.timer.model.view;
 
+import com.asi.timer.backend.model.CompetitorRound;
 import com.asi.timer.backend.model.CompetitorScore;
+
+import java.util.List;
+import java.util.UUID;
 
 public class APICompetitorScore {
 
+    private record APICompetitorRoundScore(int lastRound, int holdNumber, String holdType, int tryNumber, double points) {
+    }
+
     private int rank;
+    private UUID id;
     private String firstName;
     private String lastName;
     private String city;
@@ -15,6 +23,8 @@ public class APICompetitorScore {
     private int tryNumber;
     private double points;
 
+    private List<APICompetitorRoundScore> competitorRoundScores;
+
     private APICompetitorScore() {
     }
 
@@ -23,28 +33,50 @@ public class APICompetitorScore {
 
         APICompetitorScore apiCompetitorScore = new APICompetitorScore();
 
+        apiCompetitorScore.setId(competitorScores.getCompetitor().getId());
         apiCompetitorScore.setRank(competitorScores.getRank());
         apiCompetitorScore.setFirstName(competitorScores.getCompetitor().getFirstName());
         apiCompetitorScore.setLastName(competitorScores.getCompetitor().getLastName());
         apiCompetitorScore.setCity(competitorScores.getCompetitor().getCity());
         apiCompetitorScore.setClub(competitorScores.getCompetitor().getClub());
 
-        if (competitorScores.getLastRound() != null) {
-            apiCompetitorScore.setLastRound(competitorScores.getLastRound().getRoundNumber());
-            apiCompetitorScore.setHoldNumber(competitorScores.getLastRound().getHoldNumber());
+        CompetitorRound lastRound = competitorScores.getLastRound();
 
-            if(competitorScores.getLastRound().getHoldType() != null) {
-                apiCompetitorScore.setHoldType(competitorScores.getLastRound().getHoldType().toString());
+        if (lastRound != null) {
+            apiCompetitorScore.setLastRound(lastRound.getRoundNumber());
+            apiCompetitorScore.setHoldNumber(lastRound.getHoldNumber());
+
+            if(lastRound.getHoldType() != null) {
+                apiCompetitorScore.setHoldType(lastRound.getHoldType().toString());
             } else {
                 apiCompetitorScore.setHoldType("");
             }
 
-            apiCompetitorScore.setTryNumber(competitorScores.getLastRound().getTryNumber());
+            apiCompetitorScore.setTryNumber(lastRound.getTryNumber());
             apiCompetitorScore.setPoints(competitorScores.getScore());
         }
 
+        apiCompetitorScore.competitorRoundScores = competitorScores.getCompetitorRounds()
+                .stream()
+                .map(round -> new APICompetitorRoundScore(
+                        round.getRoundNumber(),
+                        round.getHoldNumber(),
+                        round.getHoldType() != null ? round.getHoldType().toString() : "",
+                        round.getTryNumber(),
+                        competitorScores.getScore(round.getRoundNumber())
+                ))
+                .toList();
+
         return apiCompetitorScore;
 
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public int getRank() {
@@ -125,5 +157,13 @@ public class APICompetitorScore {
 
     public void setPoints(double points) {
         this.points = points;
+    }
+
+    public List<APICompetitorRoundScore> getCompetitorRoundScores() {
+        return competitorRoundScores;
+    }
+
+    public void setCompetitorRoundScores(List<APICompetitorRoundScore> competitorRoundScores) {
+        this.competitorRoundScores = competitorRoundScores;
     }
 }

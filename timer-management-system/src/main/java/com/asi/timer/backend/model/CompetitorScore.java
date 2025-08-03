@@ -2,6 +2,7 @@ package com.asi.timer.backend.model;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class CompetitorScore implements Comparable<CompetitorScore> {
@@ -68,6 +69,13 @@ public class CompetitorScore implements Comparable<CompetitorScore> {
         return scores.getTotalScore();
     }
 
+    public double getScore(int roundNumber) {
+        Map<Integer, Double> roundScores = scores.getRoundScores();
+        if (roundScores == null || roundScores.isEmpty()) {
+            return 0.0;
+        }
+        return roundScores.getOrDefault(roundNumber, 0.0);
+    }
 
     public boolean hasSameRank(CompetitorScore currentCompetitorScore) {
         return this.compareTo(currentCompetitorScore) == 0;
@@ -76,15 +84,18 @@ public class CompetitorScore implements Comparable<CompetitorScore> {
     @Override
     public int compareTo(CompetitorScore o) {
 
+        Map<Integer, Double> roundScores = this.scores.getRoundScores();
+        Map<Integer, Double> roundScoresOther = o.scores.getRoundScores();
+
         // First, compare based on the number of rounds (longer participation ranks higher)
-        int roundComparison = Integer.compare(this.scores.getRoundScores().size(), o.scores.getRoundScores().size());
+        int roundComparison = Integer.compare(roundScores.size(), roundScoresOther.size());
         if (roundComparison != 0) {
             return -roundComparison; // More rounds -> higher rank
         }
 
         // If same number of rounds, compare lexicographically (last round first)
-        for(int i = this.scores.getRoundScores().size(); i > 0; i--) {
-            int scoreComparison = Double.compare(this.scores.getRoundScores().get(i), o.scores.getRoundScores().get(i));
+        for(int i = roundScores.size(); i > 0; i--) {
+            int scoreComparison = Double.compare(roundScores.get(i), roundScoresOther.get(i));
             if (scoreComparison != 0) {
                 return -scoreComparison; // Higher score -> higher rank
             }
@@ -118,4 +129,5 @@ public class CompetitorScore implements Comparable<CompetitorScore> {
                ", scores=" + scores +
                '}';
     }
+
 }

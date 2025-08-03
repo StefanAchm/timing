@@ -57,6 +57,7 @@
               'podium-third': result.rank === 3
             }"
               class="result-item"
+              @click="openCompetitorDialog(result)"
           >
             <!-- Rank Badge -->
             <v-list-item-avatar size="40">
@@ -151,13 +152,23 @@
       </div>
     </v-card>
 
+    <!-- Competitor Details Dialog -->
+    <CompetitorCardLive
+        :dialog.sync="competitorDialog"
+        :competitor="selectedCompetitor"
+    />
+
   </v-container>
 </template>
 
 <script>
 import TimerApiService from "@/plugins/timer-api";
+import CompetitorCardLive from "@/components/competitor/CompetitorCardLive.vue";
+
 
 export default {
+
+  components: {CompetitorCardLive},
 
   data() {
     return {
@@ -165,6 +176,8 @@ export default {
       results: [],
       isLoading: false,
       autoRefreshInterval: null,
+      competitorDialog: false,
+      selectedCompetitor: null,
     }
   },
 
@@ -234,6 +247,11 @@ export default {
       this.autoRefreshInterval = setInterval(() => {
         this.refreshData()
       }, 10000)
+    },
+
+    openCompetitorDialog(competitor) {
+      this.selectedCompetitor = competitor
+      this.competitorDialog = true
     },
 
     stopAutoRefresh() {

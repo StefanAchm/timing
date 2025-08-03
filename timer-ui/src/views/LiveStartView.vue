@@ -138,7 +138,8 @@
               :class="{
               'current-player-item': competitorRound.isCurrent && selectedView === 'live',
               'completed-player': competitorRound.score !== null && !competitorRound.isCurrent
-            }"
+              }"
+              @click="openCompetitorDialog(competitorRound)"
           >
             <!-- Position Badge -->
             <v-list-item-avatar size="36">
@@ -216,14 +217,24 @@
       </v-card-text>
     </v-card>
 
+    <!-- Competitor Details Dialog -->
+    <CompetitorCardLive
+        :dialog.sync="competitorDialog"
+        :competitor="selectedCompetitor"
+    />
+
   </v-container>
 </template>
 
 <script>
 
 import TimerApiService from "@/plugins/timer-api";
+import CompetitorCardLive from "@/components/competitor/CompetitorCardLive.vue";
+
 
 export default {
+
+  components: {CompetitorCardLive},
 
   data() {
     return {
@@ -243,6 +254,10 @@ export default {
       isRefreshing: false,
       autoRefreshInterval: null,
       hasLiveRound: false,
+
+      competitorDialog: false,
+      selectedCompetitor: null,
+
     }
   },
 
@@ -312,6 +327,18 @@ export default {
         this.selectedView = 'HERREN';
         await this.refreshLatestData('HERREN');
       }
+    },
+
+    openCompetitorDialog(competitorRound) {
+      TimerApiService.getResultList(competitorRound.competitor.gender).then(response => {
+
+        const competitor = response.data.find(cr => cr.id === competitorRound.competitor.id);
+        if (competitor) {
+          this.selectedCompetitor = competitor
+          this.competitorDialog = true
+        }
+
+      })
     },
 
     async onViewChange() {
