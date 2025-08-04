@@ -24,6 +24,12 @@ public class DBUser {
     public DBUser() {
     }
 
+    public DBUser(String username, String password, Role role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
     public UUID getId() {
         return id;
     }
