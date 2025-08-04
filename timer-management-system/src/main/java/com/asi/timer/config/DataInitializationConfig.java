@@ -24,7 +24,7 @@ public class DataInitializationConfig {
 //        populator.addScript(new ClassPathResource("data-competitors.sql"));
 //        populator.addScript(new ClassPathResource("data-rounds.sql"));
 
-        populator.addScript(new ClassPathResource("users.sql"));
+//        populator.addScript(new ClassPathResource("users.sql"));
 
         populator.execute(dataSource);
 

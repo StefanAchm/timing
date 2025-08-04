@@ -14,8 +14,10 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil {
 
-    private static final String secret = "pQw8vZk3J2h5sT9bX4c6eR1uL0m2nO7pQw8vZk3J2h5sT9bX4c6eR1uL0m2nO7pQw8vZk3J2h5sT9bX4c6eR1uL0m2nO7p";
-    private int jwtExpiration = 86400;
+    private static final String SECRET_KEY = System.getenv("JWT_SECRET_KEY");
+
+    // Default to 1 hour if not set
+    private static final long JWT_EXPIRATION_SECONDS = Long.parseLong(System.getenv().getOrDefault("JWT_EXPIRATION", "3600"));
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -31,7 +33,7 @@ public class JwtTokenUtil {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -49,8 +51,8 @@ public class JwtTokenUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration * 1000))
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_SECONDS * 1000))
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
     }
 

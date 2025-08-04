@@ -5,9 +5,12 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_DB: timer
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    restart: unless-stopped
 
   backend:
     container_name: timer-management-system
@@ -17,15 +20,19 @@ services:
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/timer
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: password
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - JWT_EXPIRATION_MS=${JWT_EXPIRATION_MS}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+    restart: unless-stopped
 
   frontend:
     container_name: timer-ui
     image: ghcr.io/stefanachm/timer-ui:latest
     environment:
       - VUE_APP_DEV_ENVIRONMENT=false
-      - VUE_APP_API_BASE_URL=http://localhost:8080/timer/api
+      - VUE_APP_API_BASE_URL=${VUE_APP_API_BASE_URL}
     ports:
       - "8081:80"
+    restart: unless-stopped
