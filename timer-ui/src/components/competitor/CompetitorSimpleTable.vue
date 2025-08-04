@@ -179,6 +179,14 @@ export default {
   watch: {
     selectedCompetitorRoundLocal: function (newVal) {
       this.chooseItem(newVal)
+
+      if(newVal === null) {
+        TimerApiService.updateCompetition(null, null);
+        return;
+      }
+
+      TimerApiService.updateCompetition(this.selectedRound.id, this.selectedCompetitorRoundLocal.id)
+
     }
   },
 
@@ -186,7 +194,6 @@ export default {
 
     async stopSelectedRound() {
       this.selectedCompetitorRoundLocal = null
-      // await TimerApi.updateCompetition(null, null);
     },
 
     getRowStyle(item) {
@@ -202,13 +209,6 @@ export default {
     async chooseItem(item) {
 
       this.selectedCompetitorRoundLocal = item;
-
-      if(item === null) {
-        await TimerApiService.updateCompetition(null, null);
-        return;
-      }
-
-      await TimerApiService.updateCompetition(this.selectedRound.id, this.selectedCompetitorRoundLocal?.id)
 
       // Update +/- on all items
       let index = this.competitorRounds.indexOf(item);
