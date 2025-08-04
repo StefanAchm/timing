@@ -53,6 +53,11 @@ public class ScoreUtil {
 
             double currentScore = competitorScore.getScore();
 
+            if(currentScore <= 0.0) {
+                competitorScore.setRank(0); // If the score is 0 or less, set rank to 0
+                continue; // Skip to the next competitor
+            }
+
             if(currentScore < lastScore) {
                 rank++; // Increase rank if score is lower than the last score
             } // If the score is the same, the rank stays the same

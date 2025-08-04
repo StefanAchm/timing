@@ -199,6 +199,7 @@ export default {
   methods: {
 
     getRankColor(rank) {
+      if (rank === 0) return 'grey lighten-2' // No rank
       if (rank === 1) return 'amber darken-2'   // Gold
       if (rank === 2) return 'blue-grey lighten-1' // Silver
       if (rank === 3) return 'brown lighten-1'  // Bronze
@@ -206,6 +207,7 @@ export default {
     },
 
     getRankIcon(rank) {
+      if (rank === 0) return 'DNS' // No rank
       if (rank === 1) return 'mdi-trophy'
       if (rank === 2) return 'mdi-medal'
       if (rank === 3) return 'mdi-medal'
@@ -213,6 +215,7 @@ export default {
     },
 
     getPointsColor(rank) {
+      if (rank === 0) return 'grey lighten-2' // No rank
       if (rank === 1) return 'amber darken-2'   // Gold
       if (rank === 2) return 'blue-grey lighten-1' // Silver
       if (rank === 3) return 'brown lighten-1'  // Bronze
@@ -246,7 +249,7 @@ export default {
     startAutoRefresh() {
       this.autoRefreshInterval = setInterval(() => {
         this.refreshData()
-      }, 10000)
+      }, 30000)
     },
 
     openCompetitorDialog(competitor) {

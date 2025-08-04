@@ -52,7 +52,7 @@ const routes = [
         path: '/liveStart/:type?',
         name: 'liveStart',
         component: () => import('../views/LiveStartView.vue'),
-        meta: {mobile: true, requiresAuth: false, type: 'startlist'}
+        meta: {mobile: true, requiresAuth: false, type: 'herren'}
     },
     {
         path: '*',

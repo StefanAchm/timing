@@ -11,7 +11,6 @@
         <!-- Live Indicator -->
         <v-spacer></v-spacer>
         <v-chip
-            v-if="selectedView === 'live'"
             small
             color="success"
             text-color="white"
@@ -321,12 +320,6 @@ export default {
     async initializeData() {
       // Try to load live data first
       await this.refreshLiveData();
-
-      // If no live round, switch to latest HERREN
-      if (!this.hasLiveRound) {
-        this.selectedView = 'HERREN';
-        await this.refreshLatestData('HERREN');
-      }
     },
 
     openCompetitorDialog(competitorRound) {

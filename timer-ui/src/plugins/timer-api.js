@@ -142,18 +142,6 @@ export default {
         });
     },
 
-    updateCurrentCompetitionRound(roundId) {
-        return apiClient.post('/competition/updateCurrentRound', null, {
-            params: {roundId: roundId}
-        });
-    },
-
-    updateCurrentCompetitorRound(competitorRoundId) {
-        return apiClient.post('/competition/updateCurrentCompetitorRound', null, {
-            params: {competitorRoundId: competitorRoundId}
-        });
-    },
-
     getCurrentCompetitorRound() {
         return apiClient.get('/competition/getCurrentCompetitorRound');
     },

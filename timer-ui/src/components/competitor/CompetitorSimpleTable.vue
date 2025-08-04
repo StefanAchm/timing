@@ -127,7 +127,6 @@
 
 <script>
 
-import TimerApi from "@/plugins/timer-api";
 import TimerApiService from "@/plugins/timer-api";
 
 export default {
@@ -179,16 +178,15 @@ export default {
 
   watch: {
     selectedCompetitorRoundLocal: function (newVal) {
-      console.log('selectedCompetitorRoundLocal changed:', newVal);
       this.chooseItem(newVal)
     }
   },
 
   methods: {
 
-    stopSelectedRound() {
+    async stopSelectedRound() {
       this.selectedCompetitorRoundLocal = null
-      TimerApi.updateCompetition(null, null);
+      // await TimerApi.updateCompetition(null, null);
     },
 
     getRowStyle(item) {
@@ -201,16 +199,16 @@ export default {
       }
     },
 
-    chooseItem(item) {
+    async chooseItem(item) {
 
       this.selectedCompetitorRoundLocal = item;
 
-      if(this.selectedCompetitorRoundLocal === null) {
-        TimerApiService.updateCompetition(null, null);
+      if(item === null) {
+        await TimerApiService.updateCompetition(null, null);
         return;
       }
 
-      TimerApiService.updateCompetition(this.selectedRound.id, this.selectedCompetitorRoundLocal?.id)
+      await TimerApiService.updateCompetition(this.selectedRound.id, this.selectedCompetitorRoundLocal?.id)
 
       // Update +/- on all items
       let index = this.competitorRounds.indexOf(item);

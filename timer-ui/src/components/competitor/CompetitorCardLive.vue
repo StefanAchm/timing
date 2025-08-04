@@ -36,9 +36,13 @@
             <div class="text-h5 font-weight-bold">
               {{ competitor.lastName }}
             </div>
-            <div class="text-subtitle-1 white--text">
+            <div class="text-subtitle-1 white--text" v-if="competitor.rank > 0">
               Platz {{ competitor.rank }} - {{ competitor.points.toFixed(4) }} Punkte
             </div>
+            <div class="text-subtitle-1 white--text" v-else>
+              Noch nicht gestartet
+            </div>
+
           </div>
         </div>
 
@@ -49,19 +53,19 @@
         <div class="pa-4">
           <v-row>
             <v-col cols="12" md="6">
-              <v-card outlined class="mb-4">
+              <v-card outlined class="mb-0">
                 <v-card-subtitle class="pb-2">
                   <v-icon small class="mr-2">mdi-account-details</v-icon>
                   Teilnehmer-Informationen
                 </v-card-subtitle>
 
-                <v-card-text class="pt-0">
+                <v-card-text class="pt-0 pb-2">
                   <v-divider></v-divider>
                   <div class="mb-2 mt-2" v-if="competitor.city">
                     <v-icon small color="grey" class="mr-2 ml-2">mdi-map-marker</v-icon>
                     <span class="text-body-2">{{ competitor.city }}</span>
                   </div>
-                  <div class="mb-0" v-if="competitor.club">
+                  <div class="mb-2 mt-2" v-if="competitor.club">
                     <v-icon small color="grey" class="mr-2 ml-2">mdi-account-group</v-icon>
                     <span class="text-body-2">{{ competitor.club }}</span>
                   </div>
@@ -76,21 +80,25 @@
                   Aktuelle Leistung
                 </v-card-subtitle>
 
-                <v-card-text class="pt-0">
+                <v-card-text class="pt-0 pb-2">
                   <v-divider></v-divider>
-                  <div class="mb-2 mt-2">
+                  <div class="mb-2 mt-2" v-if="competitor.rank > 0">
                     <v-icon small color="grey" class="mr-2 ml-2">mdi-numeric</v-icon>
                     <span class="text-body-2">Letzte Runde: {{ competitor.lastRound }}</span>
                   </div>
-                  <div class="mb-2">
+                  <div class="mb-2 mt-2" v-if="competitor.rank > 0">
                     <v-icon small color="grey" class="mr-2 ml-2">mdi-hand-back-right</v-icon>
                     <span class="text-body-2">Griff {{ competitor.holdNumber }} {{ competitor.holdType }}</span>
                   </div>
-                  <div class="mb-2">
+                  <div class="mb-2 mt-2" v-if="competitor.rank > 0">
                     <v-icon small color="grey" class="mr-2 ml-2">mdi-counter</v-icon>
                     <span class="text-body-2">{{ competitor.tryNumber }} Versuch{{ competitor.tryNumber !== 1 ? 'e' : '' }}</span>
                   </div>
-                  <div class="mb-0">
+                  <div class="mb-2 mt-2" v-if="competitor.rank == 0">
+                    <v-icon small color="grey" class="mr-2 ml-2">mdi-timer</v-icon>
+                    <span class="text-body-2">Noch nicht gestartet</span>
+                  </div>
+                  <div class="mb-2 mt-2">
                     <v-icon small color="grey" class="mr-2 ml-2">mdi-chart-line</v-icon>
                     <span class="text-body-2 font-weight-bold">Gesamtpunkte: {{ competitor.points.toFixed(4) }}</span>
                   </div>
@@ -141,7 +149,7 @@
 
                 <v-card-text>
                   <div class="round-details">
-                    <div class="d-flex justify-space-between align-center mb-2">
+                    <div class="d-flex justify-space-between align-center mb-2" v-if="round.points > 0">
                       <div class="text-body-2 grey--text">
                         <v-icon small color="grey" class="mr-1">mdi-hand-back-right</v-icon>
                         Griff
@@ -151,7 +159,7 @@
                       </div>
                     </div>
 
-                    <div class="d-flex justify-space-between align-center mb-2">
+                    <div class="d-flex justify-space-between align-center mb-2" v-if="round.points > 0">
                       <div class="text-body-2 grey--text">
                         <v-icon small color="grey" class="mr-1">mdi-counter</v-icon>
                         Versuche
@@ -159,6 +167,17 @@
                       <div class="text-body-1 font-weight-medium">
                         {{ round.tryNumber }}
                       </div>
+                    </div>
+
+                    <div class="d-flex justify-space-between align-center mb-2" v-if="round.points == 0.0">
+                      <div class="text-body-2 grey--text">
+                        <v-icon small color="grey" class="mr-1">mdi-timer</v-icon>
+                        Status
+                      </div>
+                      <div class="text-body-1 font-weight-medium">
+                        Noch nicht gestartet
+                      </div>
+
                     </div>
 
                     <v-divider class="my-3"></v-divider>
@@ -223,6 +242,7 @@ export default {
 
   methods: {
     getRankColor(rank) {
+      if (rank === 0) return 'grey lighten-2' // No rank
       if (rank === 1) return 'amber darken-2'   // Gold
       if (rank === 2) return 'blue-grey lighten-1' // Silver
       if (rank === 3) return 'brown lighten-1'  // Bronze
@@ -230,6 +250,7 @@ export default {
     },
 
     getRankIcon(rank) {
+      if (rank === 0) return 'DNS' // No rank
       if (rank === 1) return 'mdi-trophy'
       if (rank === 2) return 'mdi-medal'
       if (rank === 3) return 'mdi-medal'
