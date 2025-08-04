@@ -8,49 +8,49 @@ const routes = [
 
     {
         path: '/rounds',
-        name: 'rounds',
+        name: 'Rounds',
         component: () => import('../views/RoundsView.vue'),
         meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/competitor-rounds',
-        name: 'competitor-rounds',
+        name: 'Competitor Rounds',
         component: () => import('../views/CompetitorRoundView.vue'),
         meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/competition',
-        name: 'competition',
+        name: 'Competition',
         component: () => import('../views/CompetitionView.vue'),
         meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/register',
-        name: 'register',
+        name: 'Register',
         component: () => import('../views/RegisterView.vue'),
         meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/admin',
-        name: 'admin',
+        name: 'Admin',
         component: () => import('../views/AdminView.vue'),
         meta: { requiresAuth: true, role: 'JUDGE' }
     },
     {
         path: '/liveResults',
-        name: 'liveResults',
+        name: 'Results',
         component: () => import('../views/LiveResultsView.vue'),
         meta: {mobile: true, requiresAuth: false}
     },
     {
         path: '/live',
-        name: 'live',
+        name: 'Live',
         component: () => import('../views/LiveStartView.vue'),
         meta: {mobile: true, requiresAuth: false, type: 'live'}
     },
     {
         path: '/liveStart/:type?',
-        name: 'liveStart',
+        name: 'Startliste',
         component: () => import('../views/LiveStartView.vue'),
         meta: {mobile: true, requiresAuth: false, type: 'herren'}
     },

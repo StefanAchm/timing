@@ -156,7 +156,7 @@ export default {
     },
 
     redirectToJudgePanel() {
-      this.$router.push({name: 'competitor-rounds'}).catch(err => {
+      this.$router.push({name: 'Competitor Rounds'}).catch(err => {
         // Fallback to home route if JudgePanel route doesn't exist
         if (err.name === 'NavigationDuplicated') return
         this.$router.push('/')
