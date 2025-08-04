@@ -1,5 +1,5 @@
 # Use the official PostgreSQL image
-FROM postgres:latest
+FROM postgres:17.5-alpine
 
 # Environment variables for PostgreSQL
 ENV POSTGRES_DB=timer

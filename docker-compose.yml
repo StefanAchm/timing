@@ -2,8 +2,6 @@ services:
   db:
     container_name: timer-db
     image: ghcr.io/stefanachm/timer-db:latest
-    ports:
-      - "5433:5432"
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -16,7 +14,7 @@ services:
     container_name: timer-management-system
     image: ghcr.io/stefanachm/timer-management-system:latest
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080" # Bind to localhost for security
     depends_on:
       - db
     environment:
@@ -37,5 +35,5 @@ services:
       - VUE_APP_DEV_ENVIRONMENT=false
       - VUE_APP_API_BASE_URL=${VUE_APP_API_BASE_URL}
     ports:
-      - "8081:80"
+      - "127.0.0.1:8081:80" # Bind to localhost for security
     restart: unless-stopped
