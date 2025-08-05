@@ -3,7 +3,7 @@
   <!-- Add: Competitors or Rounds -->
   <!-- Print: different lists -->
 
-  <v-app-bar app color="secondary">
+  <v-app-bar app color="primary">
 
     <CompetitorDialog
         :dialog.sync="competitorDialog"
@@ -24,7 +24,7 @@
 
     <v-menu offset-y>
       <template v-slot:activator="{ on }">
-        <v-btn text v-on="on">Hinzufügen</v-btn>
+        <v-btn class=" white--text" text v-on="on">Hinzufügen</v-btn>
       </template>
 
       <v-list>
@@ -35,10 +35,12 @@
 
     <v-spacer></v-spacer>
 
-    <v-toolbar-title v-text="title"></v-toolbar-title>
+    <v-toolbar-title
+      class="text-h5 white--text"
+      v-text="title"></v-toolbar-title>
 
     <v-spacer></v-spacer>
-    <v-btn text @click="printDialog = true">Drucken</v-btn>
+    <v-btn class=" white--text"  text @click="printDialog = true">Drucken</v-btn>
 
   </v-app-bar>
 

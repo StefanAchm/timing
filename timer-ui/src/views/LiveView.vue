@@ -248,7 +248,7 @@ export default {
 
 <style scoped>
 .current-player-card {
-  border: 2px solid #4caf50;
+  border: 2px solid var(--v-primary-green);
   animation: pulse 2s infinite;
 }
 
@@ -266,7 +266,7 @@ export default {
 
 .current-player-item {
   background-color: rgba(76, 175, 80, 0.1);
-  border-left: 4px solid #4caf50;
+  border-left: 4px solid var(--v-primary-green);
 }
 
 .completed-player {

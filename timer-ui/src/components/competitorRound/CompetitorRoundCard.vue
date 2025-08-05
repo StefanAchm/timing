@@ -97,7 +97,7 @@
 
           <v-btn
               v-else
-              color="red darken-1"
+              color="warning"
               @click="save">
             Überschreiben
           </v-btn>

@@ -3,7 +3,7 @@
 
     <v-row justify="center" class="mb-4">
       <v-col cols="12" md="8" lg="10" class="text-center">
-        <v-sheet color="grey lighten-4" rounded class="pa-4">
+        <v-sheet color="primary white--text" rounded class="pa-4">
           <div class="subtitle-1 font-weight-bold">Angemeldeter Benutzer:</div>
           <div class="display-1 font-weight-bold">{{ currentUser().username }}</div>
         </v-sheet>
@@ -21,19 +21,19 @@
           <v-card-text>
             <v-row>
               <v-col cols="12" sm="4" class="text-center">
-                <v-sheet color="blue lighten-4" rounded class="pa-4">
+                <v-sheet color="secondary" rounded class="pa-4">
                   <div class="subtitle-1 font-weight-bold">Teilnehmer</div>
                   <div class="display-1 font-weight-bold">{{ stats.competitorCount }}</div>
                 </v-sheet>
               </v-col>
               <v-col cols="12" sm="4" class="text-center">
-                <v-sheet color="green lighten-4" rounded class="pa-4">
+                <v-sheet color="secondary" rounded class="pa-4">
                   <div class="subtitle-1 font-weight-bold">Runden</div>
                   <div class="display-1 font-weight-bold">{{ stats.roundCount }}</div>
                 </v-sheet>
               </v-col>
               <v-col cols="12" sm="4" class="text-center">
-                <v-sheet color="amber lighten-4" rounded class="pa-4">
+                <v-sheet color="secondary" rounded class="pa-4">
                   <div class="subtitle-1 font-weight-bold">Durchgänge</div>
                   <div class="display-1 font-weight-bold">{{ stats.competitorRoundCount }}</div>
                 </v-sheet>

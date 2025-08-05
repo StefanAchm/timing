@@ -125,18 +125,24 @@
             >
               <v-card
                   outlined
-                  :class="getRoundCardClass(round.lastRound)"
-                  class="round-card"
+                  class="round-card round"
               >
                 <v-card-title class="py-3">
+
+                  <span class="text-h6 primary--text" >Runde</span>
+
                   <v-icon
-                      :color="getRoundIconColor(round.lastRound)"
-                      class="mr-2"
+                      color="primary"
+                      class="mr-2 ml-2"
                   >
                     mdi-numeric-{{ round.lastRound }}-circle
                   </v-icon>
-                  <span class="text-h6">Runde {{ round.lastRound }}</span>
+
+
                   <v-spacer></v-spacer>
+
+
+
                   <!-- TODO: make a chip to indicate if top or not -->
 <!--                  <v-chip-->
 <!--                      small-->
@@ -243,9 +249,9 @@ export default {
   methods: {
     getRankColor(rank) {
       if (rank === 0) return 'grey lighten-2' // No rank
-      if (rank === 1) return 'amber darken-2'   // Gold
-      if (rank === 2) return 'blue-grey lighten-1' // Silver
-      if (rank === 3) return 'brown lighten-1'  // Bronze
+      if (rank === 1) return 'firstPlace'   // Gold
+      if (rank === 2) return 'secondPlace' // Silver
+      if (rank === 3) return 'thirdPlace'  // Bronze
       return 'grey' // Default for others
     },
 
@@ -257,15 +263,6 @@ export default {
       return ''
     },
 
-    getRoundCardClass(roundNumber) {
-      return `round-${roundNumber}`
-    },
-
-    getRoundIconColor(roundNumber) {
-      const colors = ['primary', 'success', 'warning', 'error', 'info']
-      return colors[(roundNumber - 1) % colors.length] || 'grey'
-    },
-
     close() {
       this.dialogLocal = false
       this.$emit('close')
@@ -275,19 +272,6 @@ export default {
       return [...this.competitor.competitorRoundScores].sort((a, b) => a.lastRound - b.lastRound)
     },
 
-    getHoldTypeColor(holdType) {
-      switch (holdType.toLowerCase()) {
-        case 'gehalten':
-          return 'success'
-        case 'berührt':
-          return 'warning'
-        case 'nicht berührt':
-        case 'nicht geschafft':
-          return 'error'
-        default:
-          return 'grey'
-      }
-    }
   }
 }
 </script>
@@ -302,24 +286,8 @@ export default {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.round-1 {
-  border-left: 4px solid #1976d2;
-}
-
-.round-2 {
-  border-left: 4px solid #4caf50;
-}
-
-.round-3 {
-  border-left: 4px solid #ff9800;
-}
-
-.round-4 {
-  border-left: 4px solid #f44336;
-}
-
-.round-5 {
-  border-left: 4px solid #2196f3;
+.round {
+  border-left: 4px solid var(--v-secondary-base);
 }
 
 .round-details {

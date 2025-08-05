@@ -176,7 +176,7 @@
                   outlined
                   rounded
                   small
-                  color="error"
+                  color="warning"
                   @click="updateCompetitorPaymentStatus(item.competitor)">
                 Bezahlen
               </v-btn>

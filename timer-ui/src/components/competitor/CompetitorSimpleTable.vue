@@ -46,8 +46,8 @@
 
             <v-btn
                 :disabled="selectedCompetitorRoundLocal === null"
-                color="primary"
-                class="mb-2"
+                color="warning"
+                class="mb-2 black--text"
                 @click="stopSelectedRound()"
             >Stopp
             </v-btn>
@@ -198,7 +198,7 @@ export default {
 
     getRowStyle(item) {
       if (item === this.selectedCompetitorRoundLocal) {
-        return 'accent';
+        return 'warning';
       } else if (item.competitorRoundStatus === 'COMPLETED') {
         return 'neutral2 grey--text';
       } else {
@@ -226,7 +226,7 @@ export default {
 
     scrollToSelectedRow() {
       this.$nextTick(() => {
-        const selectedRow = this.$refs.competitorSimpleTable.$el.querySelector('.accent');
+        const selectedRow = this.$refs.competitorSimpleTable.$el.querySelector('.secondary');
         if (selectedRow) {
           selectedRow.scrollIntoView({behavior: 'smooth', block: 'center'});
         }

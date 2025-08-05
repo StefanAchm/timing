@@ -8,6 +8,9 @@ export default new Vuetify({
         iconfont: 'mdi',
     },
     theme: {
+        options: {
+            customProperties: true,
+        },
         themes: {
             light: {
 
@@ -17,19 +20,20 @@ export default new Vuetify({
                 // Secondary buttons, hover states, highlights
                 secondary: '#819595',
 
-                // secondary2: '#99A69E',
-                // secondary3: '#A5AEA2',
-                // secondary4: '#b1b6a6',
+                // CUSTOM COLORS:
 
-                // Accent for attention
-                accent: '#ef8275',
-                // accent2: '#6d4c3d',
+                greener: '#4caf50',
+
+                firstPlace: '#FFA000', // Gold
+                secondPlace: '#78909C', // Silver
+                thirdPlace: '#8D6E63', // Bronze
+
+                boys: '#e3f2fd', // Blue
+                girls: '#fce4ec', // Pink
 
                 // Background, card colors, text
                 neutral: '#F2F2F3',
                 neutral2: '#C8CDD0',
-                neutral3: '#415058',
-                neutral4: '#1F292E',
 
                 // Status colors
                 error: '#D41111',

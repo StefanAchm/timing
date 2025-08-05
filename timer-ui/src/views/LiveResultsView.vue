@@ -24,6 +24,7 @@
         <v-chip-group
             v-model="selectedGender"
             mandatory
+            active-class="primary--text"
         >
           <v-chip value="HERREN">
             <v-icon left small>mdi-account</v-icon>
@@ -87,14 +88,6 @@
                 {{ result.firstName }} {{ result.lastName }}
               </v-list-item-title>
               <div class="result-details">
-                <!--                <div class="text-caption grey&#45;&#45;text mb-1">-->
-                <!--                  <v-icon small color="grey">mdi-map-marker</v-icon>-->
-                <!--                  {{ result.city }}-->
-                <!--                </div>-->
-                <!--                <div v-if="result.club" class="text-caption grey&#45;&#45;text mb-1">-->
-                <!--                  <v-icon small color="grey">mdi-account-group</v-icon>-->
-                <!--                  {{ result.club }}-->
-                <!--                </div>-->
                 <div class="text-caption grey--text mb-1">
                   <v-icon small color="grey">mdi-numeric</v-icon>
                   Runde {{ result.lastRound }}
@@ -200,9 +193,9 @@ export default {
 
     getRankColor(rank) {
       if (rank === 0) return 'grey lighten-2' // No rank
-      if (rank === 1) return 'amber darken-2'   // Gold
-      if (rank === 2) return 'blue-grey lighten-1' // Silver
-      if (rank === 3) return 'brown lighten-1'  // Bronze
+      if (rank === 1) return 'amber'   // Gold
+      if (rank === 2) return 'secondPlace' // Silver
+      if (rank === 3) return 'thirdPlace'  // Bronze
       return 'grey' // Default for others
     },
 
@@ -216,9 +209,9 @@ export default {
 
     getPointsColor(rank) {
       if (rank === 0) return 'grey lighten-2' // No rank
-      if (rank === 1) return 'amber darken-2'   // Gold
-      if (rank === 2) return 'blue-grey lighten-1' // Silver
-      if (rank === 3) return 'brown lighten-1'  // Bronze
+      if (rank === 1) return 'firstPlace'   // Gold
+      if (rank === 2) return 'secondPlace' // Silver
+      if (rank === 3) return 'thirdPlace'  // Bronze
       return 'grey' // Default for others
     },
 
@@ -275,17 +268,17 @@ export default {
 
 .podium-first {
   background: linear-gradient(45deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05));
-  border-left: 4px solid #ffc107;
+  border-left: 4px solid var(--v-firstPlace-base);
 }
 
 .podium-second {
   background: linear-gradient(45deg, rgba(158, 158, 158, 0.1), rgba(158, 158, 158, 0.05));
-  border-left: 4px solid #9e9e9e;
+  border-left: 4px solid var(--v-secondPlace-base);
 }
 
 .podium-third {
   background: linear-gradient(45deg, rgba(255, 87, 34, 0.1), rgba(255, 87, 34, 0.05));
-  border-left: 4px solid #ff5722;
+  border-left: 4px solid var(--v-thirdPlace-base);
 }
 
 .result-details {

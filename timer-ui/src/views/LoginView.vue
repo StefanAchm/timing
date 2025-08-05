@@ -68,7 +68,7 @@
           <!-- Already Logged In State -->
           <v-card-text v-else class="text-center py-8">
             <v-icon size="64" color="success" class="mb-4">mdi-check-circle</v-icon>
-            <h3 class="mb-4">Willkommen zurück, {{ currentUsername }}!</h3>
+            <h3 class="mb-8">Willkommen zurück, {{ currentUsername }}!</h3>
             <v-btn color="primary" @click="redirectToJudgePanel">
               Zum Bouldercup Portal
               <v-icon right>mdi-arrow-right</v-icon>
@@ -194,7 +194,7 @@ export default {
 }
 
 .card-header {
-  background: linear-gradient(45deg, #2196F3, #21CBF3);
+  background: linear-gradient(45deg, var(--v-primary-base), var(--v-secondary-base));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

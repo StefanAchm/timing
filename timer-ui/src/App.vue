@@ -13,15 +13,6 @@
         height="70"
         class="bottom-nav-enhanced"
     >
-<!--      <v-btn-->
-<!--          :value="'live'"-->
-<!--          @click="$router.push('/live')"-->
-<!--          class="nav-btn"-->
-<!--          :class="{ 'active-btn': $route.path === '/live' }"-->
-<!--      >-->
-<!--        <span class="nav-text">Live</span>-->
-<!--        <v-icon size="24" class="nav-icon">mdi-play-circle-outline</v-icon>-->
-<!--      </v-btn>-->
 
       <v-btn
           :value="'live'"
@@ -175,12 +166,21 @@ export default {
       ],
       right: null,
       mini: true,
+
     }
 
   },
 
+  // If reload, setACtiveButton is not called, so we call it here
+  watch: {
+    '$route': function() {
+      this.setActiveButton();
+    }
+  },
+
   mounted() {
     this.$root.snackbar = this.$refs.snackbar;
+    this.setActiveButton();
   },
 
   created() {
@@ -195,6 +195,20 @@ export default {
       TimerApi.logout();
       this.$router.push('/login');
 
+    },
+    setActiveButton() {
+      this.$nextTick(() => {
+        const buttons = document.querySelectorAll('.nav-btn');
+        const routePath = this.$route.path.replace(/^\//, '');
+        buttons.forEach((button) => {
+        const value = button.getAttribute('value');
+        if (routePath === value) {
+          button.classList.add('v-btn--active');
+        } else {
+          button.classList.remove('v-btn--active');
+        }
+      });
+    });
     },
   },
 
@@ -219,13 +233,12 @@ export default {
 }
 
 .nav-btn:hover {
-  background-color: rgba(25, 118, 210, 0.08) !important;
-  transform: translateY(-2px);
+  background-color: var(--v-secondary-base) !important;
 }
 
 .nav-btn.active-btn {
-  background-color: rgba(25, 118, 210, 0.12) !important;
-  color: #1976d2 !important;
+  background-color: var(--v-primary-base) !important;
+  color: white !important;
 }
 
 .nav-btn.active-btn::before {
@@ -234,9 +247,9 @@ export default {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 32px;
+  width: 50px;
   height: 3px;
-  background-color: #1976d2;
+  background-color: white !important;
   border-radius: 0 0 3px 3px;
 }
 

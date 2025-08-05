@@ -64,19 +64,20 @@
                     required
                     @change="selectCompetitor"
                     clearable
+                    :color="blue"
                     @click:clear="init()"
                 >
                   <template v-slot:item="data">
-                    <div
+                    <v-card-text
                         :style="{
-                          backgroundColor: data.item.gender === 'HERREN' ? '#e3f2fd' : (data.item.gender === 'DAMEN' ? '#fce4ec' : 'transparent'),
+                          backgroundColor: data.item.gender === 'HERREN' ? 'var(--v-boys-base)' : (data.item.gender === 'DAMEN' ? 'var(--v-girls-base)' : 'transparent'),
                           display: 'block',
                           width: '100%',
-                      padding: '8px'
+                          padding: '10px'
                     }"
                     >
                       {{ data.item.description }}
-                    </div>
+                    </v-card-text>
                   </template>
                 </v-combobox>
 
