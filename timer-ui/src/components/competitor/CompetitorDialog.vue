@@ -64,7 +64,6 @@
                     required
                     @change="selectCompetitor"
                     clearable
-                    :color="blue"
                     @click:clear="init()"
                 >
                   <template v-slot:item="data">
