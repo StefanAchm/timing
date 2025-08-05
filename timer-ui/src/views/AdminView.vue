@@ -10,6 +10,29 @@
       </v-col>
     </v-row>
 
+    <v-row justify="center" class="mb-4">
+      <v-col cols="12" md="8" lg="10" class="text-center">
+        <v-card elevation="6" class="pa-4">
+          <v-card-title class="headline font-weight-bold text-center">
+            <v-icon color="primary" left>mdi-wifi</v-icon>
+            Anwendungsstatus ändern
+          </v-card-title>
+          <v-divider class="mb-4"></v-divider>
+          <v-card-text>
+            <v-btn
+              :color="appStatus ? 'success' : 'error'"
+              large
+              block
+              @click="updateAppStatus(!appStatus)"
+            >
+              <v-icon left>{{ appStatus ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off' }}</v-icon>
+              {{ appStatus ? 'Live' : 'Offline' }}
+            </v-btn>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
     <v-row justify="center" class="mb-8">
       <v-col cols="12" md="8" lg="10">
         <v-card elevation="8" class="pa-4">
@@ -117,7 +140,8 @@ export default {
         roundCount: 0,
         competitorCount: 0,
         competitorRoundCount: 0
-      }
+      },
+      appStatus: false // This will be set based on the application status
     };
   },
   created() {
@@ -142,10 +166,32 @@ export default {
           .catch(() => {
             this.$root.snackbar.showError({message: 'Fehler beim Laden der Statistiken.'});
           });
+
+      TimerApiService.getAppStatus()
+          .then(response => {
+            this.appStatus = response.data.status;
+          })
+          .catch(() => {
+            this.$root.snackbar.showError({message: 'Fehler beim Laden des Anwendungs status.'});
+          });
+
     },
+
+    updateAppStatus(status) {
+      TimerApiService.updateAppStatus(status)
+          .then(() => {
+            this.appStatus = status;
+            this.$root.snackbar.showSuccess({message: `Anwendungsstatus erfolgreich auf ${status ? 'Live' : 'Offline'} gesetzt.`});
+          })
+          .catch(() => {
+            this.$root.snackbar.showError({message: 'Fehler beim Aktualisieren des Anwendungsstatus.'});
+          });
+    },
+
     currentUser() {
       return TimerApi.getCurrentUser();
     },
+
     async deleteAll() {
 
       TimerApiService.deleteAllData()

@@ -68,7 +68,7 @@ apiClient.interceptors.response.use(
 export default {
 
     ///////////////////////////////////////////////////////////////////////////////////
-    // Authentication (NEW)
+    // Authentication
 
     login(username, password) {
         return apiClient.post('/auth/login', {
@@ -140,6 +140,14 @@ export default {
         return apiClient.post('/competition/update', null, {
             params: {roundId: roundId, competitorRoundId: competitorRoundId}
         });
+    },
+
+    updateAppStatus(status) {
+        return apiClient.post('/competition/updateStatus', null, {params: {live: status}});
+    },
+
+    getAppStatus() {
+        return apiClient.get('/competition/getStatus');
     },
 
     getCurrentCompetitorRound() {

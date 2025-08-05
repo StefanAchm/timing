@@ -17,6 +17,8 @@ public class DBCompetition {
     @ManyToOne
     private DBRound round;
 
+    private boolean live;
+
     public UUID getId() {
         return id;
     }
@@ -39,5 +41,13 @@ public class DBCompetition {
 
     public void setRound(DBRound round) {
         this.round = round;
+    }
+
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
     }
 }

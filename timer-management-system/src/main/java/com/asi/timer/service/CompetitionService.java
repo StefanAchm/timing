@@ -12,7 +12,6 @@ import com.asi.timer.model.view.APICompetitorRound;
 import com.asi.timer.model.view.APICompetitorScore;
 import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.CompetitionRepository;
-import com.asi.timer.repositories.CompetitorRepository;
 import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
 import org.springframework.stereotype.Service;
@@ -26,20 +25,28 @@ public class CompetitionService {
 
     private final CompetitionRepository competitionRepository;
     private final RoundRepository roundRepository;
-    private final CompetitorRepository competitorRepository;
     private final CompetitorRoundRepository competitorRoundRepository;
     private final CompetitorRoundService competitorRoundService;
 
     public CompetitionService(CompetitionRepository competitionRepository,
                               RoundRepository roundRepository,
-                              CompetitorRepository competitorRepository,
                               CompetitorRoundRepository competitorRoundRepository,
                               CompetitorRoundService competitorRoundService) {
         this.competitionRepository = competitionRepository;
         this.roundRepository = roundRepository;
-        this.competitorRepository = competitorRepository;
         this.competitorRoundRepository = competitorRoundRepository;
         this.competitorRoundService = competitorRoundService;
+    }
+
+    public void updateStatus(boolean live) {
+        DBCompetition dbCompetition = getDbCompetition();
+        dbCompetition.setLive(live);
+        competitionRepository.save(dbCompetition);
+    }
+
+    public boolean getStatus() {
+        DBCompetition dbCompetition = getDbCompetition();
+        return dbCompetition.isLive();
     }
 
     public void update(UUID roundId, UUID competitorRoundId) {
@@ -62,23 +69,6 @@ public class CompetitionService {
 
     }
 
-    public void updateCurrentRound(UUID roundId) {
-        DBCompetition dbCompetition = getDbCompetition();
-        dbCompetition.setRound(roundRepository.findById(roundId).orElse(null));
-        competitionRepository.save(dbCompetition);
-    }
-
-    public void updateCurrentCompetitorRound(UUID competitorRoundId) {
-        DBCompetition dbCompetition = getDbCompetition();
-
-        if(competitorRoundId == null) {
-            dbCompetition.setCompetitorRound(null);
-        } else {
-            dbCompetition.setCompetitorRound(competitorRoundRepository.findById(competitorRoundId).orElse(null));
-        }
-
-        competitionRepository.save(dbCompetition);
-    }
 
     public List<APICompetitorRound> getCurrentCompetitorRounds() {
 
@@ -143,5 +133,6 @@ public class CompetitionService {
     private DBCompetition getDbCompetition() {
         return competitionRepository.findAll().stream().findFirst().orElseGet(DBCompetition::new);
     }
+
 
 }
