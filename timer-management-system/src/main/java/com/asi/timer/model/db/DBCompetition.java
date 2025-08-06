@@ -19,6 +19,8 @@ public class DBCompetition {
 
     private boolean live;
 
+    private boolean registrationOpen;
+
     public UUID getId() {
         return id;
     }
@@ -49,5 +51,13 @@ public class DBCompetition {
 
     public void setLive(boolean live) {
         this.live = live;
+    }
+
+    public boolean isRegistrationOpen() {
+        return registrationOpen;
+    }
+
+    public void setRegistrationOpen(boolean registrationOpen) {
+        this.registrationOpen = registrationOpen;
     }
 }

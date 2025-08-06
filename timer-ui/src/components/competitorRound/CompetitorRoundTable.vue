@@ -312,11 +312,11 @@ export default {
 
 
       return filteredCompetitors.filter(item =>
-              Object.values(item).some(value =>
-                  value.toString().toLowerCase().includes(this.search.toLowerCase())
-              ) || Object.values(item.competitor).some(value =>
-                  value.toString().toLowerCase().includes(this.search.toLowerCase())
-              )
+      Object.values(item).some(value =>
+          value && value.toString().toLowerCase().includes(this.search.toLowerCase())
+      ) || Object.values(item.competitor).some(value =>
+          value && value.toString().toLowerCase().includes(this.search.toLowerCase())
+      )
       );
 
 

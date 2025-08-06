@@ -13,10 +13,12 @@
     <template v-slot:activator="{ on, attrs }">
       <v-text-field
           v-model="computedDate"
-          label="Geburtsdatum"
-          append-outer-icon="mdi-calendar"
+          label="Geburtsdatum *"
+          prepend-inner-icon="mdi-calendar"
           hint="YYYY-MM-DD"
           persistent-hint
+          outlined
+          :rules="[value => !!value || 'Geburtsdatum ist erforderlich']"
           v-bind="attrs"
           v-on="on"
       ></v-text-field>

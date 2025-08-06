@@ -17,7 +17,7 @@ public class JwtTokenUtil {
     private static final String SECRET_KEY = System.getenv("JWT_SECRET_KEY");
 
     // Default to 1 hour if not set
-    private static final long JWT_EXPIRATION_SECONDS = Long.parseLong(System.getenv().getOrDefault("JWT_EXPIRATION", "3600"));
+    private static final long JWT_EXPIRATION_SECONDS = Long.parseLong(System.getenv().getOrDefault("JWT_EXPIRATION", "86400")); // 24 hours
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);

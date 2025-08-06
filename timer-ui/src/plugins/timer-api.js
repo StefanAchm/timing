@@ -142,12 +142,20 @@ export default {
         });
     },
 
-    updateAppStatus(status) {
-        return apiClient.post('/competition/updateStatus', null, {params: {live: status}});
+    updateLiveStatus(status) {
+        return apiClient.post('/competition/updateLiveStatus', null, {params: {live: status}});
     },
 
-    getAppStatus() {
-        return apiClient.get('/competition/getStatus');
+    getLiveStatus() {
+        return apiClient.get('/competition/getLiveStatus');
+    },
+
+    updateRegistrationStatus(status) {
+        return apiClient.post('/competition/updateRegistrationStatus', null, {params: {registrationOpen: status}});
+    },
+
+    getRegistrationStatus() {
+        return apiClient.get('/competition/getRegistrationStatus');
     },
 
     getCurrentCompetitorRound() {
@@ -172,6 +180,10 @@ export default {
         return apiClient.get('/competition/getLatestCompetitorRounds', {
             params: {gender: gender}
         });
+    },
+
+    register(competitor) {
+        return apiClient.post('/competition/register', competitor);
     },
 
     ///////////////////////////////////////////////////////////////////////////////////

@@ -44,8 +44,15 @@
         <v-icon size="24" class="nav-icon">mdi-podium</v-icon>
       </v-btn>
 
-
-
+      <v-btn
+          :value="'register'"
+          @click="$router.push('/register')"
+          class="nav-btn"
+          :class="{ 'active-btn': $route.path === '/register' }"
+      >
+        <span class="nav-text">Registrieren</span>
+        <v-icon size="24" class="nav-icon">mdi-account-plus-outline</v-icon>
+      </v-btn>
 
     </v-bottom-navigation>
 

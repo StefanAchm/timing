@@ -10,6 +10,7 @@ import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.CompetitorRepository;
 import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -34,14 +35,39 @@ public class CompetitorService {
 
     }
 
-    public DBCompetitor createCompetitor(APICompetitor competitorRequest) {
+    public APICompetitor registerCompetitor(APICompetitor competitorRequest) {
+
+        int maxRetries = 3;
+        for (int attempt = 0; attempt < maxRetries; attempt++) {
+            try {
+                Integer startNumber = generateStartNumber();
+                competitorRequest.setStartNumber(startNumber);
+                DBCompetitor competitor = createCompetitorInDB(competitorRequest);
+                return APICompetitor.fromDBCompetitor(competitor, false);
+            } catch (DataIntegrityViolationException e) {
+                if (attempt == maxRetries - 1) {
+                    throw e; // Rethrow the exception if max retries reached
+                }
+                // Small delay before retry
+                try { Thread.sleep(50); } catch (InterruptedException ie) { }
+            }
+        }
+        throw new RuntimeException("Failed to register competitor");
+
+    }
+
+    public APICompetitor createCompetitor(APICompetitor competitorRequest) {
+        try {
+            DBCompetitor competitor = createCompetitorInDB(competitorRequest);
+            return APICompetitor.fromDBCompetitor(competitor, false);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("Start number " + competitorRequest.getStartNumber() + " is already taken", e);
+        }
+    }
+
+    private DBCompetitor createCompetitorInDB(APICompetitor competitorRequest) {
 
         DBCompetitor competitor = DBCompetitor.fromAPICompetitor(competitorRequest);
-
-        if (!isStartNumberValid(null, competitorRequest.getStartNumber())) {
-            throw new RuntimeException("Start number already in use");
-        }
-
         return this.competitorRepository.save(competitor);
 
     }

@@ -17,6 +17,7 @@ public class APICompetitorScore {
     private String lastName;
     private String city;
     private String club;
+    private int startNumber;
     private int lastRound;
     private int holdNumber;
     private String holdType;
@@ -39,6 +40,7 @@ public class APICompetitorScore {
         apiCompetitorScore.setLastName(competitorScores.getCompetitor().getLastName());
         apiCompetitorScore.setCity(competitorScores.getCompetitor().getCity());
         apiCompetitorScore.setClub(competitorScores.getCompetitor().getClub());
+        apiCompetitorScore.setStartNumber(competitorScores.getCompetitor().getStartNumber());
 
         CompetitorRound lastRound = competitorScores.getLastRound();
 
@@ -165,5 +167,13 @@ public class APICompetitorScore {
 
     public void setCompetitorRoundScores(List<APICompetitorRoundScore> competitorRoundScores) {
         this.competitorRoundScores = competitorRoundScores;
+    }
+
+    public int getStartNumber() {
+        return startNumber;
+    }
+
+    public void setStartNumber(int startNumber) {
+        this.startNumber = startNumber;
     }
 }

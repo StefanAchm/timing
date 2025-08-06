@@ -119,15 +119,12 @@
           <v-icon color="green" small>mdi-clock</v-icon>
           Aktuell am Zug
         </div>
-        <v-chip color="green" text-color="white" small class="mt-2">
-          {{ currentCompetitorRound.score }} Punkte
-        </v-chip>
       </v-card-text>
     </v-card>
 
     <!-- Competitors List -->
     <v-card elevation="2" v-if="displayCompetitorRounds?.length > 0">
-      <v-card-title class="text-h6 py-2">
+      <v-card-title class="text-h6 py-2 primary--text">
         <span>Startliste {{displayRound?.gender === 'HERREN' ? 'Herren' : 'Damen'}} Runde {{ displayRound.roundNumber }}</span>
       </v-card-title>
 
@@ -158,6 +155,12 @@
               >
                 {{ competitorRound.competitor.firstName }} {{ competitorRound.competitor.lastName }}
               </v-list-item-title>
+
+
+              <div class="text-caption grey--text">
+                Startnr.: {{ competitorRound.competitor.startNumber }}
+              </div>
+
             </v-list-item-content>
 
             <!-- Score and Status -->
@@ -198,6 +201,7 @@
                 </div>
               </div>
             </v-list-item-action>
+
           </v-list-item>
 
           <v-divider v-if="index < displayCompetitorRounds?.length - 1" :key="`divider-${index}`"></v-divider>
@@ -206,11 +210,11 @@
     </v-card>
 
     <!-- No Data Message -->
-    <v-card v-else-if="!isRefreshing" elevation="1">
-      <v-card-text class="text-center py-4">
-        <v-icon large color="grey">mdi-information-outline</v-icon>
-        <div class="text-h6 grey--text mt-2">Keine Daten verfügbar</div>
-        <div class="text-caption grey--text">
+    <v-card v-else-if="!isRefreshing" class="mt-3" elevation="2" color="grey lighten-4">
+      <v-card-text class="text-center py-6">
+        <v-icon size="64" color="grey">mdi-information-outline</v-icon>
+        <div class="text-h5 grey--text mt-3 font-weight-bold">Keine Daten verfügbar</div>
+        <div class="text-body-1 mt-2">
           <span v-if="selectedView === 'live'">Derzeit läuft keine Runde</span>
           <span v-else>Keine Daten für {{ selectedView.toUpperCase() }} verfügbar</span>
         </div>

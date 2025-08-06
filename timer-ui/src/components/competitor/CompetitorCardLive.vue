@@ -61,6 +61,10 @@
 
                 <v-card-text class="pt-0 pb-2">
                   <v-divider></v-divider>
+                  <div class="mb-2 mt-2" v-if="competitor.startNumber">
+                    <v-icon small color="grey" class="mr-2 ml-2"> mdi-numeric</v-icon>
+                    <span class="text-body-2">Startnummer {{ competitor.startNumber }}</span>
+                  </div>
                   <div class="mb-2 mt-2" v-if="competitor.city">
                     <v-icon small color="grey" class="mr-2 ml-2">mdi-map-marker</v-icon>
                     <span class="text-body-2">{{ competitor.city }}</span>

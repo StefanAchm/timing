@@ -27,8 +27,8 @@ const routes = [
     {
         path: '/register',
         name: 'Register',
-        component: () => import('../views/RegisterView.vue'),
-        meta: { requiresAuth: true, role: 'JUDGE' }
+        component: () => import('../views/LiveRegister.vue'),
+        meta: { mobile: true, requiresAuth: false }
     },
     {
         path: '/admin',
