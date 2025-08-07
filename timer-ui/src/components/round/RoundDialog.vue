@@ -24,6 +24,7 @@
                   v-model="roundLocal.gender"
                   :items="['HERREN', 'DAMEN']"
                   label="Geschlecht"
+                  outlined
                   @change="updateRoundNumber"
               />
 
@@ -34,6 +35,7 @@
                   type="number"
                   v-model="roundLocal.roundNumber"
                   label="Rundennummer"
+                  outlined
                   :disabled="!!round.id"
               ></v-text-field>
             </v-col>
@@ -41,6 +43,7 @@
               <v-text-field
                   type="number"
                   v-model="roundLocal.maxHolds"
+                  outlined
                   label="Anzahl Griffe"></v-text-field>
             </v-col>
 
@@ -66,6 +69,7 @@
                   type="number"
                   :disabled="scoreRowDisabled()"
                   v-model="roundLocal.score.holdNumber"
+                  outlined
                   label="Griff Nummer"></v-text-field>
 
             </v-col>
@@ -76,6 +80,7 @@
                   type="number"
                   :disabled="scoreRowDisabled()"
                   v-model="roundLocal.score.tryNumber"
+                  outlined
                   label="Versuch"></v-text-field>
 
             </v-col>

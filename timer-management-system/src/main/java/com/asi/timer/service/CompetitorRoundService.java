@@ -4,6 +4,7 @@ import com.asi.timer.backend.model.CompetitorRound;
 import com.asi.timer.backend.model.Round;
 import com.asi.timer.backend.utils.ScoreUtil;
 import com.asi.timer.enums.EnumCompetitorRoundStatus;
+import com.asi.timer.enums.EnumGender;
 import com.asi.timer.enums.EnumHoldType;
 import com.asi.timer.model.db.DBCompetitor;
 import com.asi.timer.model.db.DBCompetitorRound;
@@ -67,6 +68,20 @@ public class CompetitorRoundService {
                 .orElseThrow(() -> new RuntimeException("Round with number " + roundNumber + " for gender " + competitor.getGender() + " not found"));
 
         return add(competitor, round);
+
+    }
+
+    public void addCompetitorToFirstRoundIfExists(DBCompetitor competitor) {
+
+        EnumGender gender = competitor.getGender();
+        DBRound firstRound = this.roundRepository.findByRoundNumberAndGender(1, gender).orElse(null);
+
+        if(firstRound != null) {
+            DBCompetitorRound competitorRound = new DBCompetitorRound();
+            competitorRound.setCompetitor(competitor);
+            competitorRound.setRound(firstRound);
+            this.competitorRoundRepository.save(competitorRound);
+        }
 
     }
 

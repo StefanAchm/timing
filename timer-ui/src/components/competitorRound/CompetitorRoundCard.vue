@@ -52,6 +52,7 @@
                   v-model="competitorRoundLocal.holdNumber"
                   :label="'Griffnummer (max:' + maxNumberOfHolds + ')'"
                   ref="holdNumberInput"
+                  outlined
               ></v-text-field>
             </v-col>
           </v-row>
@@ -69,6 +70,7 @@
               <v-text-field
                   type="number"
                   v-model="competitorRoundLocal.tryNumber"
+                  outlined
                   label="Versuch"></v-text-field>
 
             </v-col>
@@ -167,6 +169,7 @@ export default {
         }
 
         if(val?.competitorRoundStatus !== 'COMPLETED') {
+          this.competitorRoundLocal.holdNumber = 1;
           this.competitorRoundLocal.holdType = this.holdTypes[2]
           this.competitorRoundLocal.tryNumber = 1;
         }

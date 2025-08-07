@@ -303,26 +303,24 @@
         </div>
 
         <div class="text-body-1 mt-2">
-          Vielen Dank für deine Anmeldung <strong>{{ competitorSuccess.firstName }} {{
-            competitorSuccess.lastName
-          }}</strong>. Du bist nun für den Wettkampf in der Kategorie <strong>{{ competitorSuccess.gender }}</strong>
+          Vielen Dank für deine Anmeldung <strong>{{ competitorSuccess.firstName }}</strong>. Du bist nun für den Wettkampf in der Kategorie <strong>{{ competitorSuccess.gender }}</strong>
           angemeldet.
         </div>
 
         <div class="text-body-1 mt-2">
           Deine Startnummer ist <strong>{{ competitorSuccess.startNumber }}</strong>
         </div>
-        <div class="text-body-2 grey--text mt-2">
-          Weitere Details findest du in der Startliste.
-        </div>
-        <v-btn
-            color="primary"
-            class="mt-4"
-            @click="goToStartList"
-        >
-          <v-icon left>mdi-trophy</v-icon>
-          Zur Startliste
-        </v-btn>
+<!--        <div class="text-body-2 grey&#45;&#45;text mt-2">-->
+<!--          Weitere Details findest du in der Startliste.-->
+<!--        </div>-->
+<!--        <v-btn-->
+<!--            color="primary"-->
+<!--            class="mt-4"-->
+<!--            @click="goToStartList"-->
+<!--        >-->
+<!--          <v-icon left>mdi-trophy</v-icon>-->
+<!--          Zur Startliste-->
+<!--        </v-btn>-->
       </v-card-text>
     </v-card>
 

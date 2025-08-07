@@ -13,8 +13,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "competitors",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"firstName", "lastName"}),
-                @UniqueConstraint(columnNames = {"startNumber"}),
+                @UniqueConstraint(name = "uc_competitor_first_last_name", columnNames = {"firstName", "lastName"}),
+                @UniqueConstraint(name = "uc_competitor_start_number", columnNames = {"startNumber"}),
         })
 public class DBCompetitor {
 

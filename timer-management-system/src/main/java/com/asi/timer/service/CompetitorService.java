@@ -24,14 +24,17 @@ public class CompetitorService {
     private final CompetitorRepository competitorRepository;
     private final CompetitorRoundRepository competitorRoundRepository;
     private final RoundRepository roundRepository;
+    private final CompetitorRoundService competitorRoundService;
 
     public CompetitorService(CompetitorRepository competitorRepository,
                              CompetitorRoundRepository competitorRoundRepository,
-                             RoundRepository roundRepository) {
+                             RoundRepository roundRepository,
+                             CompetitorRoundService competitorRoundService) {
 
         this.competitorRepository = competitorRepository;
         this.competitorRoundRepository = competitorRoundRepository;
         this.roundRepository = roundRepository;
+        this.competitorRoundService = competitorRoundService;
 
     }
 
@@ -61,14 +64,34 @@ public class CompetitorService {
             DBCompetitor competitor = createCompetitorInDB(competitorRequest);
             return APICompetitor.fromDBCompetitor(competitor, false);
         } catch (DataIntegrityViolationException e) {
-            throw new IllegalArgumentException("Start number " + competitorRequest.getStartNumber() + " is already taken", e);
+
+            String message = e.getCause() != null ? e.getCause().getMessage() : e.getMessage();
+
+            if(message != null) {
+
+                if (message.contains("uc_competitor_first_last_name")) {
+                    throw new IllegalArgumentException("Competitor " + competitorRequest.getFirstName() + " " + competitorRequest.getLastName() + " already exists!", e);
+                } else if (message.contains("uc_competitor_start_number")) {
+                    throw new IllegalArgumentException("Start number " + competitorRequest.getStartNumber() + " is already taken", e);
+                }
+
+            }
+
+            throw new RuntimeException("Error creating competitor: " + e.getMessage(), e);
+
         }
+
     }
 
     private DBCompetitor createCompetitorInDB(APICompetitor competitorRequest) {
 
         DBCompetitor competitor = DBCompetitor.fromAPICompetitor(competitorRequest);
-        return this.competitorRepository.save(competitor);
+
+        DBCompetitor save = this.competitorRepository.save(competitor);
+
+        this.competitorRoundService.addCompetitorToFirstRoundIfExists(save);
+
+        return save;
 
     }
 

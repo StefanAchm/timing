@@ -4,7 +4,7 @@
     <v-card class="mb-3" elevation="2">
       <v-card-title class="text-h7 primary white--text py-3">
         <v-icon left color="white">mdi-podium</v-icon>
-        Ergebnisliste
+        Ergebnisse
         <!-- Live Update Indicator -->
         <v-spacer></v-spacer>
         <v-chip

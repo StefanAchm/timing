@@ -40,7 +40,7 @@
               Platz {{ competitor.rank }} - {{ competitor.points.toFixed(4) }} Punkte
             </div>
             <div class="text-subtitle-1 white--text" v-else>
-              Noch nicht gestartet
+              {{ rankText }}
             </div>
 
           </div>
@@ -100,7 +100,7 @@
                   </div>
                   <div class="mb-2 mt-2" v-if="competitor.rank == 0">
                     <v-icon small color="grey" class="mr-2 ml-2">mdi-timer</v-icon>
-                    <span class="text-body-2">Noch nicht gestartet</span>
+                    <span class="text-body-2">{{ rankText }}</span>
                   </div>
                   <div class="mb-2 mt-2">
                     <v-icon small color="grey" class="mr-2 ml-2">mdi-chart-line</v-icon>
@@ -185,9 +185,8 @@
                         Status
                       </div>
                       <div class="text-body-1 font-weight-medium">
-                        Noch nicht gestartet
+                        {{ rankText }}
                       </div>
-
                     </div>
 
                     <v-divider class="my-3"></v-divider>
@@ -239,6 +238,12 @@ export default {
     }
   },
 
+  // watch: {
+  //   competitor(newValue) {
+  //
+  //   }
+  // },
+
   computed: {
     dialogLocal: {
       get() {
@@ -248,11 +253,22 @@ export default {
         this.$emit('update:dialog', value)
       }
     },
+
+    rankText() {
+
+      if(this.competitor.isCurrent) return 'Aktuell am Zug';
+      if(!this.competitor.isCurrent) return 'Noch nicht gestartet';
+
+      return 'b';
+
+    }
+
   },
 
   methods: {
     getRankColor(rank) {
-      if (rank === 0) return 'grey lighten-2' // No rank
+      if (rank === 0 && !this.competitor.isCurrent) return 'grey lighten-2' // No rank
+      if (rank === 0 && this.competitor.isCurrent) return 'success' // Current competitor
       if (rank === 1) return 'firstPlace'   // Gold
       if (rank === 2) return 'secondPlace' // Silver
       if (rank === 3) return 'thirdPlace'  // Bronze
@@ -260,7 +276,8 @@ export default {
     },
 
     getRankIcon(rank) {
-      if (rank === 0) return 'DNS' // No rank
+      if (rank === 0 && !this.competitor.isCurrent) return 'mdi-clock-outline' // No rank
+      if (rank === 0 && this.competitor.isCurrent) return 'mdi-timer'
       if (rank === 1) return 'mdi-trophy'
       if (rank === 2) return 'mdi-medal'
       if (rank === 3) return 'mdi-medal'

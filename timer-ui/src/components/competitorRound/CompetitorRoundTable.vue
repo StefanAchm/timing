@@ -50,6 +50,7 @@
               label="Search"
               single-line
               hide-details
+              outlined
           ></v-text-field>
 
         </v-col>
@@ -60,6 +61,7 @@
               label="Geschlecht"
               v-model="genderFilter"
               :items="['HERREN', 'DAMEN', 'Alle']"
+              outlined
           ></v-select>
 
         </v-col>
@@ -69,6 +71,7 @@
               label="Runde"
               v-model="roundFilter"
               :items="nrOfRounds"
+              outlined
           ></v-select>
         </v-col>
 
@@ -77,6 +80,7 @@
               label="Status"
               v-model="statusFilter"
               :items="statusItems"
+              outlined
           ></v-select>
 
         </v-col>

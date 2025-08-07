@@ -5,6 +5,7 @@
       :items="holdTypes"
       :disabled="selectDisabled"
       item-text="name"
+      outlined
       item-value="id"
       label="Griffart"
 
