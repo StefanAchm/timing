@@ -32,6 +32,7 @@
                 <v-text-field
                     type="number"
                     v-model="competitorRoundLocal.holdNumber"
+                    outlined
                     label="Griffnummer"></v-text-field>
 
               </v-col>
@@ -42,6 +43,7 @@
                 <v-text-field
                     type="number"
                     v-model="competitorRoundLocal.tryNumber"
+                    outlined
                     label="Versuch"></v-text-field>
 
               </v-col>

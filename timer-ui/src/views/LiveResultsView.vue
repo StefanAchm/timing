@@ -35,21 +35,41 @@
             Damen
           </v-chip>
         </v-chip-group>
+
       </v-card-text>
+
+      <v-card-text class="pb-2 pt-2 d-flex align-center">
+
+        <!-- Search Bar -->
+
+        <v-text-field
+            v-model="searchQuery"
+            label="Suche nach Name"
+            clearable
+            class="mb-3"
+            hide-details
+            outlined
+            @input="filterResults"
+        />
+
+      </v-card-text>
+
     </v-card>
 
+
+
     <!-- Results List -->
-    <v-card elevation="2" v-if="results?.length > 0">
+    <v-card elevation="2" v-if="filteredResults?.length > 0">
       <v-card-title class="text-h6 py-2 primary--text">
         Ergebnisse {{ selectedGender === 'HERREN' ? 'Herren' : 'Damen' }}
         <v-spacer></v-spacer>
         <v-chip small color="grey lighten-2" text-color="grey darken-2">
-          {{ results.length }} Teilnehmer
+          {{ filteredResults.length }} Teilnehmer
         </v-chip>
       </v-card-title>
 
       <v-list dense>
-        <template v-for="(result, index) in results">
+        <template v-for="(result, index) in filteredResults">
           <v-list-item
               :key="index"
               :class="{
@@ -169,6 +189,8 @@ export default {
     return {
       selectedGender: 'HERREN',
       results: [],
+      filteredResults: [],
+      searchQuery: '',
       isLoading: false,
       autoRefreshInterval: null,
       competitorDialog: false,
@@ -179,7 +201,7 @@ export default {
   watch: {
     selectedGender() {
       this.refreshData()
-    }
+    },
   },
 
   mounted() {
@@ -192,6 +214,20 @@ export default {
   },
 
   methods: {
+
+    filterResults() {
+      if(!this.searchQuery) {
+        this.searchQuery = ''
+      }
+      const query = this.searchQuery.trim().toLowerCase()
+      if (!query) {
+        this.filteredResults = [...this.results]
+      } else {
+        this.filteredResults = this.results.filter(r =>
+            `${r.firstName} ${r.lastName}`.toLowerCase().includes(query)
+        )
+      }
+    },
 
     getRankColor(rank) {
       if (rank === 0) return 'grey lighten-2' // No rank
@@ -228,6 +264,7 @@ export default {
 
         TimerApiService.getResultList(this.selectedGender).then(response => {
           this.results = response.data
+          this.filterResults()
         })
 
         // Sort by rank

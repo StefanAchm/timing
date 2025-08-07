@@ -313,7 +313,7 @@ export default {
 
     // Scroll to the currentCompetitorRound in the Competitors List if it changes
     currentCompetitorRound(newRound, oldRound) {
-      if (newRound && newRound !== oldRound) {
+      if (newRound && newRound?.id !== oldRound?.id) {
         this.$nextTick(() => {
           const element = document.querySelector('.current-player-item');
           if (element) {
@@ -348,7 +348,6 @@ export default {
         if (competitor) {
           this.selectedCompetitor = competitor
           this.selectedCompetitor.isCurrent = competitorRound.isCurrent;
-          console.log(this.selectedCompetitor)
           this.competitorDialog = true
         }
 
