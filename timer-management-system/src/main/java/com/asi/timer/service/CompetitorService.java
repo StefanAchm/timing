@@ -10,6 +10,7 @@ import com.asi.timer.model.view.APIRound;
 import com.asi.timer.repositories.CompetitorRepository;
 import com.asi.timer.repositories.CompetitorRoundRepository;
 import com.asi.timer.repositories.RoundRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,26 +24,74 @@ public class CompetitorService {
     private final CompetitorRepository competitorRepository;
     private final CompetitorRoundRepository competitorRoundRepository;
     private final RoundRepository roundRepository;
+    private final CompetitorRoundService competitorRoundService;
 
     public CompetitorService(CompetitorRepository competitorRepository,
                              CompetitorRoundRepository competitorRoundRepository,
-                             RoundRepository roundRepository) {
+                             RoundRepository roundRepository,
+                             CompetitorRoundService competitorRoundService) {
 
         this.competitorRepository = competitorRepository;
         this.competitorRoundRepository = competitorRoundRepository;
         this.roundRepository = roundRepository;
+        this.competitorRoundService = competitorRoundService;
 
     }
 
-    public DBCompetitor createCompetitor(APICompetitor competitorRequest) {
+    public APICompetitor registerCompetitor(APICompetitor competitorRequest) {
+
+        int maxRetries = 3;
+        for (int attempt = 0; attempt < maxRetries; attempt++) {
+            try {
+                Integer startNumber = generateStartNumber();
+                competitorRequest.setStartNumber(startNumber);
+                DBCompetitor competitor = createCompetitorInDB(competitorRequest);
+                return APICompetitor.fromDBCompetitor(competitor, false);
+            } catch (DataIntegrityViolationException e) {
+                if (attempt == maxRetries - 1) {
+                    throw e; // Rethrow the exception if max retries reached
+                }
+                // Small delay before retry
+                try { Thread.sleep(50); } catch (InterruptedException ie) { }
+            }
+        }
+        throw new RuntimeException("Failed to register competitor");
+
+    }
+
+    public APICompetitor createCompetitor(APICompetitor competitorRequest) {
+        try {
+            DBCompetitor competitor = createCompetitorInDB(competitorRequest);
+            return APICompetitor.fromDBCompetitor(competitor, false);
+        } catch (DataIntegrityViolationException e) {
+
+            String message = e.getCause() != null ? e.getCause().getMessage() : e.getMessage();
+
+            if(message != null) {
+
+                if (message.contains("uc_competitor_first_last_name")) {
+                    throw new IllegalArgumentException("Competitor " + competitorRequest.getFirstName() + " " + competitorRequest.getLastName() + " already exists!", e);
+                } else if (message.contains("uc_competitor_start_number")) {
+                    throw new IllegalArgumentException("Start number " + competitorRequest.getStartNumber() + " is already taken", e);
+                }
+
+            }
+
+            throw new RuntimeException("Error creating competitor: " + e.getMessage(), e);
+
+        }
+
+    }
+
+    private DBCompetitor createCompetitorInDB(APICompetitor competitorRequest) {
 
         DBCompetitor competitor = DBCompetitor.fromAPICompetitor(competitorRequest);
 
-        if (!isStartNumberValid(null, competitorRequest.getStartNumber())) {
-            throw new RuntimeException("Start number already in use");
-        }
+        DBCompetitor save = this.competitorRepository.save(competitor);
 
-        return this.competitorRepository.save(competitor);
+        this.competitorRoundService.addCompetitorToFirstRoundIfExists(save);
+
+        return save;
 
     }
 

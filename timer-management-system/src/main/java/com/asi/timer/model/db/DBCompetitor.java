@@ -11,7 +11,11 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "competitors")
+@Table(name = "competitors",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uc_competitor_first_last_name", columnNames = {"firstName", "lastName"}),
+                @UniqueConstraint(name = "uc_competitor_start_number", columnNames = {"startNumber"}),
+        })
 public class DBCompetitor {
 
     @Id
@@ -54,7 +58,7 @@ public class DBCompetitor {
         dbCompetitor.setDateOfBirth(competitor.getDateOfBirth());
         dbCompetitor.setGender(competitor.getGender());
 
-        if(competitor.getPaymentStatus() != null) {
+        if (competitor.getPaymentStatus() != null) {
             dbCompetitor.setPaymentStatus(competitor.getPaymentStatus());
         }
 

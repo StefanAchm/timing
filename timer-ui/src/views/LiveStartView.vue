@@ -1,10 +1,10 @@
 <template>
-  <v-container fluid class="pa-2">
+  <v-container fluid class="pa-2 full-height-container">
 
     <!-- Header Card -->
     <v-card class="mb-3" elevation="2" v-if="$route.meta.type !== 'live'">
       <v-card-title class="text-h7 primary white--text py-3">
-        <v-icon left color="white">mdi-trophy</v-icon>
+        <v-icon left color="white">mdi-format-list-bulleted</v-icon>
         <span>
           Startliste
         </span>
@@ -116,22 +116,19 @@
           {{ currentCompetitorRound.competitor.firstName }} {{ currentCompetitorRound.competitor.lastName }}
         </div>
         <div class="text-subtitle-1 green--text">
-          <v-icon color="green" small>mdi-clock</v-icon>
+          <v-icon color="green" small>mdi-timer</v-icon>
           Aktuell am Zug
         </div>
-        <v-chip color="green" text-color="white" small class="mt-2">
-          {{ currentCompetitorRound.score }} Punkte
-        </v-chip>
       </v-card-text>
     </v-card>
 
     <!-- Competitors List -->
     <v-card elevation="2" v-if="displayCompetitorRounds?.length > 0">
-      <v-card-title class="text-h6 py-2">
+      <v-card-title class="text-h6 py-2 primary--text">
         <span>Startliste {{displayRound?.gender === 'HERREN' ? 'Herren' : 'Damen'}} Runde {{ displayRound.roundNumber }}</span>
       </v-card-title>
 
-      <v-list dense>
+      <v-list dense :class=" selectedView === 'live' ? 'scrollable-list' : ''">
         <template v-for="(competitorRound, index) in displayCompetitorRounds">
           <v-list-item
               :key="index"
@@ -158,6 +155,12 @@
               >
                 {{ competitorRound.competitor.firstName }} {{ competitorRound.competitor.lastName }}
               </v-list-item-title>
+
+
+              <div class="text-caption grey--text">
+                Startnr.: {{ competitorRound.competitor.startNumber }}
+              </div>
+
             </v-list-item-content>
 
             <!-- Score and Status -->
@@ -179,7 +182,7 @@
                       color="green"
                       small
                   >
-                    mdi-play-circle
+                    mdi-timer
                   </v-icon>
                   <v-icon
                       v-else-if="competitorRound.score !== null"
@@ -198,6 +201,7 @@
                 </div>
               </div>
             </v-list-item-action>
+
           </v-list-item>
 
           <v-divider v-if="index < displayCompetitorRounds?.length - 1" :key="`divider-${index}`"></v-divider>
@@ -206,11 +210,11 @@
     </v-card>
 
     <!-- No Data Message -->
-    <v-card v-else-if="!isRefreshing" elevation="1">
-      <v-card-text class="text-center py-4">
-        <v-icon large color="grey">mdi-information-outline</v-icon>
-        <div class="text-h6 grey--text mt-2">Keine Daten verfügbar</div>
-        <div class="text-caption grey--text">
+    <v-card v-else-if="!isRefreshing" class="mt-3" elevation="2" color="grey lighten-4">
+      <v-card-text class="text-center py-6">
+        <v-icon size="64" color="grey">mdi-information-outline</v-icon>
+        <div class="text-h5 grey--text mt-3 font-weight-bold">Keine Daten verfügbar</div>
+        <div class="text-body-1 mt-2">
           <span v-if="selectedView === 'live'">Derzeit läuft keine Runde</span>
           <span v-else>Keine Daten für {{ selectedView.toUpperCase() }} verfügbar</span>
         </div>
@@ -305,7 +309,21 @@ export default {
       } else if (to.meta.type === 'DAMEN') {
         this.selectedView = 'DAMEN';
       }
+    },
+
+    // Scroll to the currentCompetitorRound in the Competitors List if it changes
+    currentCompetitorRound(newRound, oldRound) {
+      if (newRound && newRound !== oldRound) {
+        this.$nextTick(() => {
+          const element = document.querySelector('.current-player-item');
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+      }
     }
+
+
   },
 
   mounted() {
@@ -329,6 +347,8 @@ export default {
         const competitor = response.data.find(cr => cr.id === competitorRound.competitor.id);
         if (competitor) {
           this.selectedCompetitor = competitor
+          this.selectedCompetitor.isCurrent = competitorRound.isCurrent;
+          console.log(this.selectedCompetitor)
           this.competitorDialog = true
         }
 
@@ -421,7 +441,7 @@ export default {
             numberOfCompetitors: latestCompetitorRounds.length,
             completedCompetitors: latestCompetitorRounds.filter(cr => cr.score !== null).length,
             maxHolds: latestCompetitorRounds[0]?.maxHolds || null,
-            roundNumber: latestCompetitorRounds[0]?.roundNumber || 1
+            roundNumber: latestCompetitorRounds[0]?.roundNumber || 1,
           };
 
           if (gender === 'HERREN') {
@@ -539,4 +559,10 @@ export default {
 .pulse-animation {
   animation: pulse2 2s infinite;
 }
+
+.scrollable-list {
+  max-height: calc(100vh - 500px);
+  overflow-y: auto;
+}
+
 </style>

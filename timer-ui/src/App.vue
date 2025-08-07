@@ -21,7 +21,7 @@
           :class="{ 'active-btn': $route.path === '/live' }"
       >
         <span class="nav-text">Live</span>
-        <v-icon size="24" class="nav-icon">mdi-play-circle-outline</v-icon>
+        <v-icon size="24" class="nav-icon"> mdi-broadcast </v-icon>
       </v-btn>
 
       <v-btn
@@ -44,8 +44,15 @@
         <v-icon size="24" class="nav-icon">mdi-podium</v-icon>
       </v-btn>
 
-
-
+      <v-btn
+          :value="'register'"
+          @click="$router.push('/register')"
+          class="nav-btn"
+          :class="{ 'active-btn': $route.path === '/register' }"
+      >
+        <span class="nav-text">Registrieren</span>
+        <v-icon size="24" class="nav-icon">mdi-account-plus</v-icon>
+      </v-btn>
 
     </v-bottom-navigation>
 

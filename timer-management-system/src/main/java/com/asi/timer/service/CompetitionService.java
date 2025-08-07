@@ -38,13 +38,13 @@ public class CompetitionService {
         this.competitorRoundService = competitorRoundService;
     }
 
-    public void updateStatus(boolean live) {
+    public void updateLiveStatus(boolean live) {
         DBCompetition dbCompetition = getDbCompetition();
         dbCompetition.setLive(live);
         competitionRepository.save(dbCompetition);
     }
 
-    public boolean getStatus() {
+    public boolean getLiveStatus() {
         DBCompetition dbCompetition = getDbCompetition();
         return dbCompetition.isLive();
     }
@@ -135,4 +135,14 @@ public class CompetitionService {
     }
 
 
+    public void updateRegistrationStatus(boolean registrationOpen) {
+        DBCompetition dbCompetition = getDbCompetition();
+        dbCompetition.setRegistrationOpen(registrationOpen);
+        competitionRepository.save(dbCompetition);
+    }
+
+    public boolean getRegistrationStatus() {
+        DBCompetition dbCompetition = getDbCompetition();
+        return dbCompetition.isRegistrationOpen();
+    }
 }

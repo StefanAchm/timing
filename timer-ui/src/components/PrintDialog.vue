@@ -16,6 +16,7 @@
                   label="Typ"
                   :items="['Startliste', 'Ergebnisliste']"
                   v-model="printType"
+                  outlined
               >
               </v-select>
             </v-col>
@@ -29,6 +30,7 @@
                   item-text="roundName"
                   item-value="id"
                   v-model="selectedRoundId"
+                  outlined
               >
               </v-select>
             </v-col>
@@ -37,6 +39,7 @@
                   label="Geschlecht"
                   :items="['HERREN', 'DAMEN']"
                   v-model="selectedGender"
+                  outlined
               >
               </v-select>
             </v-col>

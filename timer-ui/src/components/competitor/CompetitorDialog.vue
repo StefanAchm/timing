@@ -3,7 +3,7 @@
   <v-dialog
       v-if="competitorLocal"
       v-model="dialogLocal"
-      max-width="500px">
+      max-width="600px">
 
     <v-card>
       <v-card-title>
@@ -28,8 +28,9 @@
                     @click:append-outer="generateStartNumber()"
                     type="number"
                     v-model="competitorLocal.startNumber"
-                    label="Startnummer"
+                    label="Startnummer *"
                     required
+                    outlined
                     :error-messages="startNumberErrors"
                 >
 
@@ -59,9 +60,10 @@
                     :items="possibleCompetitors"
                     item-text="description"
                     item-value="description"
-                    label="Vorname"
+                    label="Vorname *"
                     :rules="[v => !!v || 'Vorname darf nicht leer sein']"
                     required
+                    outlined
                     @change="selectCompetitor"
                     clearable
                     @click:clear="init()"
@@ -86,7 +88,8 @@
 
                 <v-text-field
                     v-model="competitorLocal.lastName"
-                    label="Nachname"
+                    label="Nachname *"
+                    outlined
                     :rules="[v => !!v || 'Nachname darf nicht leer sein']"
                     required
                 />
@@ -103,7 +106,8 @@
                     :disabled="!fullEdit"
                     v-model="competitorLocal.gender"
                     :items="['HERREN', 'DAMEN']"
-                    label="Geschlecht"
+                    label="Geschlecht *"
+                    outlined
                     required
                     :rules="[v => !!v || 'Geschlecht darf nicht leer sein']"
                 />
@@ -126,7 +130,8 @@
 
                 <v-text-field
                     v-model="competitorLocal.city"
-                    label="Stadt"
+                    label="Stadt *"
+                    outlined
                     required
                 />
 
@@ -137,6 +142,7 @@
                 <v-text-field
                     v-model="competitorLocal.club"
                     label="Verein"
+                    outlined
                     required
                 />
 

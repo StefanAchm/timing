@@ -14,6 +14,7 @@
             item-text="roundName"
             item-value="id"
             label="Runde"
+            outlined
         ></v-select>
 
       </v-col>

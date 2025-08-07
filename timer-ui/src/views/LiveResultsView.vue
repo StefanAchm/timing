@@ -4,7 +4,7 @@
     <v-card class="mb-3" elevation="2">
       <v-card-title class="text-h7 primary white--text py-3">
         <v-icon left color="white">mdi-podium</v-icon>
-        Ergebnisliste
+        Ergebnisse
         <!-- Live Update Indicator -->
         <v-spacer></v-spacer>
         <v-chip
@@ -40,7 +40,7 @@
 
     <!-- Results List -->
     <v-card elevation="2" v-if="results?.length > 0">
-      <v-card-title class="text-h6 py-2">
+      <v-card-title class="text-h6 py-2 primary--text">
         Ergebnisse {{ selectedGender === 'HERREN' ? 'Herren' : 'Damen' }}
         <v-spacer></v-spacer>
         <v-chip small color="grey lighten-2" text-color="grey darken-2">
@@ -123,14 +123,16 @@
     </v-card>
 
     <!-- Empty State -->
-    <v-card v-else-if="!isLoading" elevation="2" class="text-center pa-6">
-      <v-icon size="64" color="grey lighten-2">mdi-trophy-outline</v-icon>
-      <div class="text-h6 grey--text mt-3">
-        Keine Ergebnisse verfügbar
-      </div>
-      <div class="text-body-2 grey--text">
-        Für {{ selectedGender === 'HERREN' ? 'Herren' : 'Damen' }} sind noch keine Ergebnisse vorhanden.
-      </div>
+    <v-card v-else-if="!isLoading" class="mt-3 text-center" elevation="2" color="grey lighten-4">
+      <v-card-text class="text-center py-6">
+        <v-icon size="64" color="grey">mdi-trophy-outline</v-icon>
+        <div class="text-h5 grey--text mt-3 font-weight-bold">
+          Keine Ergebnisse verfügbar
+        </div>
+        <div class="text-body-1 mt-2">
+          Für {{ selectedGender === 'HERREN' ? 'Herren' : 'Damen' }} sind noch keine Ergebnisse vorhanden.
+        </div>
+      </v-card-text>
     </v-card>
 
     <!-- Loading State -->

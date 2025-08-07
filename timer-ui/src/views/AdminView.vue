@@ -23,11 +23,24 @@
               :color="appStatus ? 'success' : 'error'"
               large
               block
-              @click="updateAppStatus(!appStatus)"
+              @click="updateLiveStatus(!appStatus)"
             >
               <v-icon left>{{ appStatus ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off' }}</v-icon>
               {{ appStatus ? 'Live' : 'Offline' }}
             </v-btn>
+
+            <v-btn
+                class="mt-4"
+                :color="registrationStatus ? 'success' : 'error'"
+                large
+                block
+                @click="updateRegistrationStatus(!registrationStatus)"
+            >
+              <v-icon left>{{ registrationStatus ? 'mdi-account-plus' : 'mdi-account-minus' }}</v-icon>
+              {{ registrationStatus ? 'Registration offen' : 'Registration geschlossen' }}
+            </v-btn>
+
+
           </v-card-text>
         </v-card>
       </v-col>
@@ -141,7 +154,8 @@ export default {
         competitorCount: 0,
         competitorRoundCount: 0
       },
-      appStatus: false // This will be set based on the application status
+      appStatus: false, // This will be set based on the application status
+      registrationStatus: false, // This will be set based on the registration status
     };
   },
   created() {
@@ -167,24 +181,43 @@ export default {
             this.$root.snackbar.showError({message: 'Fehler beim Laden der Statistiken.'});
           });
 
-      TimerApiService.getAppStatus()
+      TimerApiService.getLiveStatus()
           .then(response => {
-            this.appStatus = response.data.status;
+            this.appStatus = response.data;
           })
           .catch(() => {
             this.$root.snackbar.showError({message: 'Fehler beim Laden des Anwendungs status.'});
           });
 
+      TimerApiService.getRegistrationStatus()
+          .then(response => {
+            this.registrationStatus = response.data;
+          })
+          .catch(() => {
+            this.$root.snackbar.showError({message: 'Fehler beim Laden des Registrierungsstatus.'});
+          });
+
     },
 
-    updateAppStatus(status) {
-      TimerApiService.updateAppStatus(status)
+    updateLiveStatus(status) {
+      TimerApiService.updateLiveStatus(status)
           .then(() => {
             this.appStatus = status;
             this.$root.snackbar.showSuccess({message: `Anwendungsstatus erfolgreich auf ${status ? 'Live' : 'Offline'} gesetzt.`});
           })
           .catch(() => {
             this.$root.snackbar.showError({message: 'Fehler beim Aktualisieren des Anwendungsstatus.'});
+          });
+    },
+
+    updateRegistrationStatus(status) {
+      TimerApiService.updateRegistrationStatus(status)
+          .then(() => {
+            this.registrationStatus = status;
+            this.$root.snackbar.showSuccess({message: `Registrierungsstatus erfolgreich auf ${status ? 'offen' : 'geschlossen'} gesetzt.`});
+          })
+          .catch(() => {
+            this.$root.snackbar.showError({message: 'Fehler beim Aktualisieren des Registrierungsstatus.'});
           });
     },
 
