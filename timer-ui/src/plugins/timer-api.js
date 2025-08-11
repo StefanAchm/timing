@@ -246,6 +246,13 @@ export default {
             });
     },
 
+    setCompetitorRoundTop(competitorRoundId) {
+        return apiClient.post('/competitor-round/setTop', null, {
+            params: {competitorRoundId: competitorRoundId}
+        });
+
+    },
+
     getHoldTypes() {
         return apiClient.get('/competitor-round/getHoldTypes');
     },

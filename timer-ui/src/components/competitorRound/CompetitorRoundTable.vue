@@ -131,11 +131,11 @@
             <span v-if="item.rounds[i]">
 
 
-              {{ formatNumber(item.rounds[i].score) }}
+              <span style="display: inline-block; min-width: 50px;">{{ formatNumber(item.rounds[i].score) }}</span>
 
               <v-icon
                   small
-                  class="ml-2 mr-2"
+                  class="ml-1 mr-1"
                   @click="changeCompetitorRound(item.rounds[i].id)">
                 mdi-pencil
               </v-icon>
@@ -143,9 +143,21 @@
               <v-icon
                   small
                   :disabled="hasNextRound(item, i)"
+                  class="ml-1 mr-1"
                   @click="deleteCompetitorRound(item.rounds[i].id)">
                 mdi-delete
               </v-icon>
+
+              <v-chip
+                  color="green"
+                  class="ml-1 mr-1"
+                  outlined
+                  @click="saveTop(item.rounds[i].id)"
+                  style="cursor: pointer;"
+                  v-if="item.rounds[i].competitorRoundStatus !== 'COMPLETED'"
+              >
+                Top
+              </v-chip>
 
 
             </span>
@@ -562,6 +574,18 @@ export default {
           })
           .catch(() => {
           });
+
+    },
+
+
+    saveTop(competitorRoundId) {
+
+      TimerApiService.setCompetitorRoundTop(competitorRoundId)
+          .then(() => {
+            this.$root.snackbar.showSuccess({message: 'Gespeichert'})
+            this.init();
+          })
+          .catch(() => {});
 
     },
 

@@ -34,6 +34,11 @@ public class CompetitorRoundController {
 
     }
 
+    @PostMapping("/setTop")
+    public void setTop(@RequestParam UUID competitorRoundId) {
+        this.competitorRoundService.setTop(competitorRoundId);
+    }
+
     @GetMapping("/getHoldTypes")
     public ResponseEntity<List<EnumHoldType>> getHoldTypes() {
 

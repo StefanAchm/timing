@@ -213,4 +213,19 @@ public class CompetitorRoundService {
 
     }
 
+    public void setTop(UUID competitorRoundId) {
+
+        DBCompetitorRound competitorRound = this.competitorRoundRepository
+                .findById(competitorRoundId)
+                .orElseThrow(() -> new RuntimeException("CompetitorRound with id " + competitorRoundId + " not found"));
+
+        competitorRound.setCompetitorRoundStatus(EnumCompetitorRoundStatus.COMPLETED);
+        competitorRound.setHoldType(EnumHoldType.HELD);
+        competitorRound.setTryNumber(1);
+        competitorRound.setHoldNumber(competitorRound.getRound().getMaxHolds());
+
+        this.competitorRoundRepository.save(competitorRound);
+
+    }
+
 }
